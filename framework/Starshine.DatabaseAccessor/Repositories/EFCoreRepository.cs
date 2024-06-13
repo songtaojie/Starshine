@@ -1,4 +1,4 @@
-using Hx.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 非泛型EF Core仓储实现

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// DbFactory扩展类
@@ -14,7 +14,7 @@ namespace Hx.EntityFrameworkCore
         /// </summary>
         /// <typeparam name="T">数据库上下文实现类</typeparam>
         /// <param name="services">服务</param>
-        public static void AddDbFactory<T>(this IServiceCollection services)where T:DbContext
+        public static void AddDbFactory<T>(this IServiceCollection services) where T : DbContext
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddDbContext<DbContext, T>();

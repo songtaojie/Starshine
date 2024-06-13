@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文池

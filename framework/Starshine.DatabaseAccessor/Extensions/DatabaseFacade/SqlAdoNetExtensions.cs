@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// ADONET 拓展类
@@ -23,7 +23,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>DataTable</returns>
         public static DataTable ExecuteReader(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default)
         {
-          
+
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = databaseFacade.PrepareDbCommand(sql, parameters, commandType);
 
@@ -80,7 +80,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>DataTable</returns>
         public static async Task<DataTable> ExecuteReaderAsync(this DatabaseFacade databaseFacade, string sql, DbParameter[] parameters = null, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, CancellationToken cancellationToken = default)
         {
-          
+
             // 初始化数据库连接对象和数据库命令对象
             var (_, dbCommand) = await databaseFacade.PrepareDbCommandAsync(sql, parameters, commandType, cancellationToken);
 

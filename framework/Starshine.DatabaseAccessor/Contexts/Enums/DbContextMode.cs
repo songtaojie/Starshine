@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文模式

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hx.Cache
+namespace Starshine.Cache
 {
     internal class RedisCache : ICache
     {
@@ -18,10 +18,10 @@ namespace Hx.Cache
 
         public CacheTypeEnum CacheType => CacheTypeEnum.Redis;
 
-        public object this[string key] 
-        { 
-            get => Get<object>(key); 
-            set => Set(key,value,-1); 
+        public object this[string key]
+        {
+            get => Get<object>(key);
+            set => Set(key, value, -1);
         }
 
         public RedisCache(IRedisClient redisClient)
@@ -106,7 +106,7 @@ namespace Hx.Cache
                 }
                 return true;
             });
-            
+
         }
 
         public void Remove(params string[] keys)

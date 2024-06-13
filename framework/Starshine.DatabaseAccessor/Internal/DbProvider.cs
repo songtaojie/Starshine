@@ -1,4 +1,4 @@
-using Hx.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库提供器选项
@@ -159,7 +159,7 @@ namespace Hx.DatabaseAccessor
             else
             {
                 var configuration = Penetrates.GetService<IConfiguration>();
-                
+
                 // 如果包含 : 符号，那么认为是一个 Key 路径
                 if (connStr.Contains(":")) return configuration[connStr];
                 else
@@ -178,7 +178,7 @@ namespace Hx.DatabaseAccessor
         {
             return new List<IInterceptor>
             {
-               
+
                 new SqlCommandProfilerInterceptor(),
             };
         }
@@ -225,6 +225,6 @@ namespace Hx.DatabaseAccessor
                 throw new NotSupportedException(string.Format(NotSupportException, "stored procedure"));
             }
         }
-      
+
     }
 }

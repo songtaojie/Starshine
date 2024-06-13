@@ -1,9 +1,9 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文关联类型

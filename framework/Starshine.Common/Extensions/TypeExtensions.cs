@@ -1,11 +1,11 @@
-﻿using Hx.Common;
+﻿using Starshine.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Hx.Common.Extensions
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// 类型扩展类
@@ -254,11 +254,11 @@ namespace Hx.Common.Extensions
         /// <returns></returns>
         public static bool IsAssignableFromGenericType(this Type genericType, Type givenType)
         {
-            if (givenType.IsGenericType(genericType))  return true;
+            if (givenType.IsGenericType(genericType)) return true;
             var interfaceTypes = givenType.GetInterfaces();
             foreach (var it in interfaceTypes)
             {
-                
+
                 if (it.IsGenericType(genericType))
                     return true;
             }

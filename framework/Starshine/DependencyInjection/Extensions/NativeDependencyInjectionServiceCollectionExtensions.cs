@@ -4,7 +4,7 @@
 //
 // 电话/微信：song977601042
 
-using Hx.Common.DependencyInjection;
+using Starshine.Common.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Concurrent;
@@ -138,9 +138,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="injectionAttribute">注入特性</param>
         /// <param name="canInjectInterfaces">能被注册的接口</param>
         /// <param name="registerType"></param>
-        private static void RegisterService(IServiceCollection services, Type type, 
-                InjectionAttribute injectionAttribute, 
-                IEnumerable<Type> canInjectInterfaces, 
+        private static void RegisterService(IServiceCollection services, Type type,
+                InjectionAttribute injectionAttribute,
+                IEnumerable<Type> canInjectInterfaces,
                 DependencyInjectionType registerType)
         {
             // 注册自己
@@ -161,7 +161,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 foreach (var inter in canInjectInterfaces)
                 {
-                    RegisterType(services, registerType, type,inter);
+                    RegisterType(services, registerType, type, inter);
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务</param>
         /// <param name="type">类型</param>
         /// <param name="inter">接口</param>
-        private static void RegisterScopeType(IServiceCollection services, Type type,Type inter = null)
+        private static void RegisterScopeType(IServiceCollection services, Type type, Type inter = null)
         {
             if (inter == null) services.AddScoped(type);
             else
@@ -287,7 +287,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>int</returns>
         private static bool GetDependencyType(Type type)
         {
-            return type.IsClass && !type.IsInterface && !type.IsAbstract 
+            return type.IsClass && !type.IsInterface && !type.IsAbstract
                 && (typeof(IScopedDependency).IsAssignableFrom(type) || typeof(ITransientDependency).IsAssignableFrom(type) || typeof(ISingletonDependency).IsAssignableFrom(type));
         }
 

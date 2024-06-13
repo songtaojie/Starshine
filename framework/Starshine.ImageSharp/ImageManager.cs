@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp.Drawing.Processing;
-using Hx.ImageSharp.Fonts;
+using Starshine.ImageSharp.Fonts;
 using System.Collections.Concurrent;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Hx.ImageSharp
+namespace Starshine.ImageSharp
 {
     /// <summary>
     /// image帮助类
@@ -29,7 +29,7 @@ namespace Hx.ImageSharp
             bool result = true;
             try
             {
-               Image.Load(stream);
+                Image.Load(stream);
             }
             catch
             {
@@ -185,7 +185,7 @@ namespace Hx.ImageSharp
         /// <returns>返回的是水印的位置</returns>
         private static (TextOptions, SixLabors.ImageSharp.PointF) GetLocation(FontOptions fontOptions, SixLabors.ImageSharp.Size imgSize, float width, float height)
         {
-             TextOptions textOptions = new TextOptions(fontOptions.Font);
+            TextOptions textOptions = new TextOptions(fontOptions.Font);
             float x = 10;
             float y = 10;
             SixLabors.ImageSharp.PointF pointF = new SixLabors.ImageSharp.PointF(x, y);
@@ -324,7 +324,7 @@ namespace Hx.ImageSharp
 
             //float targetWidth = imgSize.Width - (padding * 2);
             //float targetHeight = imgSize.Height - (padding * 2);
-           
+
             var font = GetFont(fontOptions);
             // 测量文字大小
             FontRectangle size = TextMeasurer.Measure(fontOptions.Letter, new TextOptions(font));
@@ -333,7 +333,7 @@ namespace Hx.ImageSharp
             //创建一个新字体
             Font scaledFont = new Font(font, scalingFactor * font.Size);
             var testOptions = GetLocation(fontOptions, imgSize, size.Width, size.Height);
-            return processingContext.DrawText(new DrawingOptions(),fontOptions.Letter, scaledFont, fontOptions.Color, testOptions.Item2);
+            return processingContext.DrawText(new DrawingOptions(), fontOptions.Letter, scaledFont, fontOptions.Color, testOptions.Item2);
         }
 
         private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(this IImageProcessingContext processingContext,

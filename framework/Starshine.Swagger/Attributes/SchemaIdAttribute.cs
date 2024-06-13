@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Swagger.Attributes
+namespace Starshine.Swagger.Attributes
 {
     /// <summary>
     /// 解决规范化文档 SchemaId 冲突问题

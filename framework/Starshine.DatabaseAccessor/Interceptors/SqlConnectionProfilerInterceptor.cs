@@ -1,10 +1,10 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库连接拦截分析器

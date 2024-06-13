@@ -1,5 +1,5 @@
-﻿using Hx.DatabaseAccessor.Extensions;
-using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Extensions;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文构建器
@@ -55,7 +55,7 @@ namespace Hx.DatabaseAccessor
             // 查找所有数据库函数，必须是公开静态方法，且所在父类也必须是公开静态方法
             DbFunctionMethods = Penetrates.EffectiveTypes
                 .Where(t => t.IsAbstract && t.IsSealed && t.IsClass && !t.IsDefined(typeof(NonAutomaticAttribute), true))
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m =>m.IsDefined(typeof(QueryableFunctionAttribute), true))).ToList();
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => m.IsDefined(typeof(QueryableFunctionAttribute), true))).ToList();
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace Hx.DatabaseAccessor
                         {
                             result.EntityMutableTableTypes.Add(entityCorrelationType);
                         }
-                       
+
                     }
                 }
 

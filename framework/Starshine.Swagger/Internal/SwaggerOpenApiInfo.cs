@@ -1,7 +1,7 @@
-﻿using Hx.Swagger.Internal;
+﻿using Starshine.Swagger.Internal;
 using Microsoft.OpenApi.Models;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     /// <summary>
     /// 规范化文档开放接口信息

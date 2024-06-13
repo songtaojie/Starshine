@@ -4,7 +4,7 @@
 //
 // 电话/微信：song977601042
 
-using Hx.Common.DependencyInjection;
+using Starshine.Common.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;

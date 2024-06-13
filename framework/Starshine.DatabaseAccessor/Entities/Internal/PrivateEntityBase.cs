@@ -1,9 +1,9 @@
-﻿using Hx.DatabaseAccessor.Base;
+﻿using Starshine.DatabaseAccessor.Base;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hx.DatabaseAccessor.Internal
+namespace Starshine.DatabaseAccessor.Internal
 {
     /// <summary>
     /// 数据库实体依赖基类（禁止外部继承）

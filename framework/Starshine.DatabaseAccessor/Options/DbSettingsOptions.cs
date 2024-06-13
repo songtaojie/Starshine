@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Options
+namespace Starshine.DatabaseAccessor.Options
 {
     /// <summary>
     /// DbSettings
     /// </summary>
-    public class DbSettingsOptions:IPostConfigureOptions<DbSettingsOptions>
+    public class DbSettingsOptions : IPostConfigureOptions<DbSettingsOptions>
     {
         /// <summary>
         /// 集成 MiniProfiler 组件

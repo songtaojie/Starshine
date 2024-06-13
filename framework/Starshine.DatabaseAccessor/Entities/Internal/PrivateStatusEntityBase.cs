@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Internal
+namespace Starshine.DatabaseAccessor.Internal
 {
     /// <summary>
     ///  该基类封装了删除，禁用等状态字段（禁止外部继承）

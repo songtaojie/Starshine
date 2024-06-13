@@ -1,4 +1,4 @@
-﻿global using Hx.Common;
+﻿global using Starshine.Common;
 global using Starshine;
 global using System;
 global using System.Collections.Generic;

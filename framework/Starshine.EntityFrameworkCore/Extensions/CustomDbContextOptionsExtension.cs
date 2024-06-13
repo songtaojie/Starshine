@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// 自定义DBContext选项

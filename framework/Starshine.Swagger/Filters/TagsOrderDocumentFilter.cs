@@ -1,9 +1,9 @@
-﻿using Hx.Swagger.Internal;
+﻿using Starshine.Swagger.Internal;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     /// <summary>
     /// 标签文档排序拦截器
@@ -17,7 +17,7 @@ namespace Hx.Swagger
         /// <param name="context"></param>
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
-            swaggerDoc.Tags = swaggerDoc.Tags.OrderBy(u=>u.Name).ToArray();
+            swaggerDoc.Tags = swaggerDoc.Tags.OrderBy(u => u.Name).ToArray();
         }
     }
 }

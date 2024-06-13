@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 控制台帮助类
     /// </summary>
     public static class ConsoleHelper
     {
-        static void WriteColorLine(string str, ConsoleColor color,bool newLine = false)
+        static void WriteColorLine(string str, ConsoleColor color, bool newLine = false)
         {
             ConsoleColor currentForeColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
@@ -55,7 +55,7 @@ namespace Hx.Common
         /// <param name="str">待打印的字符串</param>
         /// <param name="newLine">是否在后面添加一行空行</param>
         /// <param name="color">想要打印的颜色</param>
-        public static void WriteSuccessLine(this string str, bool newLine = false,ConsoleColor color = ConsoleColor.Green)
+        public static void WriteSuccessLine(this string str, bool newLine = false, ConsoleColor color = ConsoleColor.Green)
         {
             WriteColorLine(str, color, newLine);
         }

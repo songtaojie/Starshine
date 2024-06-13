@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common.DependencyInjection
+namespace Starshine.Common.DependencyInjection
 {
     /// <summary>
     /// 设置依赖注入方式

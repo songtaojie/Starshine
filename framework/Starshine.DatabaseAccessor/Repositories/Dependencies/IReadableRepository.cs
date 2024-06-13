@@ -1,4 +1,4 @@
-using Hx.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可读仓储接口

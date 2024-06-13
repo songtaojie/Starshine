@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Hx.DatabaseAccessor.Extensions.LinqBuilder
+namespace Starshine.DatabaseAccessor.Extensions.LinqBuilder
 {
     /// <summary>
     /// 表达式拓展类

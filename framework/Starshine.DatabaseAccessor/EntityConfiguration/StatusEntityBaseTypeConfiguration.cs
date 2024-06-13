@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Hx.DatabaseAccessor.EntityConfiguration
+namespace Starshine.DatabaseAccessor.EntityConfiguration
 {
     /// <summary>
     /// 基础的配置,带状态
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
     /// <typeparam name="TKeyType">主键类型</typeparam>
-    public class StatusEntityBaseTypeConfiguration<T,TKeyType>: EntityBaseTypeConfiguration<T, TKeyType>
+    public class StatusEntityBaseTypeConfiguration<T, TKeyType> : EntityBaseTypeConfiguration<T, TKeyType>
          where T : Internal.PrivateStatusEntityBase<TKeyType>
     {
         /// <summary>

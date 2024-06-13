@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// IConventionPropertyBuilder扩展类

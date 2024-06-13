@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sqlsugar
+namespace Starshine.Sqlsugar
 {
     /// <summary>
     /// 实体种子数据接口

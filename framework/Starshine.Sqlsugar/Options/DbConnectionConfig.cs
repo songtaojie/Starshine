@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Sqlsugar
+namespace Starshine.Sqlsugar
 {
     /// <summary>
     /// 数据库连接配置
@@ -39,17 +39,17 @@ namespace Hx.Sqlsugar
         {
             return new ConnectionConfig
             {
-                AopEvents= AopEvents,
-                ConfigId= ConfigId,
-                ConfigureExternalServices= ConfigureExternalServices,
-                ConnectionString=ConnectionString,
-                DbLinkName= DbLinkName,
-                DbType= DbType,
-                IndexSuffix= IndexSuffix,
-                IsAutoCloseConnection= IsAutoCloseConnection,
-                LanguageType= LanguageType,
-                MoreSettings=MoreSettings,
-                SlaveConnectionConfigs=SlaveConnectionConfigs,
+                AopEvents = AopEvents,
+                ConfigId = ConfigId,
+                ConfigureExternalServices = ConfigureExternalServices,
+                ConnectionString = ConnectionString,
+                DbLinkName = DbLinkName,
+                DbType = DbType,
+                IndexSuffix = IndexSuffix,
+                IsAutoCloseConnection = IsAutoCloseConnection,
+                LanguageType = LanguageType,
+                MoreSettings = MoreSettings,
+                SlaveConnectionConfigs = SlaveConnectionConfigs,
                 SqlMiddle = SqlMiddle
             };
         }

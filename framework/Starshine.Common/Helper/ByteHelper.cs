@@ -1,9 +1,9 @@
-﻿using Hx.Common.Serialization;
+﻿using Starshine.Common.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 字节帮助类

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Hx.Common
     /// 框架实体基类Id
     /// </summary>
     [SkipScan]
-    public abstract class EntityBase:IEntity<long>
+    public abstract class EntityBase : IEntity<long>
     {
         /// <summary>
         /// 雪花Id

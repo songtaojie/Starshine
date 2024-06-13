@@ -1,4 +1,4 @@
-﻿namespace Hx.Common
+﻿namespace Starshine.Common
 {
     /// <summary>
     /// ajax返回结果统一封装

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using System.Reflection;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件处理程序上下文

@@ -6,13 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Hx.Common;
-using Hx.Common.Extensions;
+using Starshine.Common;
+using Starshine.Common.Extensions;
 using System.Runtime.Loader;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar
+namespace Starshine.Sqlsugar
 {
     /// <summary>
     /// SqlSugar配置初始化
@@ -98,7 +98,7 @@ namespace Hx.Sqlsugar
                             column.DataType = "number(1)";
                     }
 
-                    if (typeof(IEntity<>).IsAssignableFromGenericType(type.ReflectedType) 
+                    if (typeof(IEntity<>).IsAssignableFromGenericType(type.ReflectedType)
                         && !type.IsDefined(typeof(SugarColumn), false))
                     {
                         switch (type.Name)
@@ -116,7 +116,7 @@ namespace Hx.Sqlsugar
                                     column.Length = 36;
                                 }
                                 break;
-                            case nameof(Hx.Common.AuditedEntityBase.UpdaterId):
+                            case nameof(Starshine.Common.AuditedEntityBase.UpdaterId):
                                 if (type.PropertyType == typeof(string))
                                 {
                                     column.Length = 36;
@@ -132,7 +132,7 @@ namespace Hx.Sqlsugar
                     }
                 }
             };
-           
+
             config.ConfigureExternalServices = configureExternalServices;
             config.InitKeyType = InitKeyType.Attribute;
             config.IsAutoCloseConnection = true;
@@ -208,7 +208,7 @@ namespace Hx.Sqlsugar
                 };
             }
         }
-        
+
         private static List<string?> _isInitDbList = new List<string?>();
         /// <summary>
         /// 初始化数据库和种子数据
@@ -341,7 +341,7 @@ namespace Hx.Sqlsugar
             IEnumerable<Assembly>? result = null;
             if (frameworkAssembly != null)
             {
-                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Public|BindingFlags.Static);
+                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Public | BindingFlags.Static);
                 if (assembliesField != null)
                 {
                     result = assembliesField.GetValue(null) as IEnumerable<Assembly>;

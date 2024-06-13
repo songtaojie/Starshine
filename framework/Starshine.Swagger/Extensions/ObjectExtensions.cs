@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     internal static class ObjectExtensions
     {

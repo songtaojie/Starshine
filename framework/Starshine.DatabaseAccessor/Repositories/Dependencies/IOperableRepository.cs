@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可操作性仓储接口
@@ -144,7 +144,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyNames">属性名</param>
         /// <returns>数据库中的实体</returns>
         EntityEntry<TEntity> InsertOrUpdateIncludeNow(TEntity entity, IEnumerable<string> propertyNames);
-       
+
         /// <summary>
         /// 新增或更新一条特定属性记录并立即提交
         /// </summary>
@@ -243,7 +243,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>代理中的实体</returns>
         Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPredicates);
-       
+
         /// <summary>
         /// 新增或更新一条排除特定属性记录
         /// </summary>

@@ -1,5 +1,5 @@
-﻿using Hx.DatabaseAccessor;
-using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -97,7 +97,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>代理的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity>(this TEntity entity,  CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertAsync<TEntity>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertAsync(cancellationToken);
@@ -173,7 +173,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity>(this TEntity entity,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateNowAsync<TEntity>(this TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateNowAsync(cancellationToken);
@@ -396,7 +396,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="propertyNames">属性名</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyNames, cancellationToken);
@@ -410,10 +410,10 @@ namespace Hx.Sdk.Extensions
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates,cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateIncludeNowAsync(propertyPredicates, cancellationToken);
         }
 
         /// <summary>
@@ -620,7 +620,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>>[] propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
@@ -637,7 +637,7 @@ namespace Hx.Sdk.Extensions
         public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames,cancellationToken);
+            return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyNames, cancellationToken);
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).UpdateExcludeNowAsync(propertyPredicates, cancellationToken);
@@ -709,7 +709,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="entity">实体</param>
         /// <param name="checkProperty"></param>
         /// <returns>代理中的实体</returns>
-        public static EntityEntry<TEntity> InsertOrUpdate<TEntity>(this TEntity entity,  Expression<Func<TEntity, object>> checkProperty = null)
+        public static EntityEntry<TEntity> InsertOrUpdate<TEntity>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdate(checkProperty);
@@ -750,13 +750,13 @@ namespace Hx.Sdk.Extensions
         /// <param name="checkProperty"></param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity>(this TEntity entity,Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> InsertOrUpdateNowAsync<TEntity>(this TEntity entity, Expression<Func<TEntity, object>> checkProperty = null, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
         {
             return new EntityExecutePart<TEntity>().SetEntity(entity).InsertOrUpdateNowAsync(checkProperty, cancellationToken);
         }
 
-       
+
         /// <summary>
         /// 新增或更新一条特定属性记录
         /// </summary>

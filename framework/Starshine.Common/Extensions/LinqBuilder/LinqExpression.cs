@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Hx.Common;
-namespace Hx.Common.Extensions.LinqBuilder
+using Starshine.Common;
+namespace Starshine.Common.Extensions.LinqBuilder
 {
     /// <summary>
     /// EF Core Linq 拓展

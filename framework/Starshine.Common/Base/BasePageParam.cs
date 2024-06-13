@@ -1,5 +1,5 @@
 ﻿
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 分页参数

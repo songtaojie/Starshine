@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Microsoft.Extensions.Configuration;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件总线配置选项构建器
@@ -326,11 +326,11 @@ namespace Hx.EventBus
             _ = bool.TryParse(configuration["EventBus:IsEnabled"], out bool isEnabled);
             builder.IsEnabled = isEnabled;
             _ = bool.TryParse(configuration["EventBus:UseCap"], out bool useCap);
-            builder.UseCap= useCap;
+            builder.UseCap = useCap;
             int.TryParse(configuration["EventBus:ChannelCapacity"], out int channelCapacity);
             if (channelCapacity > 0) builder.ChannelCapacity = channelCapacity;
             _ = bool.TryParse(configuration["EventBus:EnabledLog"], out bool enabledLog);
-            builder.EnabledLog= enabledLog;
+            builder.EnabledLog = enabledLog;
             _ = bool.TryParse(configuration["EventBus:FuzzyMatch"], out bool fuzzyMatch);
             builder.FuzzyMatch = fuzzyMatch;
             _ = bool.TryParse(configuration["EventBus:GCCollect"], out bool gCCollect);
@@ -347,7 +347,7 @@ namespace Hx.EventBus
         /// <returns></returns>
         internal static Action<CapOptions> InitCapOptions(IConfiguration configuration)
         {
-            return (CapOptions options) => 
+            return (CapOptions options) =>
             {
                 options.DefaultGroupName = configuration["EventBus:Cap:DefaultGroupName"];
                 int failedRetryCount = 5;

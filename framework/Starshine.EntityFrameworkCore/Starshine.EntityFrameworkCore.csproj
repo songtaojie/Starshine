@@ -3,12 +3,12 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
     <Authors>songtaojie</Authors>
-    <Description>Hx.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
+    <Description>Starshine.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
     <Version>6.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\Hx.EntityFrameworkCore.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Starshine.EntityFrameworkCore.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 

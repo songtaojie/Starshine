@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 构建 Sql 字符串执行部件

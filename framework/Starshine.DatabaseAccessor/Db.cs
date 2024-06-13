@@ -1,8 +1,8 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库公开类

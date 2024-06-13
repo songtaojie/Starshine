@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Hx.DatabaseAccessor.Extensions
+namespace Starshine.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 时态查询拓展

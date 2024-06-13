@@ -1,5 +1,5 @@
-using Hx.DatabaseAccessor.Extensions.LinqBuilder;
-using Hx.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Extensions.LinqBuilder;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可写仓储分部类

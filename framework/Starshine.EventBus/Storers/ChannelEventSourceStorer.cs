@@ -4,7 +4,7 @@ using System;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 内存通道事件源存储器（默认实现）

@@ -1,4 +1,4 @@
-﻿namespace Hx.Swagger
+﻿namespace Starshine.Swagger
 {
     /// <summary>
     /// 分组附加信息

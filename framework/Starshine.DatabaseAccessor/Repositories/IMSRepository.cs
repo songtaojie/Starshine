@@ -1,6 +1,6 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 主从库仓储
@@ -48,5 +48,5 @@ namespace Hx.DatabaseAccessor
         IReadableRepository<TEntity, TSlaveDbContextLocator2> Slave2<TEntity>()
             where TEntity : class, IPrivateEntity, new();
     }
-    
+
 }

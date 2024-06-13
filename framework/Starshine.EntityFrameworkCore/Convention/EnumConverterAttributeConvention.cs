@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Reflection;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// 枚举转换器的属性约定

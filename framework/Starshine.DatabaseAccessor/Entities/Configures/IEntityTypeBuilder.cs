@@ -1,5 +1,5 @@
-﻿using Hx.DatabaseAccessor.Internal;
-namespace Hx.DatabaseAccessor
+﻿using Starshine.DatabaseAccessor.Internal;
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库实体类型配置依赖接口

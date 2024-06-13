@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件总线工厂接口

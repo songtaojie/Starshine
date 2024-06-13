@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Hx.Common.Xml
+namespace Starshine.Common.Xml
 {
     /// <summary>
     /// Xml的帮助类

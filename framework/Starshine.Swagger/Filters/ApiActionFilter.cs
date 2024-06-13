@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     /// <summary>
     /// 规范化文档自定义更多功能

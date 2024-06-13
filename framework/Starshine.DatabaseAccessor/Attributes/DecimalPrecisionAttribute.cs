@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 浮点类型精度设置特性

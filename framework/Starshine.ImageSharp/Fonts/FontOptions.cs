@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.ImageSharp.Fonts
+namespace Starshine.ImageSharp.Fonts
 {
     /// <summary>
     /// 水印字体的配置
@@ -63,9 +63,9 @@ namespace Hx.ImageSharp.Fonts
                 // 因为使用SystemFonts可能会很昂贵，并且您可能会因部署而异，因此存在存在字体或不存在字体的风险。
                 //var fonts = new FontCollection();
                 //var fontFamily = fonts.Install("./{FontFamily}.ttf");
-                bool isExist =  SystemFonts.TryGet(FontFamily, out FontFamily fontFamily);
+                bool isExist = SystemFonts.TryGet(FontFamily, out FontFamily fontFamily);
                 if (!isExist) throw new Exception($"该字体【{FontFamily}】未安装在字体集中。");
-                if(FontSize <= 0) throw new Exception("字体大小不能小于0");
+                if (FontSize <= 0) throw new Exception("字体大小不能小于0");
                 //用于缩放水印大小的方法在很大程度上被忽略了。
                 return SystemFonts.CreateFont(FontFamily, FontSize);
             }

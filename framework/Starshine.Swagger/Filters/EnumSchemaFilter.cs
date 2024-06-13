@@ -1,4 +1,4 @@
-using Hx.Swagger.Internal;
+using Starshine.Swagger.Internal;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     /// <summary>
     /// 修正 规范化文档 Enum 提示

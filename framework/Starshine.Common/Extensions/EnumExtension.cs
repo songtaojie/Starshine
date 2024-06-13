@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Hx.Common;
+using Starshine.Common;
 
-namespace Hx.Common.Extensions
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// 枚举扩展
@@ -125,7 +125,7 @@ namespace Hx.Common.Extensions
         public static Type TryToGetEnumType(Assembly assembly, string typeName)
         {
             // 枚举缓存为空则重新加载枚举类型字典
-            if(_enumTypeDict == null) _enumTypeDict = LoadEnumTypeDict(assembly);
+            if (_enumTypeDict == null) _enumTypeDict = LoadEnumTypeDict(assembly);
 
             // 按名称查找
             return _enumTypeDict.ContainsKey(typeName) ? _enumTypeDict[typeName] : null;

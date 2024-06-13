@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 
 namespace Microsoft.AspNetCore.Builder
 {

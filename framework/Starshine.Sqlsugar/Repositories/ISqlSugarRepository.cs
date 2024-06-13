@@ -6,14 +6,14 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar
+namespace Starshine.Sqlsugar
 {
 
     /// <summary>
     /// SqlSugar 仓储接口定义
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public partial interface ISqlSugarRepository<TEntity>: ISugarRepository, ISimpleClient<TEntity>
+    public partial interface ISqlSugarRepository<TEntity> : ISugarRepository, ISimpleClient<TEntity>
         where TEntity : class, new()
     {
         /// <summary>

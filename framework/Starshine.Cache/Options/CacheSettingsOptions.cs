@@ -1,5 +1,5 @@
 ﻿using FreeRedis;
-using Hx.Cache.Options;
+using Starshine.Cache.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Cache
+namespace Starshine.Cache
 {
     /// <summary>
     /// 缓存配置
@@ -26,15 +26,15 @@ namespace Hx.Cache
         /// <summary>
         /// redis配置
         /// </summary>
-        public RedisCacheSettingsOptions Redis {  get; set; }
+        public RedisCacheSettingsOptions Redis { get; set; }
 
         /// <summary>
         /// 缓存配置
         /// </summary>
-        public MemoryDistributedCacheOptions Memory {  get; set; }
+        public MemoryDistributedCacheOptions Memory { get; set; }
 
     }
-   
+
     /// <summary>
     /// 缓存类型
     /// </summary>

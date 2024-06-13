@@ -1,11 +1,11 @@
-﻿using Hx.Common;
+﻿using Starshine.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Hx.Common.Extensions
+namespace Starshine.Common.Extensions
 {
 	/// <summary>
 	/// IQueryable扩展类
@@ -30,15 +30,15 @@ namespace Hx.Common.Extensions
 			return source.ToPageList(param);
 		}
 
-        /// <summary>
-        /// 排序并分页
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="param"></param>
-        /// <returns></returns>
-        public async static Task<PagedListResult<T>> ToOrderAndPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
-			where T : new()
+		/// <summary>
+		/// 排序并分页
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="source"></param>
+		/// <param name="param"></param>
+		/// <returns></returns>
+		public async static Task<PagedListResult<T>> ToOrderAndPageListAsync<T>(this IQueryable<T> source, BasePageParam param)
+	where T : new()
 		{
 			if (!string.IsNullOrWhiteSpace(param.SortField))
 			{
@@ -47,15 +47,15 @@ namespace Hx.Common.Extensions
 			return await source.ToPageListAsync(param);
 		}
 
-        /// <summary>
-        /// 排序
-        /// </summary>
-        /// <typeparam name="T">源数据</typeparam>
-        /// <param name="source"></param>
-        /// <param name="fieldName">排序的字段名称</param>
-        /// <param name="orderType">排序的类型</param>
-        /// <returns></returns>
-        public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, OrderTypeEnum? orderType)
+		/// <summary>
+		/// 排序
+		/// </summary>
+		/// <typeparam name="T">源数据</typeparam>
+		/// <param name="source"></param>
+		/// <param name="fieldName">排序的字段名称</param>
+		/// <param name="orderType">排序的类型</param>
+		/// <returns></returns>
+		public static IQueryable<T> ApplyOrder<T>(this IQueryable<T> source, string fieldName, OrderTypeEnum? orderType)
 		{
 			// 升序 or 降序
 			string methodName = orderType == OrderTypeEnum.DESC ? "OrderByDescending" : "OrderBy";
@@ -80,7 +80,7 @@ namespace Hx.Common.Extensions
 			ParameterExpression param = Expression.Parameter(type, orderField);
 			Expression orderFieldExp = Expression.Property(param, orderField);
 			Expression expr = Expression.Call(typeof(Queryable), methodName, types,
-				  source.Expression, Expression.Lambda(orderFieldExp, param));
+					source.Expression, Expression.Lambda(orderFieldExp, param));
 			return source.Provider.CreateQuery<T>(expr);
 		}
 

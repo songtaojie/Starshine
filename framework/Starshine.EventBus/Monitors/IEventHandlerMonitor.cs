@@ -1,7 +1,7 @@
 ﻿
 using System.Threading.Tasks;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
 
     /// <summary>

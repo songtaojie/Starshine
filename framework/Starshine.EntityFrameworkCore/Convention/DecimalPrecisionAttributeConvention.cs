@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using System.Reflection;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// decimal标记属性约定
@@ -32,5 +32,5 @@ namespace Hx.EntityFrameworkCore
         }
     }
 
-    
+
 }

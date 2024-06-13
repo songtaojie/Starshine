@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// Sql 查询仓储接口
@@ -175,6 +175,6 @@ namespace Hx.DatabaseAccessor
         /// <param name="model">参数模型</param>
         /// <returns>List{T1}</returns>
         List<T1> SqlQueries<T1>(string sql, object model);
-      
+
     }
 }

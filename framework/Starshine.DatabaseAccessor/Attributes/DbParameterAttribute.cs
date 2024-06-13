@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// DbParameter 配置特性

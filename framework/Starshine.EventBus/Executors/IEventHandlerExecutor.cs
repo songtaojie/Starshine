@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件处理程序执行器依赖接口

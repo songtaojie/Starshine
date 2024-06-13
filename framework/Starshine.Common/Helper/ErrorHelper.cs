@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 错误帮助类

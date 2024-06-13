@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hx.Common;
-namespace Hx.Common.Extensions
+using Starshine.Common;
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// 字典类型扩展

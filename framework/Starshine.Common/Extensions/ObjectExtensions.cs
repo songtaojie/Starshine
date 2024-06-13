@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Hx.Common;
-namespace Hx.Common.Extensions
+using Starshine.Common;
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// Object扩展类
@@ -65,7 +65,7 @@ namespace Hx.Common.Extensions
             return typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(realType).Invoke(null, new object[] { obj });
         }
 
-        
+
         /// <summary>
         /// 将一个对象转换为指定类型
         /// </summary>
@@ -98,12 +98,12 @@ namespace Hx.Common.Extensions
             // 处理DateTime -> DateTimeOffset 类型
             else if (obj.GetType().Equals(typeof(DateTime)) && (underlyingType ?? type).Equals(typeof(DateTimeOffset)))
             {
-                return ((DateTime)obj).ConvertToDateTimeOffset();
+                return DateTimeHelper.ConvertToDateTimeOffset((DateTime)obj);
             }
             // 处理 DateTimeOffset -> DateTime 类型
             else if (obj.GetType().Equals(typeof(DateTimeOffset)) && (underlyingType ?? type).Equals(typeof(DateTime)))
             {
-                return ((DateTimeOffset)obj).ConvertToDateTime();
+                return DateTimeHelper.ConvertToDateTime((DateTimeOffset)obj);
             }
             else if (typeof(IConvertible).IsAssignableFrom(underlyingType ?? type))
             {

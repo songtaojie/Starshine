@@ -1,4 +1,4 @@
-﻿using Hx.Swagger;
+﻿using Starshine.Swagger;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="swaggerSettings">swagger配置</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services,Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
             services.AddOptions<SwaggerSettingsOptions>()
                 .BindConfiguration("SwaggerSettings")
@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     builder.BuildSwaggerGen(options, swaggerGenConfigure);
                 });
-           
+
             return services;
         }
 
@@ -45,7 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="swaggerSettings">swagger配置</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder,Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
         {
             var services = mvcBuilder.Services;
             services.AddSwaggerDocuments(swaggerSettings, swaggerGenConfigure);

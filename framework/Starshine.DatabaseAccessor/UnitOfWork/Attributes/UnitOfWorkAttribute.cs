@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Transactions;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 工作单元配置特性

@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件总线后台主机服务
@@ -281,16 +281,16 @@ namespace Hx.EventBus
                                     _logger.LogWarning(ex, "Retrying after {TimeOut}s for {EventId}", $"{time.TotalSeconds:n1}", eventSource.EventId);
                                 });
                             //执行策略
-                            var policyResult =  policy.ExecuteAndCapture(async () =>
+                            var policyResult = policy.ExecuteAndCapture(async () =>
                             {
                                 //开始连接rabbitmq
                                 await eventHandlerThatShouldRun.Handler!(eventHandlerExecutingContext);
                             });
-                            if (policyResult.Outcome == OutcomeType.Failure && fallbackPolicyService!= null)
+                            if (policyResult.Outcome == OutcomeType.Failure && fallbackPolicyService != null)
                             {
                                 await fallbackPolicyService.CallbackAsync(eventHandlerExecutingContext, policyResult.FinalException);
                             }
-                           
+
                         }
                         else
                         {

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
-using Hx.Common;
-namespace Hx.Common.Extensions
+using Starshine.Common;
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// string类型扩展

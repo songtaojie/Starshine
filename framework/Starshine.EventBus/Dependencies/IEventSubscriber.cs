@@ -1,4 +1,4 @@
-﻿namespace Hx.EventBus
+﻿namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件订阅者依赖接口

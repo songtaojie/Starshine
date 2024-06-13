@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common.DependencyInjection
+namespace Starshine.Common.DependencyInjection
 {
     /// <summary>
     /// 单例模式

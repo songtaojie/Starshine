@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库上下文配置特性

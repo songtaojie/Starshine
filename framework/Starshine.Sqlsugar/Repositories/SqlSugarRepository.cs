@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar.Repositories
+namespace Starshine.Sqlsugar.Repositories
 {
     /// <summary>
     /// SqlSugar 仓储实现类

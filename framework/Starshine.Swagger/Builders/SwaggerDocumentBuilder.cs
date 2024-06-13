@@ -4,9 +4,9 @@
 //
 // 电话/微信：song977601042
 
-using Hx.Swagger.Attributes;
-using Hx.Swagger.Filters;
-using Hx.Swagger.Internal;
+using Starshine.Swagger.Attributes;
+using Starshine.Swagger.Filters;
+using Starshine.Swagger.Internal;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace Hx.Swagger;
+namespace Starshine.Swagger;
 internal class SwaggerDocumentBuilder
 {
     /// <summary>
@@ -270,7 +270,7 @@ internal class SwaggerDocumentBuilder
     /// <param name="apiDescription"></param>
     /// <param name="swaggerSettings"></param>
     /// <returns></returns>
-    private static bool CheckApiDescriptionInCurrentGroup(string currentGroup, ApiDescription apiDescription,SwaggerSettingsOptions swaggerSettings)
+    private static bool CheckApiDescriptionInCurrentGroup(string currentGroup, ApiDescription apiDescription, SwaggerSettingsOptions swaggerSettings)
     {
         if (!apiDescription.TryGetMethodInfo(out var method)) return false;
 

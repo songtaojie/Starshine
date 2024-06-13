@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// 如果没有提供对应模型的服务类，可以使用该方法进行CRUD操作
@@ -141,7 +141,7 @@ namespace Hx.EntityFrameworkCore
         #region 更新
 
         /// <inheritdoc cref="IDbFactory.UpdateAsync{T}(T)"/>
-        public async Task<T> UpdateAsync<T>(T entity) where T : class,new()
+        public async Task<T> UpdateAsync<T>(T entity) where T : class, new()
         {
             return await Task.Run(() =>
             {
@@ -181,7 +181,7 @@ namespace Hx.EntityFrameworkCore
 
         #region 删除
         /// <inheritdoc cref="IDbFactory.RemoveAsync{T}(T)"/>
-        public async Task<T> RemoveAsync<T>(T entity) where T : class,new()
+        public async Task<T> RemoveAsync<T>(T entity) where T : class, new()
         {
             return await Task.Run(() =>
             {

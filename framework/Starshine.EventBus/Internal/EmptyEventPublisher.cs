@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Hx.EventBus.Internal
+namespace Starshine.EventBus.Internal
 {
     /// <summary>
     /// 无效的事件总线

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 时间帮助类

@@ -1,11 +1,11 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 构建 Sql 字符串执行部件
@@ -339,7 +339,7 @@ namespace Hx.DatabaseAccessor
         {
             return GetSqlRepository().SqlScalarAsync<TResult>(SqlString, model, cancellationToken);
         }
-   
+
         /// <summary>
         /// 获取 Sql 执行仓储
         /// </summary>

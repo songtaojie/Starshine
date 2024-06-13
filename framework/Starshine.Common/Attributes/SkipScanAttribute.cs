@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 不被扫描和发现的特性

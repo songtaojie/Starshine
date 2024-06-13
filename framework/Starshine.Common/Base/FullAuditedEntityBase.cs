@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 带有状态数据的实体（泛型）
     /// </summary>
     [SkipScan]
-    public abstract class FullAuditedEntityBase<TKey>: AuditedEntityBase<TKey>
+    public abstract class FullAuditedEntityBase<TKey> : AuditedEntityBase<TKey>
     {
         /// <summary>
         /// 是否删除

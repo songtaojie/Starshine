@@ -1,4 +1,4 @@
-﻿using Hx.Common;
+﻿using Starshine.Common;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar
+namespace Starshine.Sqlsugar
 {
     /// <summary>
     /// 分页拓展类
@@ -73,7 +73,7 @@ namespace Hx.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <returns></returns>
-        public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,CancellationToken token = default)
+        public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize, CancellationToken token = default)
             where TEntity : new()
         {
             RefAsync<int> total = 0;

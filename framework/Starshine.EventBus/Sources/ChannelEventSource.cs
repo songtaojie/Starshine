@@ -3,7 +3,7 @@
 using System.Threading;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 内存通道事件源（事件承载对象）

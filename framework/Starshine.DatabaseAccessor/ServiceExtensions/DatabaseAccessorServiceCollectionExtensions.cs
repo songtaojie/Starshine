@@ -1,6 +1,6 @@
-﻿using Hx.DatabaseAccessor;
-using Hx.DatabaseAccessor.Internal;
-using Hx.DatabaseAccessor.Options;
+﻿using Starshine.DatabaseAccessor;
+using Starshine.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             Penetrates.InternalServices = services;
             ConfigureDbOptions(services, dbSettings);
-           
+
             // 配置数据库上下文
             configure?.Invoke(services);
 

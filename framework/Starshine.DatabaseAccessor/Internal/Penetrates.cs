@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Options;
+﻿using Starshine.DatabaseAccessor.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Internal
+namespace Starshine.DatabaseAccessor.Internal
 {
     /// <summary>
     /// 常量、公共方法配置类
@@ -219,7 +219,7 @@ namespace Hx.DatabaseAccessor.Internal
             var scanAssemblies = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk"))) 
+                       || (u.Type == "package" && u.Name.StartsWith("Hx.Sdk")))
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 

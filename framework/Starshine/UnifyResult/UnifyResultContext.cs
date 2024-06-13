@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Hx.Common.Extensions;
+using Starshine.Common.Extensions;
 
 namespace Starshine
 {
@@ -82,11 +82,11 @@ namespace Starshine
             }
 
             return new ExceptionMetadata
-            { 
-                Data= data,
-                ErrorCode= errorCode,
-                Errors= errors,
-                StatusCode= statusCode,
+            {
+                Data = data,
+                ErrorCode = errorCode,
+                Errors = errors,
+                StatusCode = statusCode,
                 ErrorMessage = errorMessage
             };
         }

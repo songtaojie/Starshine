@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor;
+﻿using Starshine.DatabaseAccessor;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Microsoft.EntityFrameworkCore

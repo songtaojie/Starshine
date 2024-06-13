@@ -1,4 +1,4 @@
-﻿using Hx.Swagger;
+﻿using Starshine.Swagger;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Builder
             app.UseSwagger(options => builder.Build(options, swaggerConfigure));
 
             // 配置 Swagger UI 参数
-            app.UseKnife4UI(options => builder.BuildKnife4UI(options,swaggerUIConfigure));
+            app.UseKnife4UI(options => builder.BuildKnife4UI(options, swaggerUIConfigure));
             return app;
         }
     }

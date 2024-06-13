@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 带有更新信息的实体(泛型)
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     [SkipScan]
-    public abstract class AuditedEntityBase<TKey> :CreationEntityBase<TKey>
+    public abstract class AuditedEntityBase<TKey> : CreationEntityBase<TKey>
     {
         /// <summary>
         /// 更新时间

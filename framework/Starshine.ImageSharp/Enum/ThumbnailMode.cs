@@ -1,4 +1,4 @@
-﻿namespace Hx.ImageSharp
+﻿namespace Starshine.ImageSharp
 {
     /// <summary>
     /// 缩略图的模式

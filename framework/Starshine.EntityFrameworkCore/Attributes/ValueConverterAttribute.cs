@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
 
     /// <summary>
@@ -14,7 +14,7 @@ namespace Hx.EntityFrameworkCore
     {
 
         #region Field
-        private ValueConverter  _valueConverter;
+        private ValueConverter _valueConverter;
         #endregion
 
         #region Construct
@@ -22,7 +22,7 @@ namespace Hx.EntityFrameworkCore
         /// 值转换器构造函数
         /// </summary>
         /// <param name="type"></param>
-        public ValueConverterAttribute(Type type):this(type,null)
+        public ValueConverterAttribute(Type type) : this(type, null)
         {
         }
         /// <summary>
@@ -30,7 +30,7 @@ namespace Hx.EntityFrameworkCore
         /// </summary>
         /// <param name="type">值转换器的类型</param>
         /// <param name="param">值转换器的参数</param>
-        public ValueConverterAttribute(Type type, object param):this(type,param,null)
+        public ValueConverterAttribute(Type type, object param) : this(type, param, null)
         {
         }
         /// <summary>
@@ -39,7 +39,7 @@ namespace Hx.EntityFrameworkCore
         /// <param name="type">类型</param>
         /// <param name="param1">值转换器参数</param>
         /// <param name="param2">值转换器参数</param>
-        public ValueConverterAttribute(Type type, object param1,object param2)
+        public ValueConverterAttribute(Type type, object param1, object param2)
         {
             ConventionType = type;
             if (param2 != null)
@@ -78,7 +78,7 @@ namespace Hx.EntityFrameworkCore
         {
             get
             {
-                if(_valueConverter == null) _valueConverter = GetValueConverter();
+                if (_valueConverter == null) _valueConverter = GetValueConverter();
                 return _valueConverter;
             }
         }
@@ -114,12 +114,12 @@ namespace Hx.EntityFrameworkCore
             }
             else
             {
-                object toIntInstance = Activator.CreateInstance(ConventionType, Params == null? new object[] { mappingHints } : newParams);
+                object toIntInstance = Activator.CreateInstance(ConventionType, Params == null ? new object[] { mappingHints } : newParams);
                 return toIntInstance as ValueConverter;
             }
         }
 
-        private object CreateObject(Type type,params object[] args)
+        private object CreateObject(Type type, params object[] args)
         {
             try
             {

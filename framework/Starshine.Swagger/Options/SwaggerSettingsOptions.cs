@@ -1,4 +1,4 @@
-using Hx.Swagger.Internal;
+using Starshine.Swagger.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Linq;
 
-namespace Hx.Swagger
+namespace Starshine.Swagger
 {
     /// <summary>
     /// 规范化文档Swagger配置选项

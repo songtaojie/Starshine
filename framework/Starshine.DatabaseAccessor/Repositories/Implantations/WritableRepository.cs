@@ -1,8 +1,8 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可写仓储分部类
@@ -37,7 +37,7 @@ namespace Hx.DatabaseAccessor
             return _dbContextPool.SavePoolNowAsync(cancellationToken);
         }
 
-      
+
         /// <summary>
         /// 提交更改操作
         /// </summary>
@@ -46,7 +46,7 @@ namespace Hx.DatabaseAccessor
         {
             return Context.SaveChanges();
         }
-       
+
         /// <summary>
         /// 提交更改操作（异步）
         /// </summary>

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Cache.Options;
+namespace Starshine.Cache.Options;
 /// <summary>
 /// redis缓存配置
 /// </summary>

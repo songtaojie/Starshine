@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Extensions
+namespace Starshine.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 实体多数据库上下文拓展类
@@ -410,7 +410,7 @@ namespace Hx.DatabaseAccessor.Extensions
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default)
+        public static Task<EntityEntry<TEntity>> UpdateIncludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
@@ -666,7 +666,7 @@ namespace Hx.DatabaseAccessor.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyNames">属性名</param>
-        
+
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
         public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default)
@@ -683,7 +683,7 @@ namespace Hx.DatabaseAccessor.Extensions
         /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="propertyPredicates">属性表达式</param>
-        
+
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
         public static Task<EntityEntry<TEntity>> UpdateExcludeNowAsync<TEntity, TDbContextLocator>(this TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
@@ -1011,7 +1011,7 @@ namespace Hx.DatabaseAccessor.Extensions
             return new EntityExecutePart<TEntity>().SetEntity(entity).Change<TDbContextLocator>().InsertOrUpdateIncludeNow(propertyNames);
         }
 
-        
+
         /// <summary>
         /// 新增或更新一条特定属性记录并立即提交
         /// </summary>

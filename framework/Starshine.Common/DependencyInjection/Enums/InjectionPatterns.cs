@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Hx.Common.DependencyInjection
+namespace Starshine.Common.DependencyInjection
 {
     /// <summary>
     /// 注册范围

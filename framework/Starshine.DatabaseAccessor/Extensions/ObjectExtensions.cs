@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Extensions
+namespace Starshine.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// Object扩展类

@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Cache
+namespace Starshine.Cache
 {
     /// <summary>
     /// 内存缓存缓存
@@ -25,10 +25,10 @@ namespace Hx.Cache
 
         public object Instance => _memoryCache;
 
-        public object this[string key] 
+        public object this[string key]
         {
             get => Get<object>(key);
-            set => Set(key, value,-1);
+            set => Set(key, value, -1);
         }
 
         public long Count => (_memoryCache as MemoryCache).Count;
@@ -37,7 +37,7 @@ namespace Hx.Cache
         public bool ExistsKey(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
-            return _memoryCache.TryGetValue(key,out object _);
+            return _memoryCache.TryGetValue(key, out object _);
         }
 
         public T Get<T>(string key)
@@ -62,7 +62,7 @@ namespace Hx.Cache
             {
                 var result = _memoryCache.Set(key, value, TimeSpan.FromSeconds(expiry));
                 return result != null;
-                
+
             }
             else
             {
@@ -116,11 +116,11 @@ namespace Hx.Cache
             var cacheType = _memoryCache.GetType();
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
             var coherentStateField = cacheType.GetField("_coherentState", flags);//增加一个获取CoherentState对象环节
-            if(coherentStateField == null) return Enumerable.Empty<string>();
+            if (coherentStateField == null) return Enumerable.Empty<string>();
             var coherentState = coherentStateField.GetValue(_memoryCache);
-            if(coherentState == null) return Enumerable.Empty<string>();
+            if (coherentState == null) return Enumerable.Empty<string>();
             var entriesField = coherentState.GetType().GetField("_entries", flags);
-            if(entriesField == null) return Enumerable.Empty<string>();
+            if (entriesField == null) return Enumerable.Empty<string>();
             var cacheItems = entriesField.GetValue(coherentState) as IDictionary;
             if (cacheItems == null) return Enumerable.Empty<string>();
             return cacheItems.Keys.Cast<string>();

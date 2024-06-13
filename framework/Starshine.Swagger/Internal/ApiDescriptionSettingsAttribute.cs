@@ -1,4 +1,4 @@
-﻿using Hx.Swagger.Internal;
+﻿using Starshine.Swagger.Internal;
 using System;
 
 namespace Microsoft.AspNetCore.Mvc

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Base
+namespace Starshine.DatabaseAccessor.Base
 {
     /// <summary>
     /// 基本的模型，封装了索引器登方法

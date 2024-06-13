@@ -1,5 +1,5 @@
-﻿using Hx.DatabaseAccessor;
-using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;

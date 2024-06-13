@@ -1,4 +1,4 @@
-﻿using Hx.Common;
+﻿using Starshine.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -128,9 +128,9 @@ namespace Starshine
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
                        || (u.Type == "package" && u.Name.StartsWith("Hx")));
-                
-                var scanAssemblies = packages.Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
-                .ToList();
+
+            var scanAssemblies = packages.Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
+            .ToList();
 
             return scanAssemblies;
         }
@@ -205,8 +205,8 @@ namespace Starshine
             try
             {
                 if (sections == null || sections.Length == 0) throw new ArgumentNullException(nameof(sections));
-                var config =  InternalApp.Configuration ?? GetService<IConfiguration>();
-                if(config == null)return string.Empty;
+                var config = InternalApp.Configuration ?? GetService<IConfiguration>();
+                if (config == null) return string.Empty;
                 if (sections.Length == 1)
                 {
                     return config[sections[0]];

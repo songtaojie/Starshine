@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件总线拓展类

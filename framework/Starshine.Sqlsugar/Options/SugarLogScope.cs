@@ -10,14 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar;
+namespace Starshine.Sqlsugar;
 public class SugarLogScope
 {
     /// <summary>
     /// sql来源
     /// </summary>
     public const string Source = "SugarSource";
-   
+
     /// <summary>
     /// sql来源
     /// </summary>

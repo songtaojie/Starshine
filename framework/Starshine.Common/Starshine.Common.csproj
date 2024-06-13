@@ -8,12 +8,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Hx.Common.xml</DocumentationFile>
+    <DocumentationFile>Starshine.Common.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.8" />
-  </ItemGroup>
 
 </Project>

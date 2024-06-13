@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         internal static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
         {
-            // 判断是否安装了 Hx.Swagger 程序集
+            // 判断是否安装了 Starshine.Swagger 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly == null) return services;
             // 加载 SwaggerBuilder 拓展类型和拓展方法

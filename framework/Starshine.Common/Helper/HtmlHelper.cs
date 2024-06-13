@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// Html帮助类

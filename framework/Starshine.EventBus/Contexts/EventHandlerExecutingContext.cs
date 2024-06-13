@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件处理程序执行前上下文

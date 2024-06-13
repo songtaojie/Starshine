@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor.Extensions.LinqBuilder
+namespace Starshine.DatabaseAccessor.Extensions.LinqBuilder
 {
     /// <summary>
     /// 处理 Lambda 参数不一致问题

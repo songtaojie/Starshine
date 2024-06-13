@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件重试失败回调服务

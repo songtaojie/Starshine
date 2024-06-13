@@ -1,6 +1,6 @@
 ﻿using FreeRedis;
-using Hx.Cache;
-using Hx.Cache.Options;
+using Starshine.Cache;
+using Starshine.Cache.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns> <see cref="IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
         public static IServiceCollection AddCache(this IServiceCollection services, Action<CacheSettingsOptions> setupAction)
         {
-            if (services == null)  throw new ArgumentNullException(nameof(services));
+            if (services == null) throw new ArgumentNullException(nameof(services));
             if (setupAction == null) throw new ArgumentNullException(nameof(setupAction));
             return AddCacheCore(services, setupAction);
         }
@@ -105,7 +105,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 else
                 {
-                    return new MemoryDistributedCache(sp.GetService<IOptions< MemoryDistributedCacheOptions >>(),sp.GetService<ILoggerFactory>());
+                    return new MemoryDistributedCache(sp.GetService<IOptions<MemoryDistributedCacheOptions>>(), sp.GetService<ILoggerFactory>());
                 }
             });
 

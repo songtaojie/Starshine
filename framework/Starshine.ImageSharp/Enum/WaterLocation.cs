@@ -1,4 +1,4 @@
-﻿namespace Hx.ImageSharp
+﻿namespace Starshine.ImageSharp
 {
     /// <summary>
     /// 添加到图片中的水印的位置

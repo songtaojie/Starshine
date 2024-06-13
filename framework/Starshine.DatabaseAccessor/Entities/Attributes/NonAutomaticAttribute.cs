@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 手动配置实体特性

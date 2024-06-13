@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可删除仓储分部类
@@ -301,7 +301,7 @@ namespace Hx.DatabaseAccessor
             if (deletedEntity == null) return default;
 
             var fakeDeleteProperty = SetFakePropertyValue(deletedEntity);
-            return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name },cancellationToken);
+            return UpdateIncludeNowAsync(deletedEntity, new[] { fakeDeleteProperty.Name }, cancellationToken);
         }
 
         /// <summary>

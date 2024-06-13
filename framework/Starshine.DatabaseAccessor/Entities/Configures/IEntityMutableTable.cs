@@ -1,6 +1,6 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 动态表名依赖接口
@@ -35,5 +35,5 @@ namespace Hx.DatabaseAccessor
     {
     }
 
-  
+
 }

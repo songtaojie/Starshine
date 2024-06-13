@@ -1,10 +1,10 @@
-﻿using Hx.DatabaseAccessor.Extensions;
+﻿using Starshine.DatabaseAccessor.Extensions;
 using Hx.Sdk.Extensions;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// Sql 执行仓储分部类
@@ -186,6 +186,6 @@ namespace Hx.DatabaseAccessor
             var (result, _) = await Database.ExecuteScalarAsync(sql, model, cancellationToken: cancellationToken);
             return result.ChangeType<TResult>();
         }
-       
+
     }
 }

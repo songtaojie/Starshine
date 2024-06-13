@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
-using Hx.Common;
-namespace Hx.Common.Extensions.LinqBuilder
+using Starshine.Common;
+namespace Starshine.Common.Extensions.LinqBuilder
 {
     /// <summary>
     /// 处理 Lambda 参数不一致问题

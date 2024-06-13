@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 分页泛型集合
@@ -25,7 +25,7 @@ namespace Hx.Common
         /// </summary>
         /// <param name="items">数据集合</param>
         /// <param name="total">总条数</param>
-        public PagedListResult(IEnumerable<TEntity> items, int total):this(items,total,1,10)
+        public PagedListResult(IEnumerable<TEntity> items, int total) : this(items, total, 1, 10)
         {
         }
 

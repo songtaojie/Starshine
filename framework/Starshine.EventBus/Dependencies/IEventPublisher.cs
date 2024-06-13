@@ -1,8 +1,8 @@
-﻿ using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Threading;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件发布服务依赖接口

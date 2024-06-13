@@ -7,9 +7,9 @@
 		<Version>1.0.0</Version>
 		<PackageTags>ASP.NET Core, Swagger</PackageTags>
 		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
-		<PackageId>Hx.Swagger</PackageId>
+		<PackageId>Starshine.Swagger</PackageId>
 		<Product>Swagger for ASP.NET Core</Product>
-		<Copyright>2020 Hx.Swagger</Copyright>
+		<Copyright>2020 Starshine.Swagger</Copyright>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 

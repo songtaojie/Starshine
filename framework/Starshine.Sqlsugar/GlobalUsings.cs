@@ -1,1 +1,1 @@
-﻿global using Hx.Common;
+﻿global using Starshine.Common;

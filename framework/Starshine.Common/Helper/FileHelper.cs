@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 文件帮助类

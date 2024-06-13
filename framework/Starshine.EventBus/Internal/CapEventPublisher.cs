@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.EventBus.Internal
+namespace Starshine.EventBus.Internal
 {
     /// <summary>
     /// 基于Cap的发布实现
@@ -34,7 +34,7 @@ namespace Hx.EventBus.Internal
         /// <returns><see cref="Task"/> 实例</returns>
         public async Task PublishAsync(IEventSource eventSource)
         {
-           await _capPublisher.PublishAsync(eventSource.EventId, eventSource.Payload, string.Empty, eventSource.CancellationToken);
+            await _capPublisher.PublishAsync(eventSource.EventId, eventSource.Payload, string.Empty, eventSource.CancellationToken);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Hx.EventBus.Internal
         /// <returns><see cref="Task"/> 实例</returns>
         public async Task PublishDelayAsync(IEventSource eventSource, long delay)
         {
-            await _capPublisher.PublishDelayAsync(TimeSpan.FromMilliseconds(delay),eventSource.EventId, eventSource.Payload,string.Empty, eventSource.CancellationToken);
+            await _capPublisher.PublishDelayAsync(TimeSpan.FromMilliseconds(delay), eventSource.EventId, eventSource.Payload, string.Empty, eventSource.CancellationToken);
         }
 
         /// <summary>

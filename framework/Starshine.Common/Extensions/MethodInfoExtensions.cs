@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Hx.Common;
-namespace Hx.Common.Extensions
+using Starshine.Common;
+namespace Starshine.Common.Extensions
 {
     /// <summary>
     /// MethodInfo扩展

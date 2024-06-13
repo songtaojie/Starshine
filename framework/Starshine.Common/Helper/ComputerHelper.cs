@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 计算机帮助类
@@ -128,7 +128,7 @@ namespace Hx.Common
             {
                 string output = ShellUtil.Bash("top -bn2 -d.2");
                 // 解析输出并提取 CPU 使用率
-                string[] lines = output.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 string cpuUsageLine = lines.FirstOrDefault(line => line.StartsWith("%Cpu(s):"));
                 if (cpuUsageLine != null)
@@ -376,7 +376,7 @@ namespace Hx.Common
         }
     }
 
-   
+
     internal class ShellUtil
     {
         /// <summary>

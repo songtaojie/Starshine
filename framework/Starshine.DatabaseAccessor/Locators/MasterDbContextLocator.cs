@@ -1,4 +1,4 @@
-﻿namespace Hx.DatabaseAccessor
+﻿namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 默认数据库上下文定位器

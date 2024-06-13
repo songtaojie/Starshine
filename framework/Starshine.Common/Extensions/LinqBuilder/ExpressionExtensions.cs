@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Hx.Common;
-namespace Hx.Common.Extensions.LinqBuilder
+using Starshine.Common;
+namespace Starshine.Common.Extensions.LinqBuilder
 {
     /// <summary>
     /// 表达式拓展类

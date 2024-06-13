@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 
-namespace Hx.DatabaseAccessor.Internal
+namespace Starshine.DatabaseAccessor.Internal
 {
     /// <summary>
     /// 数据库模型构建器依赖（禁止直接继承）

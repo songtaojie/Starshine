@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 
-namespace Hx.Common
+namespace Starshine.Common
 {
     /// <summary>
     /// 邮箱发送帮助类

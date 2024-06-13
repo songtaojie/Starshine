@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 基于内存通道事件发布者（默认实现）

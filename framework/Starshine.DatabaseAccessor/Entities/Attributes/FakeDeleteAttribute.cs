@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 假删除/软删除

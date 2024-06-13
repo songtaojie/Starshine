@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可更新仓储接口
@@ -81,7 +81,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateNowAsync(TEntity entity,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateNowAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 更新多条记录并立即提交
@@ -122,7 +122,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>代理中的实体</returns>
         Task<EntityEntry<TEntity>> UpdateIncludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates);
-      
+
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
@@ -138,7 +138,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         EntityEntry<TEntity> UpdateIncludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates);
-      
+
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
@@ -146,7 +146,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyNames">属性名</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<string> propertyNames,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
@@ -155,7 +155,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateIncludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 更新一条记录并排除属性
@@ -189,7 +189,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         Task<EntityEntry<TEntity>> UpdateExcludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates);
 
-      
+
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
@@ -205,7 +205,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <returns>数据库中的实体</returns>
         EntityEntry<TEntity> UpdateExcludeNow(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates);
-      
+
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
@@ -213,7 +213,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyNames">属性名</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<string> propertyNames,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
@@ -224,7 +224,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         Task<EntityEntry<TEntity>> UpdateExcludeNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default);
 
-       
+
         /// <summary>
         /// 更新一条记录
         /// </summary>
@@ -246,14 +246,14 @@ namespace Hx.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         EntityEntry<TEntity> UpdateExistsNow(TEntity entity);
 
-       
+
         /// <summary>
         /// 更新一条记录并立即提交
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken">异步取消令牌</param>
         /// <returns>代理中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateExistsNowAsync(TEntity entity,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateExistsNowAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 更新一条记录中特定属性
@@ -295,7 +295,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         EntityEntry<TEntity> UpdateIncludeExistsNow(TEntity entity, IEnumerable<string> propertyNames);
 
-      
+
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
@@ -313,7 +313,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         Task<EntityEntry<TEntity>> UpdateIncludeExistsNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default);
 
-     
+
         /// <summary>
         /// 更新一条记录中的特定属性并立即提交
         /// </summary>
@@ -321,9 +321,9 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateIncludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateIncludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default);
 
-     
+
         /// <summary>
         /// 更新一条记录并排除属性
         /// </summary>
@@ -340,7 +340,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         EntityEntry<TEntity> UpdateExcludeExists(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates);
 
-      
+
         /// <summary>
         /// 更新一条记录中的特定属性
         /// </summary>
@@ -382,7 +382,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>数据库中的实体</returns>
         Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<string> propertyNames, CancellationToken cancellationToken = default);
 
-    
+
         /// <summary>
         /// 更新一条记录并排除属性并立即提交
         /// </summary>
@@ -390,6 +390,6 @@ namespace Hx.DatabaseAccessor
         /// <param name="propertyPredicates">属性表达式</param>
         /// <param name="cancellationToken">取消异步令牌</param>
         /// <returns>数据库中的实体</returns>
-        Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates,CancellationToken cancellationToken = default);
+        Task<EntityEntry<TEntity>> UpdateExcludeExistsNowAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default);
     }
 }

@@ -8,9 +8,9 @@
 //using System.Threading.Channels;
 //using System.Threading;
 //using System.Threading.Tasks;
-//using Hx.EventBus.RabbitMq;
+//using Starshine.EventBus.RabbitMq;
 
-//namespace Hx.EventBus.Storers
+//namespace Starshine.EventBus.Storers
 //{
 //    public sealed class RabbitMQEventSourceStorer : IEventSourceStorer, IDisposable
 //    {

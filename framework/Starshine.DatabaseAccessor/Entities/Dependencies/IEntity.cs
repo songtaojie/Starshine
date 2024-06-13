@@ -1,5 +1,5 @@
 ﻿
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 数据库实体依赖基接口（使用默认的数据库上下文定位器）

@@ -1,8 +1,8 @@
-﻿using Hx.DatabaseAccessor.Internal;
+﻿using Starshine.DatabaseAccessor.Internal;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可写仓储接口
@@ -70,6 +70,6 @@ namespace Hx.DatabaseAccessor
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<int> SaveNowAsync(CancellationToken cancellationToken = default);
-      
+
     }
 }

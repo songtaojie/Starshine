@@ -217,108 +217,6 @@
             主键id
             </summary>
         </member>
-        <member name="T:Starshine.Common.DateTimeJsonConverter">
-            <summary>
-            时间格式化
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.DateTimeJsonConverter.#ctor">
-            <summary>
-            时间格式化
-            使用内置的时间格式化
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.DateTimeJsonConverter.#ctor(System.String)">
-            <summary>
-            时间格式化
-            </summary>
-            <param name="format">格式化字符串</param>
-        </member>
-        <member name="P:Starshine.Common.DateTimeJsonConverter.DateTimeFormat">
-            <summary>
-            获取或设置DateTime格式
-            <para>默认为: yyyy-MM-dd HH:mm:ss</para>
-            </summary>           
-        </member>
-        <member name="M:Starshine.Common.DateTimeJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="reader"></param>
-            <param name="typeToConvert"></param>
-            <param name="options"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.DateTimeJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="value"></param>
-            <param name="options"></param>
-        </member>
-        <member name="T:Starshine.Common.DateTimeNullJsonConverter">
-            <summary>
-            可空的时间格式化
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.DateTimeNullJsonConverter.#ctor">
-            <summary>
-            时间格式化
-            使用内置的时间格式化
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.DateTimeNullJsonConverter.#ctor(System.String)">
-            <summary>
-            时间格式化
-            </summary>
-            <param name="format">格式化字符串</param>
-        </member>
-        <member name="P:Starshine.Common.DateTimeNullJsonConverter.DateTimeFormat">
-            <summary>
-             获取或设置DateTime格式
-             <para>默认为: yyyy-MM-dd HH:mm:ss</para>
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.DateTimeNullJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="reader"></param>
-            <param name="typeToConvert"></param>
-            <param name="options"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.DateTimeNullJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{System.DateTime},System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="value"></param>
-            <param name="options"></param>
-        </member>
-        <member name="T:Starshine.Common.LongJsonConverter">
-            <summary>
-            时间格式化
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.LongJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="reader"></param>
-            <param name="typeToConvert"></param>
-            <param name="options"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.LongJsonConverter.Write(System.Text.Json.Utf8JsonWriter,System.Int64,System.Text.Json.JsonSerializerOptions)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="value"></param>
-            <param name="options"></param>
-        </member>
         <member name="T:Starshine.Common.DependencyInjection.DependencyInjectionType">
             <summary>
             注册类型
@@ -424,25 +322,6 @@
             每个依赖一个实例(即每次都重新实例),使用每个依赖的作用域, 
             当你解析一个每个依赖一个实例的组件时, 你每次获得一个新的实例.
             </summary>
-        </member>
-        <member name="T:Starshine.Common.Extensions.DateTimeExtensions">
-            <summary>
-            时间类型扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.DateTimeExtensions.ConvertToDateTime(System.DateTimeOffset)">
-            <summary>
-            将 DateTimeOffset 转换成 DateTime
-            </summary>
-            <param name="dateTime"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.DateTimeExtensions.ConvertToDateTimeOffset(System.DateTime)">
-            <summary>
-            将 DateTime 转换成 DateTimeOffset
-            </summary>
-            <param name="dateTime"></param>
-            <returns></returns>
         </member>
         <member name="T:Starshine.Common.Extensions.DictionaryExtensions">
             <summary>
@@ -1371,6 +1250,156 @@
             <param name="objInfo"></param>
             <returns></returns>
         </member>
+        <member name="T:Starshine.Common.ComputerHelper">
+            <summary>
+            计算机帮助类
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetComputerInfo">
+            <summary>
+            内存信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetDiskInfos">
+            <summary>
+            磁盘信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.IsUnix">
+            <summary>
+            判断房钱运行平台是否是Unix
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetCPURate">
+            <summary>
+            获取CPU
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetUnixCPURateByTop">
+            <summary>
+            通过top命令获取CPU使用率
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetUnixCPURateByStat">
+            <summary>
+            通过/proc/stat文件获取CPU使用率
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetRunTime">
+            <summary>
+            获取系统运行时间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ComputerHelper.GetIpFromOnline">
+            <summary>
+            获取外网IP地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Common.MemoryMetrics">
+            <summary>
+            内存信息
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.MemoryMetrics.UsedRam">
+            <summary>
+            已用内存
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.MemoryMetrics.CpuRate">
+            <summary>
+            CPU使用率%
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.MemoryMetrics.TotalRam">
+            <summary>
+            总内存 GB
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.MemoryMetrics.RamRate">
+            <summary>
+            内存使用率 %
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.MemoryMetrics.FreeRam">
+            <summary>
+            空闲内存
+            </summary>
+        </member>
+        <member name="T:Starshine.Common.DiskInfo">
+            <summary>
+            磁盘信息
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.DiskName">
+            <summary>
+            磁盘名
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.TypeName">
+            <summary>
+            类型名
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.TotalFree">
+            <summary>
+            总剩余
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.TotalSize">
+            <summary>
+            总量
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.Used">
+            <summary>
+            已使用
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.AvailableFreeSpace">
+            <summary>
+            可使用
+            </summary>
+        </member>
+        <member name="P:Starshine.Common.DiskInfo.AvailablePercent">
+            <summary>
+            使用百分比
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.MemoryMetricsClient.GetWindowsMetrics">
+            <summary>
+            windows系统获取内存信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.MemoryMetricsClient.GetUnixMetrics">
+            <summary>
+            Unix系统获取
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ShellUtil.Bash(System.String)">
+            <summary>
+            linux 系统命令
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.ShellUtil.Cmd(System.String,System.String)">
+            <summary>
+            windows系统命令
+            </summary>
+            <param name="fileName"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
         <member name="T:Starshine.Common.ConsoleHelper">
             <summary>
             控制台帮助类
@@ -1407,6 +1436,108 @@
             <param name="str">待打印的字符串</param>
             <param name="newLine">是否在后面添加一行空行</param>
             <param name="color">想要打印的颜色</param>
+        </member>
+        <member name="T:Starshine.Common.DateTimeHelper">
+            <summary>
+            时间帮助类
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ConvertToDateTime(System.DateTimeOffset)">
+            <summary>
+            将 DateTimeOffset 转换成 DateTime
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ConvertToDateTimeOffset(System.DateTime)">
+            <summary>
+            将 DateTime 转换成 DateTimeOffset
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetBeginTime(System.Nullable{System.DateTime},System.Int32)">
+            <summary>
+            获取开始时间
+            </summary>
+            <param name="dateTime"></param>
+            <param name="days"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ToLocalTimeDateBySeconds(System.Int64)">
+            <summary>
+             时间戳转本地时间-时间戳精确到秒
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ToUnixTimestampBySeconds(System.DateTime)">
+            <summary>
+             时间转时间戳Unix-时间戳精确到秒
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ToLocalTimeDateByMilliseconds(System.Int64)">
+            <summary>
+             时间戳转本地时间-时间戳精确到毫秒
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.ToUnixTimestampByMilliseconds(System.DateTime)">
+            <summary>
+             时间转时间戳Unix-时间戳精确到毫秒
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.FormatTime(System.Int64)">
+            <summary>
+            毫秒转天时分秒
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetUnixTimeStamp(System.DateTime)">
+            <summary>
+            获取unix时间戳
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetDayMinDate(System.DateTime)">
+            <summary>
+            获取日期天的最小时间
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetDayMaxDate(System.DateTime)">
+            <summary>
+            获取日期天的最大时间
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.FormatDateTime(System.Nullable{System.DateTime})">
+            <summary>
+            获取日期天的最大时间
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetTodayTimeList(System.DateTime)">
+            <summary>
+            获取今天日期范围00:00:00 - 23:59:59
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetWeekByDate(System.DateTime)">
+            <summary>
+            获取星期几
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.DateTimeHelper.GetWeekNumInMonth(System.DateTime)">
+            <summary>
+            获取这个月的第几周
+            </summary>
+            <param name="daytime"></param>
+            <returns></returns>
         </member>
         <member name="T:Starshine.Common.EmailHelper">
             <summary>

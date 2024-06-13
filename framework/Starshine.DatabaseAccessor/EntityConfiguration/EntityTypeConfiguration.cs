@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Hx.DatabaseAccessor.EntityConfiguration
+namespace Starshine.DatabaseAccessor.EntityConfiguration
 {
     /// <summary>
     /// EntityType配置

@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hx.Common.Security
+namespace Starshine.Common.Security
 {
     /// <summary>
     /// 一些加密解密的操作类

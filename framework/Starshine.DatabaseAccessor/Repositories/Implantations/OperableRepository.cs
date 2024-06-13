@@ -1,5 +1,5 @@
-using Hx.DatabaseAccessor.Extensions.LinqBuilder;
-using Hx.DatabaseAccessor.Internal;
+using Starshine.DatabaseAccessor.Extensions.LinqBuilder;
+using Starshine.DatabaseAccessor.Internal;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// 可操作仓储分部类
@@ -44,7 +44,7 @@ namespace Hx.DatabaseAccessor
         /// <param name="entity">实体</param>
         /// <param name="checkProperty"></param>
         /// <returns>数据库中的实体</returns>
-        public virtual EntityEntry<TEntity> InsertOrUpdateNow(TEntity entity,  Expression<Func<TEntity, object>> checkProperty = null)
+        public virtual EntityEntry<TEntity> InsertOrUpdateNow(TEntity entity, Expression<Func<TEntity, object>> checkProperty = null)
         {
             return IsPropertyValueSet(entity, checkProperty) ? UpdateNow(entity) : InsertNow(entity);
         }
@@ -104,7 +104,7 @@ namespace Hx.DatabaseAccessor
         {
             return IsKeySet(entity) ? UpdateIncludeAsync(entity, propertyNames) : InsertAsync(entity);
         }
-        
+
 
         /// <summary>
         /// 新增或更新一条特定属性记录
@@ -185,7 +185,7 @@ namespace Hx.DatabaseAccessor
             return IsKeySet(entity) ? UpdateIncludeNow(entity, propertyPredicates) : InsertNow(entity);
         }
 
-        
+
 
         /// <summary>
         /// 新增或更新一条特定属性记录并立即提交
@@ -256,7 +256,7 @@ namespace Hx.DatabaseAccessor
             return IsKeySet(entity) ? UpdateExclude(entity, propertyPredicates) : Insert(entity);
         }
 
-        
+
         /// <summary>
         /// 新增或更新一条排除特定属性记录
         /// </summary>
@@ -322,7 +322,7 @@ namespace Hx.DatabaseAccessor
         /// <returns>代理中的实体</returns>
         public virtual Task<EntityEntry<TEntity>> InsertOrUpdateExcludeAsync(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> propertyPredicates, CancellationToken cancellationToken = default)
         {
-            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyPredicates) : InsertAsync(entity,cancellationToken);
+            return IsKeySet(entity) ? UpdateExcludeAsync(entity, propertyPredicates) : InsertAsync(entity, cancellationToken);
         }
 
 

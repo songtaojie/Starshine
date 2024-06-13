@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 
-namespace Hx.Swagger.Internal
+namespace Starshine.Swagger.Internal
 {
     /// <summary>
     /// 常量、公共方法配置类

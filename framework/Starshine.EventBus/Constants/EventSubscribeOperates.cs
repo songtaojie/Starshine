@@ -1,5 +1,5 @@
 ﻿
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
     /// <summary>
     /// 事件订阅器操作选项

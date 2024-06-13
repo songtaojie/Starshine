@@ -1,6 +1,6 @@
 ﻿using DotNetCore.CAP;
-using Hx.EventBus;
-using Hx.EventBus.Internal;
+using Starshine.EventBus;
+using Starshine.EventBus.Internal;
 using Microsoft.Extensions.Configuration;
 using System;
 

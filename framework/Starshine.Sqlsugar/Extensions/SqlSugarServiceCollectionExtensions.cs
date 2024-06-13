@@ -1,5 +1,5 @@
-﻿using Hx.Sqlsugar.Repositories;
-using Hx.Sqlsugar;
+﻿using Starshine.Sqlsugar.Repositories;
+using Starshine.Sqlsugar;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configAction"></param>
         /// <param name="buildAction"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction,Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
+        public static IServiceCollection AddSqlSugar(this IServiceCollection services, Action<DbSettingsOptions>? configAction, Action<ISqlSugarClient, IServiceProvider>? buildAction = default)
         {
             AddSqlSugarCore(services, configAction);
             services.AddScoped<ISqlSugarClient>(provider => InitSqlSugarClient(provider, buildAction));

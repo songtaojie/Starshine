@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace Hx.DatabaseAccessor
+namespace Starshine.DatabaseAccessor
 {
     /// <summary>
     /// Sql 操作仓储实现
@@ -55,7 +55,7 @@ namespace Hx.DatabaseAccessor
             _serviceProvider = scoped;
 
             // 解析数据库上下文
-            var dbContextResolve = scoped.GetService<Func<Type,DbContext>>();
+            var dbContextResolve = scoped.GetService<Func<Type, DbContext>>();
             var dbContext = dbContextResolve(dbContextLocator);
             DynamicContext = Context = dbContext;
 

@@ -1,7 +1,7 @@
 ﻿using DotNetCore.CAP;
 using System;
 
-namespace Hx.EventBus
+namespace Starshine.EventBus
 {
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace Hx.EventBus
         /// </summary>
         /// <param name="eventId">事件 Id</param>
         /// <remarks>只支持事件类型和 Enum 类型</remarks>
-        public EventSubscribeAttribute(string eventId):base(eventId)
+        public EventSubscribeAttribute(string eventId) : base(eventId)
         {
             EventId = eventId;
         }
@@ -29,7 +29,7 @@ namespace Hx.EventBus
         /// </summary>
         /// <param name="eventId">事件 Id</param>
         /// <remarks>只支持事件类型和 Enum 类型</remarks>
-        public EventSubscribeAttribute(Enum eventId):base(eventId.ParseToString())
+        public EventSubscribeAttribute(Enum eventId) : base(eventId.ParseToString())
         {
             EventId = eventId.ParseToString();
         }

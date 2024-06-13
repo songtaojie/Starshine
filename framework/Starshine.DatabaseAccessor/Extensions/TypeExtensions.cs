@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Hx.DatabaseAccessor.Extensions
+namespace Starshine.DatabaseAccessor.Extensions
 {
     /// <summary>
     /// 类型扩展类

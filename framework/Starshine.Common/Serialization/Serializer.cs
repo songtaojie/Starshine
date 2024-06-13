@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace Hx.Common.Serialization
+namespace Starshine.Common.Serialization
 {
     /// <summary>
     /// 序列化类

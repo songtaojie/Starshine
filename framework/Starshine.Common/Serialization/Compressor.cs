@@ -2,7 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 
-namespace Hx.Common.Serialization
+namespace Starshine.Common.Serialization
 {
     /// <summary>
     /// 压缩类，用来压缩流数据

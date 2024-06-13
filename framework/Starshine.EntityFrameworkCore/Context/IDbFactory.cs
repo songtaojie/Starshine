@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.EntityFrameworkCore
+namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// 数据库上下文操作类
@@ -60,7 +60,7 @@ namespace Hx.EntityFrameworkCore
         /// </summary>
         /// <param name="handler"></param>
         Task<bool> ExcuteAsync(EventHandler handler);
-      
+
         /// <summary>
         /// 保存更改
         /// </summary>

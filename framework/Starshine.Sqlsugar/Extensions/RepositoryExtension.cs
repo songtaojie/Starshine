@@ -4,7 +4,7 @@
 //
 // 电话/微信：song977601042
 
-using Hx.Common;
+using Starshine.Common;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hx.Sqlsugar;
+namespace Starshine.Sqlsugar;
 public static class RepositoryExtension
 {
     /// <summary>
@@ -42,15 +42,15 @@ public static class RepositoryExtension
     public static int FakeDelete<T>(this ISqlSugarClient db, T entity) where T : FullAuditedEntityBase, new()
     {
         return db.Updateable(entity).AS()
-            .ReSetValue(u => 
-            { 
-                u.IsDeleted = true; 
+            .ReSetValue(u =>
+            {
+                u.IsDeleted = true;
                 u.DeleteTime = DateTime.Now;
                 u.UpdateTime = DateTime.Now;
             })
             .IgnoreColumns(ignoreAllNullColumns: true)
-            .EnableDiffLogEvent() 
-            .UpdateColumns(u => new { u.IsDeleted, u.DeleteTime,u.DeleterId, u.UpdateTime, u.UpdaterId })
+            .EnableDiffLogEvent()
+            .UpdateColumns(u => new { u.IsDeleted, u.DeleteTime, u.DeleterId, u.UpdateTime, u.UpdaterId })
             .ExecuteCommand();
     }
 
@@ -82,7 +82,7 @@ public static class RepositoryExtension
                 u.UpdateTime = DateTime.Now;
             })
             .IgnoreColumns(ignoreAllNullColumns: true)
-            .EnableDiffLogEvent()  
+            .EnableDiffLogEvent()
             .UpdateColumns(u => new { u.IsDeleted, u.DeleteTime, u.DeleterId, u.UpdateTime, u.UpdaterId })
             .ExecuteCommandAsync();
     }
@@ -103,9 +103,9 @@ public static class RepositoryExtension
         {
             orderStr = descSort ? defualtSortField + " Desc" : defualtSortField + " Asc";
         }
-       
+
         // 排序是否可用-排序字段和排序顺序都为非空才启用排序
-        if (!string.IsNullOrEmpty(pageInput.SortField) 
+        if (!string.IsNullOrEmpty(pageInput.SortField)
             && ConnectionConfigs != null && ConnectionConfigs!.Any())
         {
             var config = ConnectionConfigs!.FirstOrDefault(u => u.ConfigId == queryable.Context.CurrentConnectionConfig.ConfigId);
@@ -274,7 +274,7 @@ public static class RepositoryExtension
     /// <returns> </returns>
     public static IDeleteable<T> AS<T>(this IDeleteable<T> deleteable) where T : EntityBase, new()
     {
-        var info = GetTableInfo<T>(); 
+        var info = GetTableInfo<T>();
         return deleteable.AS($"{info.Item1}.{info.Item2}");
     }
 

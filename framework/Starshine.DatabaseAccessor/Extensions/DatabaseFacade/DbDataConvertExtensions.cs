@@ -1,4 +1,4 @@
-﻿using Hx.DatabaseAccessor.Extensions;
+﻿using Starshine.DatabaseAccessor.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -190,6 +190,6 @@ namespace Hx.Sdk.Extensions
         {
             return Task.FromResult(dataTable.ToList(returnType));
         }
-      
+
     }
 }
