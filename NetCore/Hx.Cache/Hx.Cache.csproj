@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Version>1.2.1</Version>
+		<Authors>Carina</Authors>
+		<Company>Carina</Company>
+		<Description>基于.NET6的缓存帮助类，支持Redis缓存、和内存缓存</Description>
+		<PackageTags>ASP.NET Core, Redis,MemoryCache</PackageTags>
+		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
+		<PackageId>Hx.Cache</PackageId>
+		<Product>Cache for ASP.NET Core</Product>
+		<Copyright>2020 Hx.Cache</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>Hx.Cache.xml</DocumentationFile>
+		<OutputPath>bin\Debug\</OutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="FreeRedis.DistributedCache" Version="1.2.5" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+	</ItemGroup>
+
+</Project>

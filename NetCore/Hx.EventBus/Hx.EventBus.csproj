@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>6.0</Version>
+    <Authors>songtaojie</Authors>
+    <Description>事件总线封装类</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Polly" Version="7.2.3" />
+	  <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.1.3" />
+  </ItemGroup>
+
+</Project>

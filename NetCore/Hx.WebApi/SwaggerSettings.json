@@ -1,0 +1,28 @@
+{
+  "SwaggerSettings": {
+    "DocumentTitle": "Swagger DocumentTest",
+    //"EnabledMiniProfiler": false,
+    "XmlComments": [ "Hx.Test.Entity", "Hx.WebApi" ],
+    //"VirtualPath": "/",
+    "GroupOpenApiInfos": [
+      {
+        "Group": "Admin",
+        "Title": "管理后台APi",
+        "Description": "这里列举了常见数据库操作方法，方便大家学习。",
+        "Version": "1.0.0",
+        "TermsOfService": "https://furion.pro",
+        "Contact": {
+          "Name": "songtaojie",
+          "Url": "https://gitee.com/songtaojie",
+          "Email": "stjworkemail@163.com"
+        },
+        "Order": 2
+      },
+      {
+        "Group": "Client",
+        "Title": "客户端Api",
+        "Order": 1
+      }
+    ]
+  }
+}

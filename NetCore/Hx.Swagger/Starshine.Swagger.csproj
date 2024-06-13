@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Authors>Carina</Authors>
+		<Description>Swagger文档帮助类，集成Knife4jUI框架，更新.Net版本为.Net6</Description>
+		<Version>1.0.0</Version>
+		<PackageTags>ASP.NET Core, Swagger</PackageTags>
+		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
+		<PackageId>Hx.Swagger</PackageId>
+		<Product>Swagger for ASP.NET Core</Product>
+		<Copyright>2020 Hx.Swagger</Copyright>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Assets\index-mini-profiler.html" />
+		<None Remove="Assets\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\index-mini-profiler.html">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Assets\index.html">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.16" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
+	</ItemGroup>
+</Project>
