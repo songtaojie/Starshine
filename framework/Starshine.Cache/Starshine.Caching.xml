@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Starshine.Cache</name>
+        <name>Starshine.Caching</name>
     </assembly>
     <members>
         <member name="T:Starshine.Cache.DefaultCache">

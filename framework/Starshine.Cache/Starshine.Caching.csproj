@@ -8,13 +8,13 @@
 		<Description>基于.NET6的缓存帮助类，支持Redis缓存、和内存缓存</Description>
 		<PackageTags>ASP.NET Core, Redis,MemoryCache</PackageTags>
 		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
-		<PackageId>Starshine.Cache</PackageId>
+		<PackageId>Starshine.Caching</PackageId>
 		<Product>Cache for ASP.NET Core</Product>
-		<Copyright>2020 Starshine.Cache</Copyright>
+		<Copyright>2020 Starshine.Caching</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>Starshine.Cache.xml</DocumentationFile>
+		<DocumentationFile>Starshine.Caching.xml</DocumentationFile>
 		<OutputPath>bin\Debug\</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>

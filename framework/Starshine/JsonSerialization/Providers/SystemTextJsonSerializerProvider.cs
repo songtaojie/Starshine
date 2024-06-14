@@ -18,7 +18,7 @@ namespace Starshine.JsonSerialization;
 /// <summary>
 /// System.Text.Json 序列化提供器（默认实现）
 /// </summary>
-[Injection(Order = -int.MaxValue)]
+[Dependency(Order = -int.MaxValue)]
 public class SystemTextJsonSerializerProvider : IJsonSerializerProvider, ISingletonDependency
 {
     /// <summary>

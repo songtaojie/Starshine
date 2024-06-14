@@ -164,7 +164,7 @@ namespace Starshine.Swagger.Internal
 
             // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
             var scanAssemblies = dependencyContext.CompileLibraries
-                .Where(u => (u.Type == "project") || (u.Type == "package" && u.Name.StartsWith(nameof(Hx))))    // 判断是否启用引用程序集扫描
+                .Where(u => (u.Type == "project") || (u.Type == "package" && u.Name.StartsWith(nameof(Starshine))))    // 判断是否启用引用程序集扫描
                 .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
                 .ToList();
 

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Starshine.Common.DependencyInjection
+namespace Starshine
 {
     /// <summary>
     /// 创建单一实例的类

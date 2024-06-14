@@ -4,14 +4,9 @@
 //
 // 电话/微信：song977601042
 
-using Starshine.Common.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -40,8 +35,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         private static IServiceCollection AddScanDependencyInjection(this IServiceCollection services, IEnumerable<Type> effectiveTypes)
         {
-            // 查找所有需要依赖注入的类型
             var injectTypes = effectiveTypes
+               .Where(u => u.IsClass && !u.IsInterface && !u.IsAbstract)
+               .OrderBy(GetOrder);
+            foreach (var type in injectTypes)
+            {
+                var dependencyAttribute = GetDependencyAttribute(type);
+                var lifeTime = GetLifeTime(type, dependencyAttribute);
+                if (lifeTime == null)continue;
+
+            }   
+
+                // 查找所有需要依赖注入的类型
+                var injectTypes = effectiveTypes
                 .Where(u => typeof(IScopedDependency).IsAssignableFrom(u) && u.IsClass && !u.IsInterface && !u.IsAbstract)
                 .OrderBy(u => GetOrder(u));
             var scopedTypes = effectiveTypes
@@ -58,7 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 foreach (var type in scopedTypes)
                 {
                     // 获取注册方式
-                    var injectionAttribute = !type.IsDefined(typeof(InjectionAttribute)) ? new InjectionAttribute() : type.GetCustomAttribute<InjectionAttribute>();
+                    var injectionAttribute = !type.IsDefined(typeof(DependencyAttribute)) ? new DependencyAttribute() : type.GetCustomAttribute<InjectionAttribute>();
                     // 获取所有能注册的接口
                     var canInjectInterfaces = type.GetInterfaces()
                         .Where(u => !injectionAttribute.ExpectInterfaces.Contains(u)
@@ -129,6 +135,43 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        /// <summary>
+        /// 获取依赖注入属性
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static DependencyAttribute? GetDependencyAttribute(Type type)
+        {
+            return type.GetCustomAttribute<DependencyAttribute>(true);
+        }
+
+        private static ServiceLifetime? GetLifeTime(Type type, DependencyAttribute? dependencyAttribute)
+        {
+            return dependencyAttribute?.Lifetime ?? GetServiceLifetimeFromClass(type);
+        }
+
+        private static ServiceLifetime? GetServiceLifetimeFromClass(Type type)
+        {
+            if (typeof(ITransientDependency).GetTypeInfo().IsAssignableFrom(type))
+            {
+                return ServiceLifetime.Transient;
+            }
+
+            if (typeof(ISingletonDependency).GetTypeInfo().IsAssignableFrom(type))
+            {
+                return ServiceLifetime.Singleton;
+            }
+
+            if (typeof(IScopedDependency).GetTypeInfo().IsAssignableFrom(type))
+            {
+                return ServiceLifetime.Scoped;
+            }
+
+            return null;
+        }
+
+
 
         /// <summary>
         /// 注册服务
@@ -298,9 +341,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>int</returns>
         private static int GetOrder(Type type)
         {
-            return !type.IsDefined(typeof(InjectionAttribute), true)
+            return !type.IsDefined(typeof(DependencyAttribute), true)
                 ? 0
-                : type.GetCustomAttribute<InjectionAttribute>(true).Order;
+                : type.GetCustomAttribute<DependencyAttribute>(true)!.Order;
         }
 
         /// <summary>

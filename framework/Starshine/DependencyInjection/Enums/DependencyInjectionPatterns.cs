@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 
-namespace Starshine.Common.DependencyInjection
+namespace Starshine
 {
     /// <summary>
     /// 注册范围
     /// </summary>
     [SkipScan]
-    public enum InjectionPatterns
+    public enum DependencyInjectionPatterns
     {
         /// <summary>
         /// 只注册自己
@@ -24,6 +24,6 @@ namespace Starshine.Common.DependencyInjection
         /// 所有接口
         /// </summary>
         [Description("所有接口")]
-        ImplementedInterfaces,
+        AllInterfaces,
     }
 }

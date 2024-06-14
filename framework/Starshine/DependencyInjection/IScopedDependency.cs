@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Starshine.Common.DependencyInjection
+namespace Starshine
 {
     /// <summary>
     /// 每个请求一个实例

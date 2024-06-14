@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Starshine.Common.DependencyInjection
+namespace Starshine
 {
     /// <summary>
     /// 注册类型
