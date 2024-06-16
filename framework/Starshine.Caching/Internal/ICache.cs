@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Starshine.Cache
+namespace Starshine.Caching
 {
     /// <summary>
     /// 缓存接口

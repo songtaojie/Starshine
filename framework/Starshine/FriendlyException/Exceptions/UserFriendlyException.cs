@@ -57,21 +57,16 @@ namespace Starshine.FriendlyException
         /// <summary>
         /// 错误码
         /// </summary>
-        public object ErrorCode { get; set; }
+        public object? ErrorCode { get; set; }
 
         /// <summary>
         /// 错误消息（支持 Object 对象）
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         /// <summary>
         /// 状态码
         /// </summary>
         public int StatusCode { get; set; } = StatusCodes.Status500InternalServerError;
-
-        /// <summary>
-        /// 结果数据
-        /// </summary>
-        public new object Data { get; set; }
     }
 }

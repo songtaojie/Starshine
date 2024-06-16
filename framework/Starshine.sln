@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.Common", "Starshine.Common\Starshine.Common.csproj", "{C31204CE-ED57-47CF-B26C-0F60B94781F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.Caching", "Starshine.Cache\Starshine.Caching.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.Caching", "Starshine.Caching\Starshine.Caching.csproj", "{B128601D-1FF0-4183-B5DD-B369C3DE8D1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.ImageSharp", "Starshine.ImageSharp\Starshine.ImageSharp.csproj", "{5166068A-A564-447E-A2A1-E57DA3E70915}"
 EndProject

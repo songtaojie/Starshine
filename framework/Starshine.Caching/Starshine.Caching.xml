@@ -4,52 +4,52 @@
         <name>Starshine.Caching</name>
     </assembly>
     <members>
-        <member name="T:Starshine.Cache.DefaultCache">
+        <member name="T:Starshine.Caching.DefaultCache">
             <summary>
             内存缓存缓存
             </summary>
         </member>
-        <member name="T:Starshine.Cache.ICache">
+        <member name="T:Starshine.Caching.ICache">
             <summary>
             缓存接口
             </summary>
         </member>
-        <member name="P:Starshine.Cache.ICache.Instance">
+        <member name="P:Starshine.Caching.ICache.Instance">
             <summary>
             缓存的实例对象
             </summary>
         </member>
-        <member name="P:Starshine.Cache.ICache.CacheType">
+        <member name="P:Starshine.Caching.ICache.CacheType">
             <summary>
             缓存实例类型
             </summary>
         </member>
-        <member name="M:Starshine.Cache.ICache.GetAllKeys">
+        <member name="M:Starshine.Caching.ICache.GetAllKeys">
             <summary>
             获取所有的缓存的key
             </summary>
             <returns></returns>
         </member>
-        <member name="P:Starshine.Cache.ICache.Item(System.String)">
+        <member name="P:Starshine.Caching.ICache.Item(System.String)">
             <summary>
             获取和设置缓存，永不过期
             </summary>
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="P:Starshine.Cache.ICache.Count">
+        <member name="P:Starshine.Caching.ICache.Count">
             <summary>
              缓存个数
             </summary>
         </member>
-        <member name="M:Starshine.Cache.ICache.ExistsKey(System.String)">
+        <member name="M:Starshine.Caching.ICache.ExistsKey(System.String)">
             <summary>
             是否包含缓存项
             </summary>
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Set``1(System.String,``0,System.Int32)">
+        <member name="M:Starshine.Caching.ICache.Set``1(System.String,``0,System.Int32)">
             <summary>
             设置缓存项
             </summary>
@@ -59,7 +59,7 @@
             <param name="expire">过期时间，秒，-1：表示不过期</param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Set``1(System.String,``0,System.Nullable{System.TimeSpan})">
+        <member name="M:Starshine.Caching.ICache.Set``1(System.String,``0,System.Nullable{System.TimeSpan})">
             <summary>
             设置数据
             </summary>
@@ -69,7 +69,7 @@
             <param name="expiry">过期时间</param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Get``1(System.String)">
+        <member name="M:Starshine.Caching.ICache.Get``1(System.String)">
             <summary>
             获取缓存项
             </summary>
@@ -77,14 +77,14 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Get(System.String)">
+        <member name="M:Starshine.Caching.ICache.Get(System.String)">
             <summary>
             获取数据
             </summary>
             <param name="key">缓存的键</param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Set(System.String,System.String,System.Nullable{System.TimeSpan})">
+        <member name="M:Starshine.Caching.ICache.Set(System.String,System.String,System.Nullable{System.TimeSpan})">
             <summary>
             设置数据
             </summary>
@@ -93,43 +93,43 @@
             <param name="expiry">过期时间</param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Remove(System.String[])">
+        <member name="M:Starshine.Caching.ICache.Remove(System.String[])">
             <summary>
             批量移除缓存项
             </summary>
             <param name="keys">键集合</param>
         </member>
-        <member name="M:Starshine.Cache.ICache.RemoveByPrefix(System.String)">
+        <member name="M:Starshine.Caching.ICache.RemoveByPrefix(System.String)">
             <summary>
             根据前缀移除缓存项
             </summary>
             <param name="prefixKey"></param>
             <returns></returns>
         </member>
-        <member name="M:Starshine.Cache.ICache.Clear">
+        <member name="M:Starshine.Caching.ICache.Clear">
             <summary>
              清空所有缓存项
             </summary>
         </member>
-        <member name="M:Starshine.Cache.ICache.SetRedisDbNum(System.Int32)">
+        <member name="M:Starshine.Caching.ICache.SetRedisDbNum(System.Int32)">
             <summary>
             设置Redis数据库
             </summary>
             <param name="dbNum"></param>
         </member>
-        <member name="M:Starshine.Cache.ICache.TYPE(System.String)">
+        <member name="M:Starshine.Caching.ICache.TYPE(System.String)">
             <summary>
              获取指定键的数据结构类型
             </summary>
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="F:Starshine.Cache.RedisCache._dbNum">
+        <member name="F:Starshine.Caching.RedisCache._dbNum">
             <summary>
             数据库编号
             </summary>
         </member>
-        <member name="M:Starshine.Cache.RedisCache.Do``1(System.Func{FreeRedis.IRedisClient,``0})">
+        <member name="M:Starshine.Caching.RedisCache.Do``1(System.Func{FreeRedis.IRedisClient,``0})">
             <summary>
             获取数据库
             </summary>
@@ -137,53 +137,53 @@
             <param name="func"></param>
             <returns></returns>
         </member>
-        <member name="T:Starshine.Cache.CacheSettingsOptions">
+        <member name="T:Starshine.Caching.CacheSettingsOptions">
             <summary>
             缓存配置
             </summary>
         </member>
-        <member name="P:Starshine.Cache.CacheSettingsOptions.CacheType">
+        <member name="P:Starshine.Caching.CacheSettingsOptions.CacheType">
             <summary>
             缓存类型
             Redis、Memory
             </summary>
         </member>
-        <member name="P:Starshine.Cache.CacheSettingsOptions.Redis">
+        <member name="P:Starshine.Caching.CacheSettingsOptions.Redis">
             <summary>
             redis配置
             </summary>
         </member>
-        <member name="P:Starshine.Cache.CacheSettingsOptions.Memory">
+        <member name="P:Starshine.Caching.CacheSettingsOptions.Memory">
             <summary>
             缓存配置
             </summary>
         </member>
-        <member name="T:Starshine.Cache.CacheTypeEnum">
+        <member name="T:Starshine.Caching.CacheTypeEnum">
             <summary>
             缓存类型
             </summary>
         </member>
-        <member name="F:Starshine.Cache.CacheTypeEnum.Memory">
+        <member name="F:Starshine.Caching.CacheTypeEnum.Memory">
             <summary>
             内存缓存
             </summary>
         </member>
-        <member name="F:Starshine.Cache.CacheTypeEnum.Redis">
+        <member name="F:Starshine.Caching.CacheTypeEnum.Redis">
             <summary>
             Redis缓存
             </summary>
         </member>
-        <member name="T:Starshine.Cache.Options.RedisCacheSettingsOptions">
+        <member name="T:Starshine.Caching.Options.RedisCacheSettingsOptions">
             <summary>
             redis缓存配置
             </summary>
         </member>
-        <member name="P:Starshine.Cache.Options.RedisCacheSettingsOptions.ConnectionString">
+        <member name="P:Starshine.Caching.Options.RedisCacheSettingsOptions.ConnectionString">
             <summary>
             用于连接到Redis的配置。
             </summary>
         </member>
-        <member name="P:Starshine.Cache.Options.RedisCacheSettingsOptions.SlaveConnectionStrings">
+        <member name="P:Starshine.Caching.Options.RedisCacheSettingsOptions.SlaveConnectionStrings">
             <summary>
             Slave连接字符串
             </summary>
@@ -195,7 +195,7 @@
         </member>
         <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            增加了一个默认的实现<see cref="T:Starshine.Cache.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
+            增加了一个默认的实现<see cref="T:Starshine.Caching.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
             需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
             </summary>
             <remarks>
@@ -205,9 +205,9 @@
             <param name="services"> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> 添加服务.</param>
             <returns> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
         </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Starshine.Cache.CacheSettingsOptions})">
+        <member name="M:Microsoft.Extensions.DependencyInjection.CacheServiceCollextionExtensions.AddCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Starshine.Caching.CacheSettingsOptions})">
             <summary>
-            增加了一个默认的实现<see cref="T:Starshine.Cache.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
+            增加了一个默认的实现<see cref="T:Starshine.Caching.ICache"/>，将项目存储在 memory/redis到<see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />。
             需要分布式缓存工作的框架可以安全地将此依赖项添加到其依赖项列表中，以确保至少有一个实现可用。
             </summary>
             <remarks>
@@ -216,7 +216,7 @@
             </remarks>
             <param name="services"> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> 添加服务.</param>
             <param name="setupAction">
-             <see cref="T:System.Action`1"/> 要提供的配置 <see cref="T:Starshine.Cache.CacheSettingsOptions"/>.
+             <see cref="T:System.Action`1"/> 要提供的配置 <see cref="T:Starshine.Caching.CacheSettingsOptions"/>.
             </param>
             <returns> <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 这样额外的调用就可以被链接起来。</returns>
         </member>

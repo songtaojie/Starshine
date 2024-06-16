@@ -4,15 +4,10 @@
 //
 // 电话/微信：song977601042
 
-using Starshine.Common.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Starshine.DependencyInjection;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Starshine.JsonSerialization;
 /// <summary>
@@ -41,7 +36,7 @@ public class SystemTextJsonSerializerProvider : IJsonSerializerProvider, ISingle
     /// <param name="value"></param>
     /// <param name="jsonSerializerOptions"></param>
     /// <returns></returns>
-    public string Serialize(object value, object jsonSerializerOptions = null)
+    public string Serialize(object value, object? jsonSerializerOptions = null)
     {
         return JsonSerializer.Serialize(value, (jsonSerializerOptions ?? GetSerializerOptions()) as JsonSerializerOptions);
     }
@@ -53,7 +48,7 @@ public class SystemTextJsonSerializerProvider : IJsonSerializerProvider, ISingle
     /// <param name="json"></param>
     /// <param name="jsonSerializerOptions"></param>
     /// <returns></returns>
-    public T Deserialize<T>(string json, object jsonSerializerOptions = null)
+    public T? Deserialize<T>(string json, object? jsonSerializerOptions = null)
     {
         return JsonSerializer.Deserialize<T>(json, (jsonSerializerOptions ?? GetSerializerOptions()) as JsonSerializerOptions);
     }
@@ -65,7 +60,7 @@ public class SystemTextJsonSerializerProvider : IJsonSerializerProvider, ISingle
     /// <param name="returnType"></param>
     /// <param name="jsonSerializerOptions"></param>
     /// <returns></returns>
-    public object Deserialize(string json, Type returnType, object jsonSerializerOptions = null)
+    public object? Deserialize(string json, Type returnType, object? jsonSerializerOptions = null)
     {
         return JsonSerializer.Deserialize(json, returnType, (jsonSerializerOptions ?? GetSerializerOptions()) as JsonSerializerOptions);
     }
@@ -74,7 +69,7 @@ public class SystemTextJsonSerializerProvider : IJsonSerializerProvider, ISingle
     /// 返回读取全局配置的 JSON 选项
     /// </summary>
     /// <returns></returns>
-    public object GetSerializerOptions()
+    public object? GetSerializerOptions()
     {
         return _jsonOptions?.JsonSerializerOptions;
     }

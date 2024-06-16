@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Starshine.Cache
+namespace Starshine.Caching
 {
     internal class RedisCache : ICache
     {

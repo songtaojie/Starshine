@@ -1,19 +1,13 @@
 ﻿using System.ComponentModel;
 
-namespace Starshine
+namespace Starshine.DependencyInjection
 {
     /// <summary>
     /// 注册范围
     /// </summary>
-    [SkipScan]
-    public enum DependencyInjectionPatterns
+    [SkipScan,Flags]
+    public enum DependencyInjectionPattern
     {
-        /// <summary>
-        /// 只注册自己
-        /// </summary>
-        [Description("只注册自己")]
-        Self,
-
         /// <summary>
         /// 第一个接口,默认值
         /// </summary>
@@ -25,5 +19,11 @@ namespace Starshine
         /// </summary>
         [Description("所有接口")]
         AllInterfaces,
+
+        /// <summary>
+        /// 只注册自己
+        /// </summary>
+        [Description("只注册自己")]
+        Self,
     }
 }

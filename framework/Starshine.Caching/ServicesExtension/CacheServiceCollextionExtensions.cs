@@ -1,6 +1,6 @@
 ﻿using FreeRedis;
-using Starshine.Cache;
-using Starshine.Cache.Options;
+using Starshine.Caching;
+using Starshine.Caching.Options;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection.Extensions;

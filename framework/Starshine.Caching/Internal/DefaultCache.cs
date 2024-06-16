@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Starshine.Cache
+namespace Starshine.Caching
 {
     /// <summary>
     /// 内存缓存缓存

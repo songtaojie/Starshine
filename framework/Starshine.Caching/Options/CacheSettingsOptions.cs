@@ -1,5 +1,5 @@
 ﻿using FreeRedis;
-using Starshine.Cache.Options;
+using Starshine.Caching.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Starshine.Cache
+namespace Starshine.Caching
 {
     /// <summary>
     /// 缓存配置

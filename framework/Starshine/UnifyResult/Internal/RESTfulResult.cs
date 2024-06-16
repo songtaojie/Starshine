@@ -16,7 +16,7 @@
         /// <summary>
         /// 数据
         /// </summary>
-        public T Data { get; set; }
+        public T? Data { get; set; }
 
         /// <summary>
         /// 执行成功
@@ -26,12 +26,12 @@
         /// <summary>
         /// 异常码
         /// </summary>
-        public object ErrorCode { get; set; }
+        public object? ErrorCode { get; set; }
 
         /// <summary>
         /// 错误信息
         /// </summary>
-        public object Errors { get; set; }
+        public object? Errors { get; set; }
 
         /// <summary>
         /// 时间戳

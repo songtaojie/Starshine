@@ -42,7 +42,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         internal static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app)
         {
-            var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
