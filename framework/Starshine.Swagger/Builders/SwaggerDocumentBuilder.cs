@@ -47,41 +47,41 @@ internal class SwaggerDocumentBuilder
     /// <summary>
     /// 文档分组列表
     /// </summary>
-    private static IEnumerable<string> _documentGroups;
+    private static IEnumerable<string>? _documentGroups;
     /// <summary>
     /// 带排序的分组名
     /// </summary>
-    private static Regex _groupOrderRegex;
+    private static Regex? _groupOrderRegex;
 
     /// <summary>
     /// 分组信息
     /// </summary>
-    private static IEnumerable<GroupExtraInfo> _groupExtraInfos;
+    private static IEnumerable<GroupExtraInfo>? _groupExtraInfos;
 
     /// <summary>
     /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
     /// </summary>
-    private static ConcurrentDictionary<ControllerActionDescriptor, string> _getControllerTagCached;
+    private static ConcurrentDictionary<ControllerActionDescriptor, string>? _getControllerTagCached;
 
     /// <summary>
     /// <see cref="GetActionTag(ApiDescription)"/> 缓存集合
     /// </summary>
-    private static ConcurrentDictionary<ApiDescription, string> _getActionTagCached;
+    private static ConcurrentDictionary<ApiDescription, string>? _getActionTagCached;
 
     /// <summary>
     /// 获取控制器组缓存集合
     /// </summary>
-    private static ConcurrentDictionary<Type, IEnumerable<GroupExtraInfo>> _getControllerGroupsCached;
+    private static ConcurrentDictionary<Type, IEnumerable<GroupExtraInfo>>? _getControllerGroupsCached;
 
     /// <summary>
     /// 获取分组信息缓存集合
     /// </summary>
-    private static ConcurrentDictionary<string, SwaggerOpenApiInfo> _getGroupOpenApiInfoCached;
+    private static ConcurrentDictionary<string, SwaggerOpenApiInfo>? _getGroupOpenApiInfoCached;
 
     /// <summary>
     /// <see cref="GetActionGroups(MethodInfo,SwaggerSettingsOptions)"/> 缓存集合
     /// </summary>
-    private static ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>> _getActionGroupsCached;
+    private static ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>>? _getActionGroupsCached;
 
     public SwaggerDocumentBuilder(IOptions<SwaggerSettingsOptions> options)
     {
@@ -104,7 +104,7 @@ internal class SwaggerDocumentBuilder
     /// </summary>
     /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
     /// <param name="configure">自定义配置</param>
-    internal void BuildSwaggerGen(SwaggerGenOptions swaggerGenOptions, Action<SwaggerGenOptions> configure = null)
+    internal void BuildSwaggerGen(SwaggerGenOptions swaggerGenOptions, Action<SwaggerGenOptions>? configure = default)
     {
         //// 创建分组文档
         CreateSwaggerDocs(swaggerGenOptions, _swaggerSettings);
@@ -148,7 +148,7 @@ internal class SwaggerDocumentBuilder
     /// </summary>
     /// <param name="swaggerOptions">Swagger 全局配置</param>
     /// <param name="configure"></param>
-    internal void Build(SwaggerOptions swaggerOptions, Action<SwaggerOptions> configure = null)
+    internal void Build(SwaggerOptions swaggerOptions, Action<SwaggerOptions>? configure = default)
     {
         // 生成V2版本
         swaggerOptions.SerializeAsV2 = _swaggerSettings.FormatAsV2 == true;
@@ -181,7 +181,7 @@ internal class SwaggerDocumentBuilder
     /// </summary>
     /// <param name="swaggerUIOptions"></param>
     /// <param name="configure"></param>
-    internal void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions> configure = null)
+    internal void BuildUI(SwaggerUIOptions swaggerUIOptions, Action<SwaggerUIOptions>? configure = default)
     {
         // 配置分组终点路由
         CreateGroupEndpoint(swaggerUIOptions, _swaggerSettings);
@@ -193,7 +193,7 @@ internal class SwaggerDocumentBuilder
         swaggerUIOptions.RoutePrefix = _swaggerSettings.RoutePrefix ?? "swagger";
 
         // 文档展开设置
-        swaggerUIOptions.DocExpansion(_swaggerSettings.DocExpansion.Value);
+        swaggerUIOptions.DocExpansion(_swaggerSettings.DocExpansion ?? Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
 
         // 自定义首页
         CustomizeIndex(swaggerUIOptions, _swaggerSettings);
@@ -209,7 +209,7 @@ internal class SwaggerDocumentBuilder
     /// </summary>
     /// <param name="knife4UIOptions"></param>
     /// <param name="configure"></param>
-    internal void BuildKnife4UI(Knife4UIOptions knife4UIOptions, Action<Knife4UIOptions> configure = null)
+    internal void BuildKnife4UI(Knife4UIOptions knife4UIOptions, Action<Knife4UIOptions>? configure = default)
     {
         // 配置分组终点路由
         CreateGroupEndpoint(knife4UIOptions, _swaggerSettings);
@@ -246,6 +246,7 @@ internal class SwaggerDocumentBuilder
     /// <param name="swaggerSettings"></param>
     private static void CreateSwaggerDocs(SwaggerGenOptions swaggerGenOptions, SwaggerSettingsOptions swaggerSettings)
     {
+        if (_documentGroups == null) return;
         foreach (var group in _documentGroups)
         {
             var groupOpenApiInfo = GetGroupOpenApiInfo(group, swaggerSettings) as OpenApiInfo;
@@ -334,12 +335,12 @@ internal class SwaggerDocumentBuilder
             // 判断是否自定义了 [OperationId] 特性
             if (isMethod && method.IsDefined(typeof(OperationIdAttribute), false))
             {
-                return method.GetCustomAttribute<OperationIdAttribute>(false).OperationId;
+                return method.GetCustomAttribute<OperationIdAttribute>(false)!.OperationId;
             }
 
-            var operationId = apiDescription.RelativePath.Replace("/", "-")
+            var operationId = apiDescription.RelativePath!.Replace("/", "-")
                                        .Replace("{", "-")
-                                       .Replace("}", "-") + "-" + apiDescription.HttpMethod.ToLower().ToUpperCamelCase();
+                                       .Replace("}", "-") + "-" + apiDescription.HttpMethod!.ToLower().ToUpperCamelCase();
 
             return operationId.Replace("--", "-");
         });

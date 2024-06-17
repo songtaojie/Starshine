@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.Sqlsugar;
+/// <summary>
+/// 日志作用域
+/// </summary>
 public class SugarLogScope
 {
     /// <summary>

@@ -18,6 +18,10 @@ namespace Starshine.Sqlsugar
         /// </summary>
         public IEnumerable<DbConnectionConfig>? ConnectionConfigs { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="options"></param>
         public void Configure(DbSettingsOptions options)
         {
             options.ConnectionConfigs ??= new List<DbConnectionConfig>();

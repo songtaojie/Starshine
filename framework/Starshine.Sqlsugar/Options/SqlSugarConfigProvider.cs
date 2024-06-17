@@ -148,6 +148,8 @@ namespace Starshine.Sqlsugar
         /// 配置Aop日志
         /// </summary>
         /// <param name="db"></param>
+        /// <param name="config"></param>
+        /// <param name="logger"></param>
         internal static void SetAopLog(ISqlSugarClient db, DbConnectionConfig config, ILogger logger)
         {
             if (config.EnableSqlLog)
@@ -214,8 +216,7 @@ namespace Starshine.Sqlsugar
         /// 初始化数据库和种子数据
         /// DbConnectionConfig需开启相应的开关
         /// </summary>
-        /// <param name="typeList">所有的实体类</param>
-        /// <param name="db"></param>
+        /// <param name="dbProvider"></param>
         /// <param name="config"></param>
         public static void InitDatabase(ISqlSugarClient dbProvider, DbConnectionConfig config)
         {

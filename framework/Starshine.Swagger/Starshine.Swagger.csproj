@@ -2,15 +2,18 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Authors>Carina</Authors>
-		<Description>Swagger文档帮助类，集成Knife4jUI框架，更新.Net版本为.Net6</Description>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Authors>Starshine</Authors>
+		<Company>Starshine</Company>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>Swagger文档帮助类，集成Knife4jUI框架</Description>
 		<Version>1.0.0</Version>
 		<PackageTags>ASP.NET Core, Swagger</PackageTags>
-		<PackageReleaseNotes>https://gitee.com/songtaojie/Common.git</PackageReleaseNotes>
+		<PackageReleaseNotes>https://github.com/songtaojie/Starshine</PackageReleaseNotes>
 		<PackageId>Starshine.Swagger</PackageId>
 		<Product>Swagger for ASP.NET Core</Product>
 		<Copyright>2020 Starshine.Swagger</Copyright>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

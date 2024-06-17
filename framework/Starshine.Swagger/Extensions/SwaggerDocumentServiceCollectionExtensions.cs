@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="swaggerSettings">swagger配置</param>
         /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions> swaggerSettings = null, Action<SwaggerGenOptions> swaggerGenConfigure = null)
+        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions>? swaggerSettings = default, Action<SwaggerGenOptions>? swaggerGenConfigure = default)
         {
             services.AddOptions<SwaggerSettingsOptions>()
                 .BindConfiguration("SwaggerSettings")

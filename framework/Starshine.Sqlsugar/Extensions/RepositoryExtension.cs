@@ -14,6 +14,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.Sqlsugar;
+/// <summary>
+/// 仓库扩展
+/// </summary>
 public static class RepositoryExtension
 {
     /// <summary>

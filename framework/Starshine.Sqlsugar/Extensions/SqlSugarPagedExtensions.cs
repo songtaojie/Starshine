@@ -55,13 +55,16 @@ namespace Starshine.Sqlsugar
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
         /// <param name="expression">查询结果 Select 表达式</param>
+        /// <param name="token"></param>
         /// <returns></returns>
         public static async Task<PagedListResult<TResult>> ToPagedListAsync<TEntity, TResult>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize,
-            Expression<Func<TEntity, TResult>> expression)
+            Expression<Func<TEntity, TResult>> expression, 
+            CancellationToken token = default)
             where TEntity : new()
             where TResult : new()
         {
             RefAsync<int> total = 0;
+            query.Context.Ado.CancellationToken = token;
             var items = await query.ToPageListAsync(pageIndex, pageSize, total, expression);
             return CreateSqlSugarPagedList(items, total, pageIndex, pageSize);
         }
@@ -72,6 +75,7 @@ namespace Starshine.Sqlsugar
         /// <param name="query"><see cref="ISugarQueryable{TEntity}"/>对象</param>
         /// <param name="pageIndex">当前页码，从1开始</param>
         /// <param name="pageSize">页码容量</param>
+        /// <param name="token"></param>
         /// <returns></returns>
         public static async Task<PagedListResult<TEntity>> ToPagedListAsync<TEntity>(this ISugarQueryable<TEntity> query, int pageIndex, int pageSize, CancellationToken token = default)
             where TEntity : new()
