@@ -11,16 +11,25 @@ namespace Starshine.DependencyInjection;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ExposeServicesAttribute:Attribute, IExposedServiceTypesProvider
 {
+    /// <summary>
+    /// 暴漏的服务
+    /// </summary>
+    /// <param name="serviceKey">服务的key</param>
+    /// <param name="serviceType">服务类型</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public ExposeServicesAttribute(object serviceKey, Type serviceType)
     {
         ServiceKey = serviceKey ?? throw new ArgumentNullException($"{nameof(serviceKey)} can not be null!");
         ServiceTypes = new Type[] { serviceType };
-        Pattern = DependencyInjectionPattern.FirstInterface;
     }
+
+    /// <summary>
+    /// 暴漏的服务
+    /// </summary>
+    /// <param name="serviceTypes"></param>
     public ExposeServicesAttribute(params Type[] serviceTypes)
     {
         ServiceTypes = serviceTypes ?? Type.EmptyTypes;
-        Pattern = DependencyInjectionPattern.FirstInterface;
     }
 
     /// <summary>
@@ -39,6 +48,11 @@ public class ExposeServicesAttribute:Attribute, IExposedServiceTypesProvider
     /// </summary>
     public Type[] ServiceTypes { get; set; }
 
+    /// <summary>
+    /// 获取所有暴漏的服务
+    /// </summary>
+    /// <param name="targetType"></param>
+    /// <returns></returns>
     public List<ServiceIdentifier> GetExposedServiceTypes(Type targetType)
     {
         var serviceList = ServiceTypes.Select(r=>new ServiceIdentifier(ServiceKey,r)).ToList();

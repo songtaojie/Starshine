@@ -51,7 +51,7 @@ namespace Starshine
                 // 如果 Response 已经完成输出，则禁止写入
                 if (context.Response.HasStarted) return;
 
-                await unifyResult.OnResponseStatusCodes(context, context.Response.StatusCode);
+                await unifyResult!.OnResponseStatusCodes(context, context.Response.StatusCode);
             }
         }
     }

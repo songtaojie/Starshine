@@ -41,16 +41,17 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="webHostBuilder">泛型主机注入构建器</param>
         /// <param name="configureDelegate">配置对象</param>
         /// <returns>IHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxWebAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder> configureDelegate = null)
+        public static IWebHostBuilder ConfigureHxWebAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder>? configureDelegate = default)
         {
             // 自动装载配置
             webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {
                 // 存储环境对象
-                InternalApp.HostEnvironment = InternalApp.WebHostEnvironment = hostingContext.HostingEnvironment;
+                InternalApp.SetWebHostEnvironment(hostingContext.HostingEnvironment);
+                InternalApp.SetHostEnvironment(hostingContext.HostingEnvironment);
 
                 // 加载配置
-                InternalApp.AddConfigureFiles(config, InternalApp.HostEnvironment);
+                InternalApp.AddConfigureFiles(config, hostingContext.HostingEnvironment);
                 configureDelegate?.Invoke(hostingContext, config);
             });
 
@@ -58,9 +59,9 @@ namespace Microsoft.AspNetCore.Builder
             {
                 var config = hostContext.Configuration;
                 // 存储服务提供器
-                InternalApp.InternalServices = services;
+                InternalApp.SetServiceCollection(services);
                 // 存储配置对象
-                InternalApp.Configuration = config;
+                InternalApp.SetConfiguration(config);
                 // 存储服务提供器
                 services.AddHostedService<GenericHostLifetimeEventsHostedService>();
                 // 注册 Startup 过滤器

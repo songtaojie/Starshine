@@ -16,7 +16,7 @@ namespace Starshine
         /// <param name="context"></param>
         /// <param name="metadata">异常元数据</param>
         /// <returns></returns>
-        public IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata)
+        public IActionResult? OnException(ExceptionContext context, ExceptionMetadata metadata)
         {
            // return new JsonResult(RESTfulResult(metadata.StatusCode, data: metadata.Data, errors: metadata.Errors)
            //, UnifyContext.GetSerializerSettings(context));
@@ -39,9 +39,9 @@ namespace Starshine
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public IActionResult OnSucceeded(ResultExecutingContext context)
+        public IActionResult? OnSucceeded(ResultExecutingContext context)
         {
-            object data;
+            object? data;
             if(context.Result is EmptyResult) data = null;
             // 处理内容结果
             else if (context.Result is ContentResult contentResult) data = contentResult.Content;
@@ -56,7 +56,7 @@ namespace Starshine
             }
             else return null;
 
-            return new JsonResult(new RESTfulResult<object>
+            return new JsonResult(new RESTfulResult<object?>
             {
                 StatusCode = context.Result is EmptyResult ? StatusCodes.Status204NoContent : StatusCodes.Status200OK,  // 处理没有返回值情况 204
                 Succeeded = true,

@@ -44,7 +44,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 if (lifeTime == null) continue;
                 var exposedServiceTypes = targetType.GetCustomAttributes(true)
                     .OfType<IExposedServiceTypesProvider>()
-                    .DefaultIfEmpty(new ExposeServicesAttribute())
+                    .DefaultIfEmpty(new ExposeServicesAttribute
+                    { 
+                        Pattern = DependencyInjectionPattern.FirstInterface
+                    })
                     .SelectMany(r => r.GetExposedServiceTypes(targetType))
                     .Distinct();
                 var nullableServiceKeyList = exposedServiceTypes.Where(x => x.ServiceKey == null).ToList();
@@ -69,8 +72,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         services.TryAdd(serviceDescriptor);
                     }
+
                 }
             }
+
+            DescribeKeyedService(ServiceLifetime.Singleton);
+            DescribeKeyedService(ServiceLifetime.Scoped);
+            DescribeKeyedService(ServiceLifetime.Transient);
             return services;
         }
 
@@ -85,23 +93,26 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (redirectedType != null)
                 {
-                    return serviceKey == null
-                        ? ServiceDescriptor.Describe(
+                    if (serviceKey != null)
+                    {
+                        TypeKeyedCollection.TryAdd(serviceKey, redirectedType);
+                    }
+                    return ServiceDescriptor.Describe(
                             exposingServiceType,
                             provider => provider.GetService(redirectedType)!,
                             lifeTime
-                        )
-                        : DescribeKeyedService(lifeTime);
+                        );
                 }
             }
-
-            return serviceKey == null
-                ? ServiceDescriptor.Describe(
+            if (serviceKey != null)
+            {
+                TypeKeyedCollection.TryAdd(serviceKey, implementationType);
+            }
+            return ServiceDescriptor.Describe(
                     exposingServiceType,
                     implementationType,
                     lifeTime
-                )
-                : DescribeKeyedService(lifeTime);
+                );
         }
 
         private static Type? GetRedirectedType(
@@ -133,15 +144,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 注册命名服务（接口多实现）
         /// </summary>
-        /// <typeparam name="TDependency"></typeparam>
         private static ServiceDescriptor DescribeKeyedService(ServiceLifetime serviceLifetime)
         {
             // 注册命名服务
             return ServiceDescriptor.Describe(typeof(Func<string, object?>), provider =>
             {
-                object? ResolveService(string named)
+                object? ResolveService(string serviceKey)
                 {
-                    var isRegister = TypeNamedCollection.TryGetValue(named, out var serviceType);
+                    var isRegister = TypeKeyedCollection.TryGetValue(serviceKey, out var serviceType);
                     return isRegister ? provider.GetService(serviceType!) : null;
                 }
                 return (Func<string, object?>)ResolveService;
@@ -197,14 +207,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 类型名称集合
         /// </summary>
-        private static readonly ConcurrentDictionary<string, Type> TypeNamedCollection;
+        private static readonly ConcurrentDictionary<object, Type> TypeKeyedCollection;
 
         /// <summary>
         /// 静态构造函数
         /// </summary>
         static NativeDependencyInjectionServiceCollectionExtensions()
         {
-            TypeNamedCollection = new ConcurrentDictionary<string, Type>();
+            TypeKeyedCollection = new ConcurrentDictionary<object, Type>();
         }
 
     }

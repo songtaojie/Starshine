@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
         {
             // 判断是否安装了 Starshine.Swagger 程序集
-            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return services;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.Extensions.DependencyInjection.SwaggerDocumentServiceCollectionExtensions");
@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .First(FirstMethod);
             var logger = NullLoggerFactory.Instance.CreateLogger<HxCoreApp>();
             logger.LogDebug("Add the Swagger service");
-            addSwaggerDocumentsMethod?.Invoke(null, new object[] { services, null, null });
+            addSwaggerDocumentsMethod?.Invoke(null, new object?[] { services, null, null });
             return services;
             static bool FirstMethod(MethodInfo methodInfo)
             {

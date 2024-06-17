@@ -26,12 +26,12 @@ namespace Starshine.Caching
         /// <summary>
         /// redis配置
         /// </summary>
-        public RedisCacheSettingsOptions Redis { get; set; }
+        public RedisCacheSettingsOptions? Redis { get; set; }
 
         /// <summary>
         /// 缓存配置
         /// </summary>
-        public MemoryDistributedCacheOptions Memory { get; set; }
+        public MemoryDistributedCacheOptions? Memory { get; set; }
 
     }
 

@@ -22,8 +22,8 @@ namespace Starshine
         /// <param name="resultFunc">自定义结果处理函数</param>
         /// <typeparam name="TResult">返回值类型</typeparam>
         /// <returns></returns>
-        Task<TResult> GetAsync<TResult>(string url, Dictionary<string, string> headers = null,
-            Func<string, TResult> resultFunc = null);
+        Task<TResult?> GetAsync<TResult>(string url, Dictionary<string, string>? headers = default,
+            Func<string, TResult>? resultFunc = default);
 
         #endregion
 
@@ -39,8 +39,8 @@ namespace Starshine
         /// <param name="resultFunc">自定义结果处理函数</param>
         /// <typeparam name="TResult">返回值类型</typeparam>
         /// <returns></returns>
-        Task<TResult> PostAsync<TResult>(string url, object data, Dictionary<string, string> headers = null,
-            Func<object, HttpContent> contentFunc = null, Func<string, TResult> resultFunc = null);
+        Task<TResult?> PostAsync<TResult>(string url, object data, Dictionary<string, string>? headers = default,
+            Func<object, HttpContent>? contentFunc = default, Func<string, TResult>? resultFunc = default);
 
         #endregion
     }

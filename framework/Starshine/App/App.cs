@@ -73,7 +73,7 @@ namespace Starshine
         /// <returns></returns>
         public static object? GetService(Type type, IServiceProvider? scoped = default)
         {
-            return (scoped ?? InternalApp.RootServices).GetService(type);
+            return (scoped ?? InternalApp.RootServices!).GetService(type);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Starshine
         public static TService GetRequiredService<TService>(IServiceProvider? scoped = default)
             where TService : class
         {
-            return (scoped ?? InternalApp.RootServices).GetRequiredService<TService>();
+            return (scoped ?? InternalApp.RootServices!).GetRequiredService<TService>();
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Starshine
         /// <returns></returns>
         public static object GetRequiredService(Type type, IServiceProvider? scoped = default)
         {
-            return (scoped ?? InternalApp.RootServices).GetRequiredService(type);
+            return (scoped ?? InternalApp.RootServices!).GetRequiredService(type);
         }
 
 

@@ -21,7 +21,7 @@ namespace Starshine.EventBus.Internal
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="eventSourceStorer">事件源存储器</param>
+        /// <param name="capPublisher">事件源存储器</param>
         public CapEventPublisher(ICapPublisher capPublisher)
         {
             _capPublisher = capPublisher;

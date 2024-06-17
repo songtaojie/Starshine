@@ -25,15 +25,15 @@ namespace Starshine
             }
             else
             {
-                object rootPath = propInfo.GetValue(env);
-                WebRootPath = rootPath?.ToString().Trim();
+                object? rootPath = propInfo.GetValue(env);
+                WebRootPath = rootPath?.ToString()?.Trim();
             }
             if (string.IsNullOrEmpty(WebRootPath)) throw new Exception("获取web应用程序根路径失败");
         }
         /// <summary>
         /// web应用程序根路径
         /// </summary>
-        public string WebRootPath { get; }
+        public string? WebRootPath { get; }
 
         /// <summary>
         /// web应用程序根路径
@@ -47,6 +47,7 @@ namespace Starshine
         public string ToRelativePath(string absolutePath)
         {
             if (string.IsNullOrEmpty(absolutePath)) return string.Empty;
+            if (string.IsNullOrEmpty(WebRootPath)) return absolutePath;
             return absolutePath.Replace(WebRootPath, "/").Replace(@"\", @"/"); //转换成相对路径
         }
         /// <summary>
@@ -61,6 +62,7 @@ namespace Starshine
             {
                 relativePath = relativePath.Substring(1);
             }
+            if (string.IsNullOrEmpty(WebRootPath)) return relativePath;
             return Path.Combine(WebRootPath, relativePath);
         }
 

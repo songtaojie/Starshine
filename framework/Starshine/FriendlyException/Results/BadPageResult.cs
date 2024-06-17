@@ -123,15 +123,16 @@ namespace Starshine.FriendlyException
         public override string ToString()
         {
             // 获取当前类型信息
-            var thisType = typeof(BadPageResult);
+            Type thisType = typeof(BadPageResult);
             var thisAssembly = thisType.Assembly;
             // 读取嵌入式页面路径
-            var errorhtml = $"{thisAssembly.GetName().Name}{thisType.Namespace.Replace("Hx", string.Empty)}.Assets.error.html";
+            var errorhtml = $"{thisAssembly.GetName().Name}{thisType.Namespace!.Replace("Hx", string.Empty)}.Assets.error.html";
 
             // 解析嵌入式文件流
             byte[] buffer;
             using (var readStream = thisAssembly.GetManifestResourceStream(errorhtml))
             {
+                if (readStream == null) return string.Empty;
                 buffer = new byte[readStream.Length];
                 readStream.Read(buffer, 0, buffer.Length);
             }

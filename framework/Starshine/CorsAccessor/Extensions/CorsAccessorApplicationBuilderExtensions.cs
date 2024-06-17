@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Builder
             else
             {
                 // 配置跨域中间件
-                app.UseCors(corsAccessorSettings.PolicyName);
+                app.UseCors(corsAccessorSettings.PolicyName!);
             }
 
             return app;

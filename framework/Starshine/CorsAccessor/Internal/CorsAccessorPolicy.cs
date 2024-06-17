@@ -44,7 +44,7 @@ internal static class CorsAccessorPolicy
             // 解决 SignarlR  不能配置允许所有源问题
             if (!enableSignalR) builder.AllowAnyOrigin();
         }
-        else builder.WithOrigins(corsAccessorSettings.WithOrigins)
+        else builder.WithOrigins(corsAccessorSettings.WithOrigins!)
                     .SetIsOriginAllowedToAllowWildcardSubdomains();
 
         // 如果没有配置请求标头，则允许所有表头，包含处理 SignarlR 情况

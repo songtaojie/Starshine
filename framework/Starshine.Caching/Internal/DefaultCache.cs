@@ -31,7 +31,7 @@ namespace Starshine.Caching
             set => Set(key, value, -1);
         }
 
-        public long Count => (_memoryCache as MemoryCache).Count;
+        public long Count => (_memoryCache as MemoryCache)!.Count;
 
 
         public bool ExistsKey(string key)
@@ -86,7 +86,7 @@ namespace Starshine.Caching
             }
         }
 
-        public string Get(string key)
+        public string? Get(string key)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
             if (ExistsKey(key))

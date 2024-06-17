@@ -20,8 +20,8 @@ namespace Microsoft.AspNetCore.Builder
         internal static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
         {
             // 判断是否安装了 DependencyInjection 程序集
-            var logger = app.ApplicationServices.GetService<ILogger<HxCoreApp>>();
-            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Builder
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "UseSwaggerDocuments" && u.GetParameters().First()?.ParameterType == typeof(IApplicationBuilder));
             logger.LogDebug("Use the SwaggerUI ApplicationBuilder");
-            useSwaggerDocuments?.Invoke(null, new object[] { app, null, null });
+            useSwaggerDocuments?.Invoke(null, new object?[] { app, null, null });
             return app;
 
         }
@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Builder
         {
             var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
             // 判断是否安装了 DependencyInjection 程序集
-            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name.Equals(AppExtend.Swagger));
+            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Builder
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(u => u.Name == "UseSwaggerKnife4jDocuments" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
             logger.LogDebug("Use the Swagger Knife4UI ApplicationBuilder");
-            useSwaggerDocuments?.Invoke(null, new object[] { app, null, null});
+            useSwaggerDocuments?.Invoke(null, new object?[] { app, null, null});
             return app;
         }
     }

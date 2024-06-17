@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Http
         /// <typeparam name="TAttribute"></typeparam>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        public static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext)
+        public static TAttribute? GetMetadata<TAttribute>(this HttpContext httpContext)
             where TAttribute : class
         {
             return httpContext.GetEndpoint()?.Metadata?.GetMetadata<TAttribute>();
@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        public static ControllerActionDescriptor GetControllerActionDescriptor(this HttpContext httpContext)
+        public static ControllerActionDescriptor? GetControllerActionDescriptor(this HttpContext httpContext)
         {
             return httpContext.GetEndpoint()?.Metadata?.FirstOrDefault(u => u is ControllerActionDescriptor) as ControllerActionDescriptor;
         }
@@ -64,7 +64,7 @@ namespace Microsoft.AspNetCore.Http
         /// <param name="httpContext"></param>
         /// <param name="accessToken"></param>
         /// <param name="refreshToken"></param>
-        public static void SetTokensOfResponseHeaders(this HttpContext httpContext, string accessToken, string refreshToken = null)
+        public static void SetTokensOfResponseHeaders(this HttpContext httpContext, string accessToken, string? refreshToken = null)
         {
             httpContext.Response.Headers["access-token"] = accessToken;
             if (!string.IsNullOrWhiteSpace(refreshToken))
@@ -78,7 +78,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetLocalIpAddressToIPv4(this HttpContext context)
+        public static string? GetLocalIpAddressToIPv4(this HttpContext context)
         {
             return context.Connection.LocalIpAddress?.MapToIPv4()?.ToString();
         }
@@ -88,7 +88,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetLocalIpAddressToIPv6(this HttpContext context)
+        public static string? GetLocalIpAddressToIPv6(this HttpContext context)
         {
             return context.Connection.LocalIpAddress?.MapToIPv6()?.ToString();
         }
@@ -98,7 +98,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetRemoteIpAddressToIPv4(this HttpContext context)
+        public static string? GetRemoteIpAddressToIPv4(this HttpContext context)
         {
             return context.Connection.RemoteIpAddress?.MapToIPv4()?.ToString();
         }
@@ -108,7 +108,7 @@ namespace Microsoft.AspNetCore.Http
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetRemoteIpAddressToIPv6(this HttpContext context)
+        public static string? GetRemoteIpAddressToIPv6(this HttpContext context)
         {
             return context.Connection.RemoteIpAddress?.MapToIPv6()?.ToString();
         }
@@ -147,7 +147,7 @@ namespace Microsoft.AspNetCore.Http
         /// <param name="httpContext"></param>
         /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
         /// <returns></returns>
-        public static async Task<string> ReadBodyContentAsync(this HttpContext httpContext)
+        public static async Task<string?> ReadBodyContentAsync(this HttpContext httpContext)
         {
             if (httpContext == null) return default;
             return await httpContext.Request.ReadBodyContentAsync();

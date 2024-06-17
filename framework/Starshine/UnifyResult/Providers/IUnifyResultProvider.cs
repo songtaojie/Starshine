@@ -18,14 +18,14 @@ namespace Starshine
         /// <param name="context"></param>
         /// <param name="metadata">异常元数据</param>
         /// <returns></returns>
-        IActionResult OnException(ExceptionContext context, ExceptionMetadata metadata);
+        IActionResult? OnException(ExceptionContext context, ExceptionMetadata metadata);
 
         /// <summary>
         /// 成功返回值
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        IActionResult OnSucceeded(ResultExecutingContext context);
+        IActionResult? OnSucceeded(ResultExecutingContext context);
 
         /// <summary>
         /// 拦截返回状态码

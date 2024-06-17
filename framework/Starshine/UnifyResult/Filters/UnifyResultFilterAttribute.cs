@@ -19,6 +19,11 @@ namespace Microsoft.AspNetCore.Mvc.Filters
             // 排除 Mvc 视图
             bool isHandleResult = false;
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor == null)
+            {
+                base.OnResultExecuting(context);
+                return;
+            }
             if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo))
             {
                 base.OnResultExecuting(context);
@@ -51,7 +56,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                     if (badResult.Value is ModelStateDictionary modelState)
                     {
                         // 将验证错误信息转换成字典并序列化成 Json
-                        var validationResult = modelState.Where(u => modelState[u.Key].ValidationState == ModelValidationState.Invalid)
+                        var validationResult = modelState.Where(u => modelState[u.Key]?.ValidationState == ModelValidationState.Invalid)
                             .Select(u => u.Value)
                             .FirstOrDefault();
                         result.Errors = validationResult?.Errors.Select(r=>r.ErrorMessage);
@@ -66,7 +71,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                 }
                 else
                 {
-                    var result = unifyResultProvider.OnSucceeded(context);
+                    var result = unifyResultProvider!.OnSucceeded(context);
                     if (result != null)
                     {
                         isHandleResult = true;

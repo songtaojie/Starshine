@@ -12,7 +12,7 @@ namespace Starshine.DependencyInjection
         /// 第一个接口,默认值
         /// </summary>
         [Description("只注册第一个接口")]
-        FirstInterface,
+        FirstInterface = 1,
 
         /// <summary>
         /// 所有接口

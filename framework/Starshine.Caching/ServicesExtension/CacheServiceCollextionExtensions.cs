@@ -54,7 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
 
-        private static IServiceCollection AddCacheCore(IServiceCollection services, Action<CacheSettingsOptions> setupAction = null)
+        private static IServiceCollection AddCacheCore(IServiceCollection services, Action<CacheSettingsOptions>? setupAction = null)
         {
             services.AddOptions<CacheSettingsOptions>()
                .BindConfiguration(CacheSettingsKey)
@@ -97,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddMemoryCache();
             services.TryAddSingleton<IDistributedCache>(sp =>
             {
-                var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
+                var options = sp.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
                 if (options.CacheType == CacheTypeEnum.Redis)
                 {
                     var redisClient = sp.GetService<IRedisClient>();
@@ -115,7 +115,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 if (options.CacheType == CacheTypeEnum.Redis)
                 {
                     var redisOptions = options.Redis;
-                    if (string.IsNullOrEmpty(redisOptions.ConnectionString))
+                    if (redisOptions == null || string.IsNullOrEmpty(redisOptions.ConnectionString))
                         throw new ArgumentNullException(nameof(RedisCacheSettingsOptions.ConnectionString));
 
                     if (redisOptions.SlaveConnectionStrings == null || !redisOptions.SlaveConnectionStrings.Any())
@@ -130,19 +130,19 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 else
                 {
-                    return null;
+                    return null!;
                 }
             });
             services.TryAddSingleton<ICache>(sp =>
             {
-                var options = sp.GetService<IOptions<CacheSettingsOptions>>().Value;
+                var options = sp.GetRequiredService<IOptions<CacheSettingsOptions>>().Value;
                 if (options.CacheType == CacheTypeEnum.Redis)
                 {
-                    return new RedisCache(sp.GetService<IRedisClient>());
+                    return new RedisCache(sp.GetRequiredService<IRedisClient>());
                 }
                 else
                 {
-                    return new DefaultCache(sp.GetService<IMemoryCache>());
+                    return new DefaultCache(sp.GetRequiredService<IMemoryCache>());
                 }
             });
             return services;

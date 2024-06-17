@@ -3,11 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<Version>1.2.1</Version>
-		<Authors>Carina</Authors>
-		<Company>Carina</Company>
+		<Authors>Starshine</Authors>
+		<Company>Starshine</Company>
 		<Description>基于.NET6的缓存帮助类，支持Redis缓存、和内存缓存</Description>
 		<PackageTags>ASP.NET Core, Redis,MemoryCache</PackageTags>
 		<PackageReleaseNotes>https://github.com/songtaojie/Common</PackageReleaseNotes>
+		<Nullable>enable</Nullable>
 		<PackageId>Starshine.Caching</PackageId>
 		<Product>Cache for ASP.NET Core</Product>
 		<Copyright>2020 Starshine.Caching</Copyright>

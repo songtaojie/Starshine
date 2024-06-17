@@ -24,7 +24,7 @@ namespace Starshine
         /// <summary>
         /// 规范化结果类型
         /// </summary>
-        internal static Type RESTfulResultType = typeof(RESTfulResult<>);
+        internal static Type? RESTfulResultType = typeof(RESTfulResult<>);
 
         /// <summary>
         /// 规范化结果额外数据键
@@ -44,10 +44,10 @@ namespace Starshine
         public static ExceptionMetadata GetExceptionMetadata(ActionContext context)
         {
             // 获取错误码
-            object errorCode = default;
-            object errors = default;
-            string errorMessage = null;
-            object data = default;
+            object? errorCode = default;
+            object? errors = default;
+            string? errorMessage = null;
+            object? data = default;
             var statusCode = StatusCodes.Status500InternalServerError;
             // 判断是否是 ExceptionContext 或者 ActionExecutedContext
             var exception = context is ExceptionContext exContext
@@ -98,15 +98,20 @@ namespace Starshine
         /// <param name="unifyResultProvider"></param>
         /// <param name="isWebRequest"></param>
         /// <returns></returns>
-        internal static bool IsSkipSucceedUnifyHandler(ActionContext context, out IUnifyResultProvider unifyResultProvider, bool isWebRequest = true)
+        internal static bool IsSkipSucceedUnifyHandler(ActionContext context, out IUnifyResultProvider? unifyResultProvider, bool isWebRequest = true)
         {
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor == null)
+            {
+                unifyResultProvider = null;
+                return false;
+            }
             var method = actionDescriptor.MethodInfo;
             // 判断是否跳过规范化处理
             var isSkip = !IsEnabledUnifyHandle
                   || method.GetRealReturnType().HasImplementedRawGeneric(RESTfulResultType)
                   || method.CustomAttributes.Any(x => typeof(NonUnifyAttribute).IsAssignableFrom(x.AttributeType) || typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType) || typeof(IApiResponseMetadataProvider).IsAssignableFrom(x.AttributeType))
-                  || method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true);
+                  || (method.ReflectedType != null && method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true));
 
             if (!isWebRequest)
             {
@@ -126,16 +131,21 @@ namespace Starshine
         /// <param name="unifyResult"></param>
         /// <param name="isWebRequest"></param>
         /// <returns></returns>
-        internal static bool IsSkipUnifyHandler(ActionContext context, out IUnifyResultProvider unifyResult, bool isWebRequest = true)
+        internal static bool IsSkipUnifyHandler(ActionContext context, out IUnifyResultProvider? unifyResult, bool isWebRequest = true)
         {
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor == null)
+            {
+                unifyResult = null;
+                return false;
+            }
             var method = actionDescriptor.MethodInfo;
             // 判断是否跳过规范化处理
             var isSkip = !IsEnabledUnifyHandle
                     || method.CustomAttributes.Any(x => typeof(NonUnifyAttribute).IsAssignableFrom(x.AttributeType))
                     || (
                             !method.CustomAttributes.Any(x => typeof(ProducesResponseTypeAttribute).IsAssignableFrom(x.AttributeType))
-                            && method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true)
+                            && (method.ReflectedType != null && method.ReflectedType.IsDefined(typeof(NonUnifyAttribute), true))
                         );
 
             if (!isWebRequest)
@@ -154,7 +164,7 @@ namespace Starshine
         /// <param name="context"></param>
         /// <param name="unifyResult"></param>
         /// <returns></returns>
-        internal static bool IsSkipUnifyHandler(HttpContext context, out IUnifyResultProvider unifyResult)
+        internal static bool IsSkipUnifyHandler(HttpContext context, out IUnifyResultProvider? unifyResult)
         {
             // 获取终点路由特性
             var endpointFeature = context.Features.Get<IEndpointFeature>();
@@ -173,7 +183,7 @@ namespace Starshine
         /// <typeparam name="TAttribute"></typeparam>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        internal static TAttribute GetMetadata<TAttribute>(this HttpContext httpContext)
+        internal static TAttribute? GetMetadata<TAttribute>(this HttpContext httpContext)
             where TAttribute : class
         {
             return httpContext.GetEndpoint()?.Metadata?.GetMetadata<TAttribute>();

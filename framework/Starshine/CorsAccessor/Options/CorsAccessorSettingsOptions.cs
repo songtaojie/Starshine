@@ -14,27 +14,27 @@ namespace Starshine.CorsAccessor
         /// 策略名称
         /// </summary>
         [Required]
-        public string PolicyName { get; set; }
+        public string? PolicyName { get; set; }
 
         /// <summary>
         /// 允许来源域名，没有配置则允许所有来源
         /// </summary>
-        public string[] WithOrigins { get; set; }
+        public string[]? WithOrigins { get; set; }
 
         /// <summary>
         /// 请求表头，没有配置则允许所有表头
         /// </summary>
-        public string[] WithHeaders { get; set; }
+        public string[]? WithHeaders { get; set; }
 
         /// <summary>
         /// 响应标头
         /// </summary>
-        public string[] WithExposedHeaders { get; set; }
+        public string[]? WithExposedHeaders { get; set; }
 
         /// <summary>
         /// 设置跨域允许请求谓词，没有配置则允许所有
         /// </summary>
-        public string[] WithMethods { get; set; }
+        public string[]? WithMethods { get; set; }
 
         /// <summary>
         /// 跨域请求中的凭据

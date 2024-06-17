@@ -20,10 +20,10 @@ public sealed class RedisCacheSettingsOptions
     /// <summary>
     /// 用于连接到Redis的配置。
     /// </summary>
-    public string ConnectionString { get; set; }
+    public string? ConnectionString { get; set; }
 
     /// <summary>
     /// Slave连接字符串
     /// </summary>
-    public IEnumerable<string> SlaveConnectionStrings { get; set; }
+    public IEnumerable<string>? SlaveConnectionStrings { get; set; }
 }

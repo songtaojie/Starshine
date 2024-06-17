@@ -31,8 +31,8 @@ namespace Starshine
         #region HttpGet
 
         /// <inheritdoc cref="IHxHttpClient.GetAsync{TResult}"/>
-        public async Task<TResult> GetAsync<TResult>(string url, Dictionary<string, string> headers = null,
-            Func<string, TResult> resultFunc = null)
+        public async Task<TResult?> GetAsync<TResult>(string url, Dictionary<string, string>? headers = default,
+            Func<string, TResult>? resultFunc = default)
         {
             return await CallRequestAsync(async httpClient => await httpClient.GetAsync(url), headers, resultFunc);
         }
@@ -42,9 +42,9 @@ namespace Starshine
         #region HttpPost
 
         /// <inheritdoc cref="IHxHttpClient.PostAsync{TResult}"/>
-        public async Task<TResult> PostAsync<TResult>(string url, object data,
-            Dictionary<string, string> headers = null,
-            Func<object, HttpContent> contentFunc = null, Func<string, TResult> resultFunc = null)
+        public async Task<TResult?> PostAsync<TResult>(string url, object data,
+            Dictionary<string, string>? headers = default,
+            Func<object, HttpContent>? contentFunc = default, Func<string, TResult>? resultFunc = default)
         {
             return await CallRequestAsync(async httpClient =>
             {
@@ -75,9 +75,9 @@ namespace Starshine
         /// <param name="resultFunc"></param>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        private async Task<TResult> CallRequestAsync<TResult>(
+        private async Task<TResult?> CallRequestAsync<TResult>(
             Func<System.Net.Http.HttpClient, Task<HttpResponseMessage>> operation,
-            Dictionary<string, string> headers = null, Func<string, TResult> resultFunc = null)
+            Dictionary<string, string>? headers = default, Func<string, TResult>? resultFunc = default)
         {
             _client.DefaultRequestHeaders.Clear();
             if (headers != null && headers.Count > 0)
@@ -102,7 +102,7 @@ namespace Starshine
             }
             catch (Exception ex)
             {
-                _logger.LogError($"deserialize failed,content:{result},Msg:{ex.StackTrace},Url:{response.RequestMessage.RequestUri}");
+                _logger.LogError($"deserialize failed,content:{result},Msg:{ex.StackTrace},Url:{response.RequestMessage?.RequestUri}");
                 return default;
             }
         }

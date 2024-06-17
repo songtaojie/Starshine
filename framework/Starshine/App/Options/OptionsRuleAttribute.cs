@@ -39,7 +39,7 @@ namespace Starshine
         /// <summary>
         /// 对应配置文件中的Key
         /// </summary>
-        public string JsonKey { get; set; }
+        public string? JsonKey { get; set; }
 
         /// <summary>
         /// 对所有配置实例进行后期配置

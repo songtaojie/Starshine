@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="mvcBuilder"></param>
         /// <param name="extraConfigure"></param>
         /// <returns></returns>
-        public static IMvcBuilder AddMvcFilter<TFilter>(this IMvcBuilder mvcBuilder, Action<MvcOptions> extraConfigure = default)
+        public static IMvcBuilder AddMvcFilter<TFilter>(this IMvcBuilder mvcBuilder, Action<MvcOptions>? extraConfigure = default)
             where TFilter : IFilterMetadata
         {
             mvcBuilder.AddMvcOptions(options =>
@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         /// <param name="extraConfigure"></param>
         /// <returns></returns>
-        public static IServiceCollection AddMvcFilter<TFilter>(this IServiceCollection services, Action<MvcOptions> extraConfigure = default)
+        public static IServiceCollection AddMvcFilter<TFilter>(this IServiceCollection services, Action<MvcOptions>? extraConfigure = default)
             where TFilter : IFilterMetadata
         {
             // 只有 Web 环境才添加过滤器

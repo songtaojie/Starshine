@@ -22,27 +22,72 @@ namespace Starshine.Internal
         /// <summary>
         /// 应用服务
         /// </summary>
-        internal static IServiceCollection InternalServices;
+        internal static IServiceCollection? InternalServices { get; private set; }
+
+        /// <summary>
+        /// 设置服务
+        /// </summary>
+        /// <param name="services"></param>
+        internal static void SetServiceCollection(IServiceCollection services)
+        {
+            InternalServices = services;
+        }
+       
 
         /// <summary>
         /// 配置对象
         /// </summary>
-        internal static IConfiguration Configuration;
+        internal static IConfiguration? Configuration { get; private set; }
+
+        /// <summary>
+        /// 设置配置
+        /// </summary>
+        /// <param name="configuration"></param>
+        internal static void SetConfiguration(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
 
         /// <summary>
         /// 获取Web主机环境
         /// </summary>
-        internal static IWebHostEnvironment WebHostEnvironment;
+        internal static IWebHostEnvironment? WebHostEnvironment {get; private set; }
+        /// <summary>
+        /// 设置Web主机环境
+        /// </summary>
+        /// <param name="webHostEnvironment"></param>
+        internal static void SetWebHostEnvironment(IWebHostEnvironment webHostEnvironment)
+        {
+            WebHostEnvironment = webHostEnvironment;
+        }
 
         /// <summary>
         /// 获取泛型主机环境
         /// </summary>
-        internal static IHostEnvironment HostEnvironment;
+        internal static IHostEnvironment? HostEnvironment;
+        /// <summary>
+        /// 设置泛型主机环境
+        /// </summary>
+        /// <param name="hostEnvironment"></param>
+        internal static void SetHostEnvironment(IHostEnvironment hostEnvironment)
+        {
+            HostEnvironment = hostEnvironment;
+        }
 
         /// <summary>
         /// 服务提供器
         /// </summary>
-        internal static IServiceProvider RootServices;
+        internal static IServiceProvider? RootServices;
+
+        /// <summary>
+        /// 设置服务提供器
+        /// </summary>
+        /// <param name="provider"></param>
+        internal static void SetHostEnvironment(IServiceProvider provider)
+        {
+            RootServices = provider;
+        }
 
         /// <summary>
         /// 添加配置文件
@@ -52,7 +97,7 @@ namespace Starshine.Internal
         internal static void AddConfigureFiles(IConfigurationBuilder configurationBuilder, IHostEnvironment hostEnvironment)
         {
             var configuration = configurationBuilder is ConfigurationManager
-                   ? (configurationBuilder as ConfigurationManager)
+                   ? (configurationBuilder as ConfigurationManager)!
                    : configurationBuilder.Build();
             // 获取程序执行目录
             var executeDirectory = AppContext.BaseDirectory;

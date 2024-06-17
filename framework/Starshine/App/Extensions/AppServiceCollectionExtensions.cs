@@ -44,7 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务集合</param>
         /// <param name="configure">服务配置</param>
         /// <returns>服务集合</returns>
-        internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection> configure = null)
+        internal static IServiceCollection AddHostApp(this IServiceCollection services, Action<IServiceCollection>? configure = default)
         {
             // 注册全局配置选项
             services.AddConfigureOptions<AppSettingsOptions>();

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Starshine.ImageSharp.Fonts
+namespace Starshine.ImageSharp
 {
     /// <summary>
     /// 水印字体的配置

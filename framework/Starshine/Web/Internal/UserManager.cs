@@ -25,7 +25,7 @@ namespace Starshine
         /// <summary>
         /// Http上下文操作类
         /// </summary>
-        public HttpContext HttpContext
+        public HttpContext? HttpContext
         {
             get
             {
@@ -45,11 +45,11 @@ namespace Starshine
         /// <summary>
         /// 用户的名字
         /// </summary>
-        public string UserName
+        public string? UserName
         {
             get
             { 
-                string name = HttpContext.User.Identity.Name;
+                string? name = HttpContext?.User?.Identity?.Name;
                 if (!string.IsNullOrEmpty(name)) return name;
                 //string getNameType = _isUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
                return GetClaimValueByType(ClaimTypes.Name).FirstOrDefault();
@@ -84,12 +84,12 @@ namespace Starshine
         /// <summary>
         /// Jwt的id
         /// </summary>
-        public string JwtId => GetClaimValueByType(HxClaimTypes.Jti).FirstOrDefault();
+        public string? JwtId => GetClaimValueByType(HxClaimTypes.Jti).FirstOrDefault();
 
         /// <summary>
         /// 用户的id
         /// </summary>
-        public T GetUserId<T>()
+        public T? GetUserId<T>()
         {
             return GetClaimValueByType<T>(ClaimTypes.NameIdentifier);
         }
@@ -99,7 +99,7 @@ namespace Starshine
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetOrgId<T>()
+        public T? GetOrgId<T>()
         {
             return GetClaimValueByType<T>(HxClaimTypes.OrgId);
         }
@@ -107,7 +107,7 @@ namespace Starshine
         /// <summary>
         /// 用户的id
         /// </summary>
-        public string UserId
+        public string? UserId
         {
             get
             {
@@ -120,9 +120,9 @@ namespace Starshine
         /// </summary>
         /// <param name="cookieName"></param>
         /// <returns></returns>
-        public string GetCookieValue(string cookieName)
+        public string? GetCookieValue(string cookieName)
         {
-            return HttpContext.Request.Cookies[cookieName];
+            return HttpContext?.Request.Cookies[cookieName];
         }
 
         /// <summary>
@@ -133,25 +133,25 @@ namespace Starshine
         /// <param name="expires">过期时间</param>
         public void SetCookieValue(string cookieName, string value, DateTime? expires = null)
         {
-            string cookieValue = GetCookieValue(cookieName);
-            if (!string.IsNullOrEmpty(cookieValue)) HttpContext.Response.Cookies.Delete(cookieName);
+            string? cookieValue = GetCookieValue(cookieName);
+            if (!string.IsNullOrEmpty(cookieValue)) HttpContext?.Response?.Cookies.Delete(cookieName);
             if (expires.HasValue)
             {
-                HttpContext.Response.Cookies.Append(cookieName, value, new CookieOptions
+                HttpContext?.Response.Cookies.Append(cookieName, value, new CookieOptions
                 {
                     Expires = new DateTimeOffset(expires.Value)
                 });
             }
             else
             {
-                HttpContext.Response.Cookies.Append(cookieName, value);
+                HttpContext?.Response.Cookies.Append(cookieName, value);
             }
         }
         /// <summary>
         /// 是否已经验证，即是否一登录
         /// </summary>
         /// <returns></returns>
-        public bool IsAuthenticated => HttpContext.User.Identity.IsAuthenticated;
+        public bool IsAuthenticated => HttpContext?.User?.Identity?.IsAuthenticated ?? false;
         /// <summary>
         /// 获取token
         /// </summary>
@@ -192,7 +192,7 @@ namespace Starshine
         /// <typeparam name="T"></typeparam>
         /// <param name="claimType"></param>
         /// <returns></returns>
-        public dynamic GetClaimValueByType<T>(string claimType)
+        public dynamic? GetClaimValueByType<T>(string claimType)
         {
             var claim = GetClaimValueByType(claimType).FirstOrDefault();
             if (claim == null) return default(T);

@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app">应用构建器</param>
         /// <param name="configure">应用配置</param>
         /// <returns>应用构建器</returns>
-        internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder> configure = null)
+        internal static IApplicationBuilder UseHxApp(this IApplicationBuilder app, Action<IApplicationBuilder>? configure = default)
         {
 
             // 判断是否启用规范化文档

@@ -5,6 +5,7 @@
     <Version>6.0</Version>
     <Authors>songtaojie</Authors>
     <Description>事件总线封装类</Description>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Polly" Version="7.2.3" />

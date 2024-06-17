@@ -79,7 +79,7 @@ namespace Starshine.Caching
 		/// </summary>
 		/// <param name="key">缓存的键</param>
 		/// <returns></returns>
-		string Get(string key);
+		string? Get(string key);
 
         /// <summary>
         /// 设置数据

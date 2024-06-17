@@ -1,10 +1,8 @@
-﻿using SixLabors.ImageSharp.Drawing;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp.Drawing.Processing;
-using Starshine.ImageSharp.Fonts;
 using System.Collections.Concurrent;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -148,7 +146,7 @@ namespace Starshine.ImageSharp
         /// </summary>
         /// <param name="path">图片路径（绝对路径）</param>
         /// <param name="fontOptions">字体的配置</param>
-        public static string MarkLetterWater(string path, Fonts.FontOptions fontOptions)
+        public static string MarkLetterWater(string path, FontOptions fontOptions)
         {
             #region
             string fileExt = System.IO.Path.GetExtension(path);
@@ -327,7 +325,7 @@ namespace Starshine.ImageSharp
 
             var font = GetFont(fontOptions);
             // 测量文字大小
-            FontRectangle size = TextMeasurer.Measure(fontOptions.Letter, new TextOptions(font));
+            FontRectangle size = TextMeasurer.MeasureSize(fontOptions.Letter, new TextOptions(font));
             //找出我们需要缩放文本以填充空间的大小（上下）
             float scalingFactor = Math.Min(imgSize.Width / size.Width, imgSize.Height / size.Height);
             //创建一个新字体
@@ -383,7 +381,7 @@ namespace Starshine.ImageSharp
                     isTooSmall = true;
                 }
                 trapCount--;
-                s = TextMeasurer.Measure(fontOptions.Letter, new TextOptions(scaledFont)
+                s = TextMeasurer.MeasureSize(fontOptions.Letter, new TextOptions(scaledFont)
                 {
                     TabWidth = targetWidth
                     //WrappingWidth = targetWidth

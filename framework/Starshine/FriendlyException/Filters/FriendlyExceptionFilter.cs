@@ -71,6 +71,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
 
                 // 排除 Mvc 控制器处理
                 var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+                if(actionDescriptor == null)return;
                 if (typeof(Controller).IsAssignableFrom(actionDescriptor.ControllerTypeInfo)) return;
                 // 判断是否跳过规范化结果
                 if (UnifyResultContext.IsSkipUnifyHandler(context, out var unifyResult))
@@ -82,7 +83,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
                         StatusCode = exceptionMetadata.StatusCode
                     };
                 }
-                else context.Result = unifyResult.OnException(context, exceptionMetadata);
+                else context.Result = unifyResult!.OnException(context, exceptionMetadata);
 
             }
             await Task.CompletedTask;
