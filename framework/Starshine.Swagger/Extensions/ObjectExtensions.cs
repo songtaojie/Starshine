@@ -64,25 +64,26 @@ namespace Starshine.Swagger
         /// <param name="obj">待转换的对象</param>
         /// <param name="type">目标类型</param>
         /// <returns>转换后的对象</returns>
-        internal static object ChangeType(this object obj, Type type)
+        internal static object? ChangeType(this object? obj, Type type)
         {
             if (type == null) return obj;
             if (type == typeof(string)) return obj?.ToString();
-            if (type == typeof(Guid) && obj != null) return Guid.Parse(obj.ToString());
+            if (type == typeof(Guid) && obj != null &&Guid.TryParse(obj.ToString(),out Guid result)) return result;
             if (type == typeof(bool) && obj != null && obj is not bool)
             {
-                var objStr = obj.ToString().ToLower();
+                var objStr = obj.ToString()?.ToLower();
                 if (objStr == "1" || objStr == "true" || objStr == "yes" || objStr == "on") return true;
                 return false;
             }
             if (obj == null) return type.IsValueType ? Activator.CreateInstance(type) : null;
-
             var underlyingType = Nullable.GetUnderlyingType(type);
+            var objString = obj.ToString();
             if (type.IsAssignableFrom(obj.GetType())) return obj;
             else if ((underlyingType ?? type).IsEnum)
             {
-                if (underlyingType != null && string.IsNullOrWhiteSpace(obj.ToString())) return null;
-                else return Enum.Parse(underlyingType ?? type, obj.ToString());
+                if (underlyingType != null && string.IsNullOrWhiteSpace(objString)) return null;
+                else if(string.IsNullOrEmpty(objString)) return null;
+                else return Enum.Parse(underlyingType ?? type, objString);
             }
             // 处理DateTime -> DateTimeOffset 类型
             else if (obj.GetType().Equals(typeof(DateTime)) && (underlyingType ?? type).Equals(typeof(DateTimeOffset)))

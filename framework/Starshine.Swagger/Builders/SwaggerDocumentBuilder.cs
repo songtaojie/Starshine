@@ -95,7 +95,7 @@ internal class SwaggerDocumentBuilder
         _getGroupOpenApiInfoCached ??= new ConcurrentDictionary<string, SwaggerOpenApiInfo>();
         _getActionGroupsCached ??= new ConcurrentDictionary<MethodInfo, IEnumerable<GroupExtraInfo>>();
         // 默认分组，支持多个逗号分割
-        _groupExtraInfos ??= new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettings.DefaultGroupName, _swaggerSettings) };
+        _groupExtraInfos ??= new List<GroupExtraInfo> { ResolveGroupExtraInfo(_swaggerSettings.DefaultGroupName!, _swaggerSettings) };
         _documentGroups ??= ReadGroups(_swaggerSettings);
     }
 
@@ -163,7 +163,8 @@ internal class SwaggerDocumentBuilder
                 var servers = new List<OpenApiServer> {
                         new OpenApiServer { Url = $"{request.Scheme}://{request.Host.Value}{_swaggerSettings.VirtualPath}",Description="Default" }
                     };
-                servers.AddRange(_swaggerSettings.Servers);
+                if(_swaggerSettings.Servers != null)
+                    servers.AddRange(_swaggerSettings.Servers);
 
                 swagger.Servers = servers;
             });
@@ -356,7 +357,7 @@ internal class SwaggerDocumentBuilder
         // 本地函数
         static string DefaultSchemaIdSelector(Type modelType)
         {
-            var modelName = modelType.FullName;
+            var modelName = modelType.FullName!;
 
             // 处理泛型类型问题
             if (modelType.IsConstructedGenericType)
@@ -373,7 +374,7 @@ internal class SwaggerDocumentBuilder
             var isCustomize = modelType.IsDefined(typeof(SchemaIdAttribute));
             if (isCustomize)
             {
-                var schemaIdAttribute = modelType.GetCustomAttribute<SchemaIdAttribute>();
+                var schemaIdAttribute = modelType.GetCustomAttribute<SchemaIdAttribute>()!;
                 if (!schemaIdAttribute.Replace) return schemaIdAttribute.SchemaId + modelName;
                 else return schemaIdAttribute.SchemaId;
             }
@@ -393,6 +394,7 @@ internal class SwaggerDocumentBuilder
     private static void LoadXmlComments(SwaggerGenOptions swaggerGenOptions, SwaggerSettingsOptions swaggerSettings)
     {
         var xmlComments = swaggerSettings.XmlComments;
+        if (xmlComments == null) return;
         var members = new Dictionary<string, XElement>();
 
         // 显式继承的注释
@@ -415,7 +417,10 @@ internal class SwaggerDocumentBuilder
 
                 foreach (var memberElement in memberNotInheritdocElementList)
                 {
-                    members.Add(memberElement.Attribute("name").Value, memberElement);
+                    if (memberElement == null) continue;
+                    var memberName = memberElement.Attribute("name")?.Value;
+                    if (string.IsNullOrEmpty(memberName)) continue;
+                    members.Add(memberName, memberElement);
                 }
 
                 // 查找所有 member[name] 含有 <inheritdoc /> 节点的注释
@@ -423,14 +428,15 @@ internal class SwaggerDocumentBuilder
                 foreach (var memberElement in memberElementList)
                 {
                     var inheritdocElement = memberElement.Element("inheritdoc");
+                    if (inheritdocElement == null) continue;
                     var cref = inheritdocElement.Attribute("cref");
                     var value = cref?.Value;
 
                     // 处理不带 cref 的 inheritdoc 注释
                     if (value == null)
                     {
-                        var memberName = inheritdocElement.Parent.Attribute("name").Value;
-
+                        var memberName = inheritdocElement.Parent?.Attribute("name")?.Value;
+                        if(string.IsNullOrWhiteSpace(memberName)) continue;
                         // 处理隐式实现接口的注释
                         // 注释格式：M:Furion.Application.TestInheritdoc.Furion#Application#ITestInheritdoc#Abc(System.String)
                         // 匹配格式：[A-Z]:[a-zA-Z_@\.]+\.
@@ -466,7 +472,7 @@ internal class SwaggerDocumentBuilder
                     if (members.TryGetValue(value, out var realDocMember))
                     {
                         memberElement.SetAttributeValue("_ref_", value);
-                        inheritdocElement.Parent.ReplaceNodes(realDocMember.Nodes());
+                        inheritdocElement.Parent?.ReplaceNodes(realDocMember.Nodes());
                     }
                 }
 
@@ -482,7 +488,7 @@ internal class SwaggerDocumentBuilder
     /// <param name="memberName"></param>
     /// <param name="className"></param>
     /// <returns></returns>
-    private static string GenerateInheritdocCref(XDocument xmlDoc, string memberName, string className)
+    private static string? GenerateInheritdocCref(XDocument xmlDoc, string memberName, string className)
     {
         var classElement = xmlDoc.XPathSelectElements($"/doc/members/member[@name='{"T" + className}' and @_ref_]").FirstOrDefault();
         if (classElement == null) return default;
@@ -502,7 +508,7 @@ internal class SwaggerDocumentBuilder
     private static void ConfigureSecurities(SwaggerGenOptions swaggerGenOptions, SwaggerSettingsOptions swaggerSettings)
     {
         // 判断是否启用了授权
-        if (swaggerSettings.EnableAuthorized != true || swaggerSettings.SecurityDefinitions.Length == 0) return;
+        if (swaggerSettings.EnableAuthorized != true || swaggerSettings.SecurityDefinitions == null || swaggerSettings.SecurityDefinitions.Length == 0) return;
 
         //开启加权小锁
         swaggerGenOptions.OperationFilter<AddResponseHeadersFilter>();
@@ -528,6 +534,7 @@ internal class SwaggerDocumentBuilder
     /// <param name="swaggerSettings"></param>
     private static void CreateGroupEndpoint(SwaggerUIOptions swaggerUIOptions, SwaggerSettingsOptions swaggerSettings)
     {
+        if (_documentGroups == null) return;
         foreach (var group in _documentGroups)
         {
             var groupOpenApiInfo = GetGroupOpenApiInfo(group, swaggerSettings);
@@ -545,12 +552,13 @@ internal class SwaggerDocumentBuilder
     /// <param name="swaggerSettings"></param>
     private static void CreateGroupEndpoint(Knife4UIOptions knife4UIOptions, SwaggerSettingsOptions swaggerSettings)
     {
+        if (_documentGroups == null) return;
         foreach (var group in _documentGroups)
         {
             var groupOpenApiInfo = GetGroupOpenApiInfo(group, swaggerSettings);
 
             // 替换路由模板
-            var routeTemplate = swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+            var routeTemplate = swaggerSettings.RouteTemplate!.Replace("{documentName}", Uri.EscapeDataString(group));
             knife4UIOptions.SwaggerEndpoint($"{swaggerSettings.VirtualPath}/{routeTemplate}", groupOpenApiInfo?.Title ?? group);
         }
     }
@@ -573,13 +581,13 @@ internal class SwaggerDocumentBuilder
             // 自定义首页模板参数
             var indexArguments = new Dictionary<string, string>
                 {
-                    {"%(VirtualPath)", swaggerSettings.VirtualPath }    // 解决二级虚拟目录 MiniProfiler 丢失问题
+                    {"%(VirtualPath)", swaggerSettings.VirtualPath! }    // 解决二级虚拟目录 MiniProfiler 丢失问题
                 };
 
             // 读取文件内容
             using (var stream = thisAssembly.GetManifestResourceStream(customIndex))
             {
-                using var reader = new StreamReader(stream);
+                using var reader = new StreamReader(stream!);
                 htmlBuilder = new StringBuilder(reader.ReadToEnd());
             }
 
@@ -620,7 +628,7 @@ internal class SwaggerDocumentBuilder
         {
             var defaultGroups = new List<string>
                 {
-                    swaggerSettings.DefaultGroupName
+                    swaggerSettings.DefaultGroupName!
                 };
             // 启用总分组功能
             if (swaggerSettings.EnableAllGroups == true)
@@ -651,7 +659,7 @@ internal class SwaggerDocumentBuilder
         var groups = groupOrders
             .OrderByDescending(u => u.Order)
             .ThenBy(u => u.Group)
-            .Select(u => u.Group);
+            .Select(u => u.Group!);
         // 启用总分组功能
         if (swaggerSettings.EnableAllGroups == true)
         {
@@ -668,7 +676,7 @@ internal class SwaggerDocumentBuilder
     /// <returns></returns>
     private static string GetControllerTag(ControllerActionDescriptor controllerActionDescriptor)
     {
-        return _getControllerTagCached.GetOrAdd(controllerActionDescriptor, Function);
+        return _getControllerTagCached!.GetOrAdd(controllerActionDescriptor, Function);
 
         // 本地函数
         static string Function(ControllerActionDescriptor controllerActionDescriptor)
@@ -678,7 +686,7 @@ internal class SwaggerDocumentBuilder
             if (!type.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return controllerActionDescriptor.ControllerName;
 
             // 读取标签
-            var apiDescriptionSettings = type.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
+            var apiDescriptionSettings = type.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)!;
             return string.IsNullOrWhiteSpace(apiDescriptionSettings.Tag) ? controllerActionDescriptor.ControllerName : apiDescriptionSettings.Tag;
         }
     }
@@ -698,7 +706,7 @@ internal class SwaggerDocumentBuilder
         if (method.ReflectedType != ReflectedType || method.DeclaringType == typeof(object)) return false;
 
         // 不是能被导出忽略的接方法
-        if (method.IsDefined(typeof(ApiExplorerSettingsAttribute), true) && method.GetCustomAttribute<ApiExplorerSettingsAttribute>(true).IgnoreApi) return false;
+        if (method.IsDefined(typeof(ApiExplorerSettingsAttribute), true) && method.GetCustomAttribute<ApiExplorerSettingsAttribute>(true)!.IgnoreApi) return false;
 
         return true;
     }
@@ -710,21 +718,21 @@ internal class SwaggerDocumentBuilder
     /// <returns></returns>
     private static string GetActionTag(ApiDescription apiDescription)
     {
-        return _getActionTagCached.GetOrAdd(apiDescription, Function);
+        return _getActionTagCached!.GetOrAdd(apiDescription, Function);
 
         // 本地函数
         static string Function(ApiDescription apiDescription)
         {
-            if (!apiDescription.TryGetMethodInfo(out var method)) return Assembly.GetEntryAssembly().GetName().Name;
+            if (!apiDescription.TryGetMethodInfo(out var method)) return Assembly.GetEntryAssembly()!.GetName().Name!;
 
             // 获取控制器描述器
             var controllerActionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
-
+            if(controllerActionDescriptor == null) return Assembly.GetEntryAssembly()!.GetName().Name!;
             // 如果动作方法没有定义 [ApiDescriptionSettings] 特性，则返回所在控制器名
             if (!method.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return GetControllerTag(controllerActionDescriptor);
 
             // 读取标签
-            var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
+            var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)!;
             return string.IsNullOrWhiteSpace(apiDescriptionSettings.Tag) ? GetControllerTag(controllerActionDescriptor) : apiDescriptionSettings.Tag;
 
         }
@@ -738,17 +746,17 @@ internal class SwaggerDocumentBuilder
     /// <returns></returns>
     internal static IEnumerable<GroupExtraInfo> GetControllerGroups(Type type, SwaggerSettingsOptions swaggerSettings)
     {
-        return _getControllerGroupsCached.GetOrAdd(type, Function(type, swaggerSettings));
+        return _getControllerGroupsCached!.GetOrAdd(type, Function(type, swaggerSettings));
 
         // 本地函数
         static IEnumerable<GroupExtraInfo> Function(Type type, SwaggerSettingsOptions swaggerSettings)
         {
             // 如果控制器没有定义 [ApiDescriptionSettings] 特性，则返回默认分组
-            if (!type.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return _groupExtraInfos;
+            if (!type.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return _groupExtraInfos!;
 
             // 读取分组
-            var apiDescriptionSettings = type.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
-            if (apiDescriptionSettings.Groups == null || apiDescriptionSettings.Groups.Length == 0) return _groupExtraInfos;
+            var apiDescriptionSettings = type.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)!;
+            if (apiDescriptionSettings.Groups == null || apiDescriptionSettings.Groups.Length == 0) return _groupExtraInfos!;
 
             // 处理分组额外信息
             var groupExtras = new List<GroupExtraInfo>();
@@ -769,17 +777,17 @@ internal class SwaggerDocumentBuilder
     /// <returns></returns>
     private static IEnumerable<GroupExtraInfo> GetActionGroups(MethodInfo method, SwaggerSettingsOptions swaggerSettings)
     {
-        return _getActionGroupsCached.GetOrAdd(method, Function(method, swaggerSettings));
+        return _getActionGroupsCached!.GetOrAdd(method, Function(method, swaggerSettings));
 
         // 本地函数
         static IEnumerable<GroupExtraInfo> Function(MethodInfo method, SwaggerSettingsOptions swaggerSettings)
         {
             // 如果动作方法没有定义 [ApiDescriptionSettings] 特性，则返回所在控制器分组
-            if (!method.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return GetControllerGroups(method.ReflectedType, swaggerSettings);
+            if (!method.IsDefined(typeof(ApiDescriptionSettingsAttribute), true)) return GetControllerGroups(method.ReflectedType!, swaggerSettings);
 
             // 读取分组
-            var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
-            if (apiDescriptionSettings.Groups == null || apiDescriptionSettings.Groups.Length == 0) return GetControllerGroups(method.ReflectedType, swaggerSettings);
+            var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)!;
+            if (apiDescriptionSettings.Groups == null || apiDescriptionSettings.Groups.Length == 0) return GetControllerGroups(method.ReflectedType!, swaggerSettings);
 
             // 处理排序
             var groupExtras = new List<GroupExtraInfo>();
@@ -803,7 +811,7 @@ internal class SwaggerDocumentBuilder
         string realGroup;
         var order = 0;
 
-        if (!_groupOrderRegex.IsMatch(group)) realGroup = group;
+        if (!_groupOrderRegex!.IsMatch(group)) realGroup = group;
         else
         {
             realGroup = _groupOrderRegex.Replace(group, "");
@@ -827,13 +835,13 @@ internal class SwaggerDocumentBuilder
     /// <returns></returns>
     private static SwaggerOpenApiInfo GetGroupOpenApiInfo(string group, SwaggerSettingsOptions swaggerSettings)
     {
-        return _getGroupOpenApiInfoCached.GetOrAdd(group, Function(group, swaggerSettings));
+        return _getGroupOpenApiInfoCached!.GetOrAdd(group, Function(group, swaggerSettings));
 
         // 本地函数
         static SwaggerOpenApiInfo Function(string group, SwaggerSettingsOptions swaggerSettings)
         {
             // 替换路由模板
-            var routeTemplate = swaggerSettings.RouteTemplate.Replace("{documentName}", Uri.EscapeDataString(group));
+            var routeTemplate = swaggerSettings.RouteTemplate!.Replace("{documentName}", Uri.EscapeDataString(group));
             if (!string.IsNullOrWhiteSpace(swaggerSettings.ServerDir))
             {
                 routeTemplate = swaggerSettings.ServerDir + "/" + routeTemplate;
@@ -842,7 +850,7 @@ internal class SwaggerDocumentBuilder
             // 处理虚拟目录问题
             var template = $"{swaggerSettings.VirtualPath}/{routeTemplate}";
 
-            var groupInfo = swaggerSettings.GroupOpenApiInfos.FirstOrDefault(u => u.Group == group);
+            var groupInfo = swaggerSettings.GroupOpenApiInfos!.FirstOrDefault(u => u.Group == group);
             if (groupInfo != null)
             {
                 groupInfo.RouteTemplate = template;

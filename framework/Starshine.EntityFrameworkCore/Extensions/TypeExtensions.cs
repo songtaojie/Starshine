@@ -36,7 +36,7 @@ namespace Starshine.EntityFrameworkCore
                 if (it.IsGenericType(genericType))
                     return true;
             }
-            Type baseType = givenType.BaseType;
+            Type? baseType = givenType.BaseType;
             if (baseType == null) return false;
             return genericType.IsAssignableFromGenericType(baseType);
         }

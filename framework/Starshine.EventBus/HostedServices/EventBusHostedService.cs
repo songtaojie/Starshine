@@ -29,7 +29,7 @@ namespace Starshine.EventBus
         /// <summary>
         /// 避免由 CLR 的终结器捕获该异常从而终止应用程序，让所有未觉察异常被觉察
         /// </summary>
-        internal event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
+        internal event EventHandler<UnobservedTaskExceptionEventArgs>? UnobservedTaskException;
 
         /// <summary>
         /// 日志对象
@@ -123,12 +123,12 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件处理程序监视器
         /// </summary>
-        private IEventHandlerMonitor Monitor { get; }
+        private IEventHandlerMonitor? Monitor { get; }
 
         /// <summary>
         /// 事件处理程序执行器
         /// </summary>
-        private IEventHandlerExecutor Executor { get; }
+        private IEventHandlerExecutor? Executor { get; }
 
         /// <summary>
         /// 是否使用 UTC 时间
@@ -210,7 +210,7 @@ namespace Starshine.EventBus
             // 空订阅
             if (!eventHandlersThatShouldRun.Any())
             {
-                Log(LogLevel.Warning, "Subscriber with event ID <{EventId}> was not found.", new[] { eventSource.EventId });
+                Log(LogLevel.Warning, "Subscriber with event ID <{EventId}> was not found.", null, new[] { eventSource.EventId });
 
                 return;
             }
@@ -237,7 +237,7 @@ namespace Starshine.EventBus
                     };
 
                     // 执行异常对象
-                    InvalidOperationException executionException = default;
+                    InvalidOperationException? executionException = default;
 
                     try
                     {
@@ -263,7 +263,7 @@ namespace Starshine.EventBus
 
                             // 调用事件处理程序并配置出错执行重试
                             //重试策略
-                            var retryTimeout = eventSubscribeAttribute.RetryTimeout ?? new TimeSpan[]
+                            var retryTimeout = eventSubscribeAttribute?.RetryTimeout ?? new TimeSpan[]
                             {
                                 TimeSpan.FromSeconds(1000)
                             };
@@ -300,7 +300,7 @@ namespace Starshine.EventBus
                     catch (Exception ex)
                     {
                         // 输出异常日志
-                        Log(LogLevel.Error, "Error occurred executing in {EventId}.", new[] { eventSource.EventId }, ex);
+                        Log(LogLevel.Error, "Error occurred executing in {EventId}.", ex, new[] { eventSource.EventId });
 
                         // 标记异常
                         executionException = new InvalidOperationException(string.Format("Error occurred executing in {0}.", eventSource.EventId), ex);
@@ -373,7 +373,7 @@ namespace Starshine.EventBus
                 // 输出日志
                 if (succeeded)
                 {
-                    Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.", new[] { eventId });
+                    Log(LogLevel.Information, "Subscriber with event ID <{EventId}> was appended successfully.",null, new[] { eventId });
                 }
             }
             // 处理动态删除
@@ -388,7 +388,7 @@ namespace Starshine.EventBus
                     if (!succeeded) continue;
 
                     // 输出日志
-                    Log(LogLevel.Warning, "Subscriber<{Name}> with event ID <{EventId}> was remove.", new[] { wrapper.HandlerMethod?.Name, eventId });
+                    Log(LogLevel.Warning, "Subscriber<{Name}> with event ID <{EventId}> was remove.",null, new[] { wrapper.HandlerMethod?.Name, eventId });
                 }
             }
         }
@@ -398,7 +398,7 @@ namespace Starshine.EventBus
         /// </summary>
         /// <param name="fuzzyMatch"></param>
         /// <returns></returns>
-        private bool CheckIsSetFuzzyMatch(object fuzzyMatch)
+        private bool CheckIsSetFuzzyMatch(object? fuzzyMatch)
         {
             return fuzzyMatch == null
                 ? FuzzyMatch
@@ -410,7 +410,7 @@ namespace Starshine.EventBus
         /// </summary>
         /// <param name="gcCollect"></param>
         /// <returns></returns>
-        private bool CheckIsSetGCCollect(object gcCollect)
+        private bool CheckIsSetGCCollect(object? gcCollect)
         {
             return gcCollect == null
                 ? GCCollect
@@ -424,7 +424,7 @@ namespace Starshine.EventBus
         /// <param name="message">消息</param>
         /// <param name="args">参数</param>
         /// <param name="ex">异常</param>
-        private void Log(LogLevel logLevel, string message, object[] args = default, Exception ex = default)
+        private void Log(LogLevel logLevel, string message, Exception? ex = default, params object?[] args)
         {
             // 如果未启用日志记录则直接返回
             if (!EnabledLog) return;

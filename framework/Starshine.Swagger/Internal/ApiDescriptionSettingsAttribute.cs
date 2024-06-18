@@ -41,17 +41,17 @@ namespace Microsoft.AspNetCore.Mvc
         /// <summary>
         /// 版本号
         /// </summary>
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         /// <summary>
         /// 分组
         /// </summary>
-        public string[] Groups { get; set; }
+        public string[]? Groups { get; set; }
 
         /// <summary>
         /// 标签
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// 排序
@@ -61,6 +61,6 @@ namespace Microsoft.AspNetCore.Mvc
         /// <summary>
         /// 额外描述，支持 HTML
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

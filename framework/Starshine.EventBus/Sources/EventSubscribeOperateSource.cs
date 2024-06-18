@@ -10,15 +10,16 @@ namespace Starshine.EventBus
     /// </summary>
     internal sealed class EventSubscribeOperateSource : IEventSource
     {
+
         /// <summary>
         /// 事件 Id
         /// </summary>
-        public string EventId { get; set; }
+        public string EventId { get; set; } = null!;
 
         /// <summary>
         /// 事件承载（携带）数据
         /// </summary>
-        public object Payload { get; set; }
+        public object? Payload { get; set; }
 
         /// <summary>
         /// 事件创建时间
@@ -35,22 +36,22 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件处理程序
         /// </summary>
-        internal Func<EventHandlerExecutingContext, Task> Handler { get; set; }
+        internal Func<EventHandlerExecutingContext, Task>? Handler { get; set; }
 
         /// <summary>
         /// 订阅特性
         /// </summary>
-        internal EventSubscribeAttribute Attribute { get; set; }
+        internal EventSubscribeAttribute? Attribute { get; set; }
 
         /// <summary>
         /// 触发的方法
         /// </summary>
-        internal MethodInfo HandlerMethod { get; set; }
+        internal MethodInfo? HandlerMethod { get; set; }
 
         /// <summary>
         /// 实际事件 Id
         /// </summary>
-        internal string SubscribeEventId { get; set; }
+        internal string SubscribeEventId { get; set; } = null!;
 
         /// <summary>
         /// 事件订阅器操作选项

@@ -19,12 +19,12 @@ namespace Starshine.Swagger
         /// <summary>
         /// 分组私有字段
         /// </summary>
-        private string _group;
+        private string? _group;
 
         /// <summary>
         /// 所属组
         /// </summary>
-        public string Group
+        public string? Group
         {
             get => _group;
             set
@@ -47,6 +47,6 @@ namespace Starshine.Swagger
         /// <summary>
         /// 路由模板
         /// </summary>
-        public string RouteTemplate { get; internal set; }
+        public string? RouteTemplate { get; internal set; }
     }
 }

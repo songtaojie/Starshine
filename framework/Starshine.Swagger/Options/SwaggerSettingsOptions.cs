@@ -20,12 +20,12 @@ namespace Starshine.Swagger
         /// <summary>
         /// 文档标题
         /// </summary>
-        public string DocumentTitle { get; set; }
+        public string? DocumentTitle { get; set; }
 
         /// <summary>
         /// 默认分组名，默认为Default
         /// </summary>
-        public string DefaultGroupName { get; set; }
+        public string? DefaultGroupName { get; set; }
 
         /// <summary>
         /// 启用授权支持，默认为true
@@ -40,17 +40,17 @@ namespace Starshine.Swagger
         /// <summary>
         /// 配置规范化文档地址
         /// </summary>
-        public string RoutePrefix { get; set; }
+        public string? RoutePrefix { get; set; }
 
         /// <summary>
         /// 配置虚拟目录
         /// </summary>
-        public string VirtualPath { get; set; }
+        public string? VirtualPath { get; set; }
 
         /// <summary>
         /// 服务目录（修正 IIS 创建 Application 问题）
         /// </summary>
-        public string ServerDir { get; set; }
+        public string? ServerDir { get; set; }
 
         /// <summary>
         /// 文档展开设置
@@ -60,22 +60,22 @@ namespace Starshine.Swagger
         /// <summary>
         /// XML 描述文件
         /// </summary>
-        public string[] XmlComments { get; set; }
+        public string[]? XmlComments { get; set; }
 
         /// <summary>
         /// 分组信息
         /// </summary>
-        public SwaggerOpenApiInfo[] GroupOpenApiInfos { get; set; }
+        public SwaggerOpenApiInfo[]? GroupOpenApiInfos { get; set; }
 
         /// <summary>
         /// 安全定义
         /// </summary>
-        public SwaggerOpenApiSecurityScheme[] SecurityDefinitions { get; set; }
+        public SwaggerOpenApiSecurityScheme[]? SecurityDefinitions { get; set; }
 
         /// <summary>
         /// 配置 Servers
         /// </summary>
-        public OpenApiServer[] Servers { get; set; }
+        public OpenApiServer[]? Servers { get; set; }
 
         /// <summary>
         /// 隐藏 Servers
@@ -85,7 +85,7 @@ namespace Starshine.Swagger
         /// <summary>
         /// 默认 swagger.json 路由模板
         /// </summary>
-        public string RouteTemplate { get; set; }
+        public string? RouteTemplate { get; set; }
 
         /// <summary>
         /// 启用枚举 Schema 筛选器
@@ -114,7 +114,7 @@ namespace Starshine.Swagger
             options.FormatAsV2 ??= false;
             options.RoutePrefix ??= "swagger";
             options.DocExpansion ??= Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List;
-            options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name.Contains("Hx")).Select(t => t.GetName().Name).ToArray();
+            options.XmlComments ??= Penetrates.Assemblies.Where(u => !u.GetName().Name!.Contains(nameof(Starshine))).Select(t => t.GetName().Name!).ToArray();
             options.GroupOpenApiInfos ??= new SwaggerOpenApiInfo[]
             {
                 new SwaggerOpenApiInfo()

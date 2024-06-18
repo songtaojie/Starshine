@@ -13,18 +13,6 @@ namespace Starshine.EntityFrameworkCore
     public interface IDbFactory
     {
         /// <summary>
-        /// 服务的实例
-        /// </summary>
-        IServiceProvider ServiceProvider { get; }
-
-        /// <summary>
-        /// 获取服务
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        T GetRequiredService<T>();
-
-        /// <summary>
         ///  根据Id获取实体数据
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>

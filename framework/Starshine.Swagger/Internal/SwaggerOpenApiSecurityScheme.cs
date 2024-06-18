@@ -17,6 +17,6 @@ namespace Starshine.Swagger
         /// <summary>
         /// 唯一Id
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
     }
 }

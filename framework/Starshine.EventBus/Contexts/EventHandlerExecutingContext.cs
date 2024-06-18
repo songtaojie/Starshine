@@ -18,8 +18,8 @@ namespace Starshine.EventBus
         /// <param name="attribute">订阅特性</param>
         internal EventHandlerExecutingContext(IEventSource eventSource
             , IDictionary<object, object> properties
-            , MethodInfo handlerMethod
-            , EventSubscribeAttribute attribute)
+            , MethodInfo? handlerMethod
+            , EventSubscribeAttribute? attribute)
             : base(eventSource, properties, handlerMethod, attribute)
         {
         }

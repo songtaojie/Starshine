@@ -2,9 +2,18 @@
 
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
-    <Authors>songtaojie</Authors>
-    <Description>Starshine.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
-    <Version>6.0</Version>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <Authors>Starshine</Authors>
+	  <Company>Starshine</Company>
+	  <Description>Starshine.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
+	  <Version>1.0.0</Version>
+	  <PackageTags>ASP.NET Core, Starshine,EventBus</PackageTags>
+	  <PackageReleaseNotes>https://github.com/songtaojie/Starshine</PackageReleaseNotes>
+	  <PackageId>Starshine.EntityFrameworkCore</PackageId>
+	  <Product>Starshine.EntityFrameworkCore for ASP.NET Core</Product>
+	  <Copyright>2020 Starshine.EntityFrameworkCore</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

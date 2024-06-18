@@ -16,7 +16,7 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件承载（携带）数据
         /// </summary>
-        object Payload { get; }
+        object? Payload { get; }
 
         /// <summary>
         /// 事件创建时间

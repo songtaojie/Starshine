@@ -15,6 +15,7 @@ namespace Starshine.EventBus
         /// </summary>
         public ChannelEventSource()
         {
+            EventId = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Starshine.EventBus
         /// </summary>
         /// <param name="eventId">事件 Id</param>
         /// <param name="payload">事件承载（携带）数据</param>
-        public ChannelEventSource(string eventId, object payload)
+        public ChannelEventSource(string eventId, object? payload)
             : this(eventId)
         {
             Payload = payload;
@@ -43,7 +44,7 @@ namespace Starshine.EventBus
         /// <param name="eventId">事件 Id</param>
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken">取消任务 Token</param>
-        public ChannelEventSource(string eventId, object payload, CancellationToken cancellationToken)
+        public ChannelEventSource(string eventId, object? payload, CancellationToken cancellationToken)
             : this(eventId, payload)
         {
             CancellationToken = cancellationToken;
@@ -63,7 +64,7 @@ namespace Starshine.EventBus
         /// </summary>
         /// <param name="eventId">事件 Id</param>
         /// <param name="payload">事件承载（携带）数据</param>
-        public ChannelEventSource(Enum eventId, object payload)
+        public ChannelEventSource(Enum eventId, object? payload)
             : this(eventId.ParseToString(), payload)
         {
         }
@@ -74,7 +75,7 @@ namespace Starshine.EventBus
         /// <param name="eventId">事件 Id</param>
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken">取消任务 Token</param>
-        public ChannelEventSource(Enum eventId, object payload, CancellationToken cancellationToken)
+        public ChannelEventSource(Enum eventId, object? payload, CancellationToken cancellationToken)
             : this(eventId.ParseToString(), payload, cancellationToken)
         {
         }
@@ -87,7 +88,7 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件承载（携带）数据
         /// </summary>
-        public object Payload { get; set; }
+        public object? Payload { get; set; }
 
         /// <summary>
         /// 事件创建时间

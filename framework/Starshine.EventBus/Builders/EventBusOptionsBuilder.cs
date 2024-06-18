@@ -24,22 +24,22 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件发布者类型
         /// </summary>
-        private Type _eventPublisher;
+        private Type? _eventPublisher;
 
         /// <summary>
         /// 事件存储器实现工厂
         /// </summary>
-        private Func<IServiceProvider, IEventSourceStorer> _eventSourceStorerImplementationFactory;
+        private Func<IServiceProvider, IEventSourceStorer>? _eventSourceStorerImplementationFactory;
 
         /// <summary>
         /// 事件处理程序监视器
         /// </summary>
-        private Type _eventHandlerMonitor;
+        private Type? _eventHandlerMonitor;
 
         /// <summary>
         /// 事件处理程序执行器
         /// </summary>
-        private Type _eventHandlerExecutor;
+        private Type? _eventHandlerExecutor;
 
         /// <summary>
         /// 事件重试策略类型集合
@@ -76,7 +76,7 @@ namespace Starshine.EventBus
         /// <summary>
         /// 重试失败策略配置
         /// </summary>
-        public Type FallbackPolicy { get; set; }
+        public Type? FallbackPolicy { get; set; }
 
         /// <summary>
         /// 是否启用EventBus
@@ -91,12 +91,12 @@ namespace Starshine.EventBus
         /// <summary>
         /// cap相关配置
         /// </summary>
-        public Action<CapOptions> CapOptions { get; set; }
+        public Action<CapOptions>? CapOptions { get; set; }
 
         /// <summary>
         /// 未察觉任务异常事件处理程序
         /// </summary>
-        public EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskExceptionHandler { get; set; }
+        public EventHandler<UnobservedTaskExceptionEventArgs>? UnobservedTaskExceptionHandler { get; set; }
 
         /// <summary>
         /// 注册事件订阅者
@@ -349,7 +349,11 @@ namespace Starshine.EventBus
         {
             return (CapOptions options) =>
             {
-                options.DefaultGroupName = configuration["EventBus:Cap:DefaultGroupName"];
+                var defaultGroupName = configuration["EventBus:Cap:DefaultGroupName"];
+                if (!string.IsNullOrWhiteSpace(defaultGroupName))
+                {
+                    options.DefaultGroupName = defaultGroupName;
+                }
                 int failedRetryCount = 5;
                 var failedRetryCountStr = configuration["EventBus:Cap:FailedRetryCount"];
                 if (!string.IsNullOrEmpty(failedRetryCountStr))
@@ -367,10 +371,26 @@ namespace Starshine.EventBus
                     var portStr = configuration["EventBus:RabbitMQ:Port"];
                     int port = 5672;
                     if (!string.IsNullOrEmpty(portStr)) _ = int.TryParse(portStr, out port);
-                    options.HostName = configuration["EventBus:RabbitMQ:HostName"];
-                    options.VirtualHost = configuration["EventBus:RabbitMQ:VirtualHost"];
-                    options.UserName = configuration["EventBus:RabbitMQ:UserName"];
-                    options.Password = configuration["EventBus:RabbitMQ:Password"];
+                    var hostName = configuration["EventBus:RabbitMQ:HostName"];
+                    if (!string.IsNullOrWhiteSpace(hostName))
+                    {
+                        options.HostName = hostName;
+                    }
+                    var virtualHost = configuration["EventBus:RabbitMQ:VirtualHost"];
+                    if (!string.IsNullOrWhiteSpace(virtualHost))
+                    {
+                        options.VirtualHost = virtualHost;
+                    }
+                    var userName = configuration["EventBus:RabbitMQ:UserName"];
+                    if (!string.IsNullOrWhiteSpace(userName))
+                    {
+                        options.UserName = userName;
+                    }
+                    var password = configuration["EventBus:RabbitMQ:Password"];
+                    if (!string.IsNullOrWhiteSpace(password))
+                    {
+                        options.Password = password;
+                    }
                     options.Port = port;
                 });
             };

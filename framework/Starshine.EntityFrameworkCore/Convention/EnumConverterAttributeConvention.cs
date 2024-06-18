@@ -16,7 +16,7 @@ namespace Starshine.EntityFrameworkCore
         /// 
         /// </summary>
         /// <param name="dependencies"></param>
-        public EnumConverterAttributeConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
+        public EnumConverterAttributeConvention(ProviderConventionSetBuilderDependencies? dependencies) : base(dependencies)
         {
 
         }
@@ -30,29 +30,29 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="context"></param>
         protected override void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, EnumConverterAttribute attribute, MemberInfo clrMember, IConventionContext context)
         {
-            ConverterMappingHints mappingHints = null;
+            ConverterMappingHints? mappingHints = null;
             switch (attribute.ConventionType)
             {
                 case EnumConventionType.EnumToString:
                     var toStringGeneric = typeof(EnumToStringConverter<>);
-                    var toStringPropInfo = clrMember.DeclaringType.GetProperty(clrMember.Name);
-                    var toStringType = toStringGeneric.MakeGenericType(toStringPropInfo.PropertyType);
-                    object toStringInstance = Activator.CreateInstance(toStringType, mappingHints);
+                    var toStringPropInfo = clrMember.DeclaringType!.GetProperty(clrMember.Name);
+                    var toStringType = toStringGeneric.MakeGenericType(toStringPropInfo!.PropertyType);
+                    object? toStringInstance = Activator.CreateInstance(toStringType, mappingHints);
                     propertyBuilder.HasConversion(toStringInstance as ValueConverter, true);
                     //propertyBuilder.Metadata.SetValueConverter(toStringInstance as ValueConverter, true);
                     break;
                 case EnumConventionType.EnumToInt:
                     var toIntGeneric = typeof(EnumToNumberConverter<,>);
-                    var toIntPropInfo = clrMember.DeclaringType.GetProperty(clrMember.Name);
-                    var toIntType = toIntGeneric.MakeGenericType(toIntPropInfo.PropertyType, typeof(int));
-                    object toIntInstance = Activator.CreateInstance(toIntType, mappingHints);
+                    var toIntPropInfo = clrMember.DeclaringType!.GetProperty(clrMember.Name);
+                    var toIntType = toIntGeneric.MakeGenericType(toIntPropInfo!.PropertyType, typeof(int));
+                    object? toIntInstance = Activator.CreateInstance(toIntType, mappingHints);
                     propertyBuilder.HasConversion(toIntInstance as ValueConverter, true);
                     break;
                 case EnumConventionType.EnumToLong:
                     var toLongGeneric = typeof(EnumToNumberConverter<,>);
-                    var toLongPropInfo = clrMember.DeclaringType.GetProperty(clrMember.Name);
-                    var toLongType = toLongGeneric.MakeGenericType(toLongPropInfo.PropertyType, typeof(long));
-                    object toLongInstance = Activator.CreateInstance(toLongType, mappingHints);
+                    var toLongPropInfo = clrMember.DeclaringType!.GetProperty(clrMember.Name);
+                    var toLongType = toLongGeneric.MakeGenericType(toLongPropInfo!.PropertyType, typeof(long));
+                    object? toLongInstance = Activator.CreateInstance(toLongType, mappingHints);
                     propertyBuilder.HasConversion(toLongInstance as ValueConverter, true);
                     break;
             }

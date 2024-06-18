@@ -24,13 +24,14 @@ namespace Starshine.EventBus
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static Enum ParseToEnum(this string str)
+        public static Enum? ParseToEnum(this string str)
         {
             var assemblyName = str[..str.IndexOf(';')];
             var fullName = str[(str.IndexOf(';') + 1)..str.LastIndexOf('.')];
             var name = str[(str.LastIndexOf('.') + 1)..];
-
-            return Enum.Parse(Assembly.Load(assemblyName).GetType(fullName), name) as Enum;
+            var type = Assembly.Load(assemblyName).GetType(fullName);
+            if (type == null) return default;
+            return Enum.Parse(type, name) as Enum;
         }
     }
 }

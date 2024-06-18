@@ -61,7 +61,7 @@ namespace Starshine.EventBus
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken"> 取消任务 Token</param>
         /// <returns></returns>
-        public async Task PublishAsync(string eventId, object payload = default, CancellationToken cancellationToken = default)
+        public async Task PublishAsync(string eventId, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
         }
@@ -73,7 +73,7 @@ namespace Starshine.EventBus
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken"> 取消任务 Token</param>
         /// <returns></returns>
-        public async Task PublishAsync(Enum eventId, object payload = default, CancellationToken cancellationToken = default)
+        public async Task PublishAsync(Enum eventId, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
         }
@@ -86,7 +86,7 @@ namespace Starshine.EventBus
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken"> 取消任务 Token</param>
         /// <returns><see cref="Task"/> 实例</returns>
-        public async Task PublishDelayAsync(string eventId, long delay, object payload = default, CancellationToken cancellationToken = default)
+        public async Task PublishDelayAsync(string eventId, long delay, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishDelayAsync(new ChannelEventSource(eventId, payload, cancellationToken), delay);
         }
@@ -99,7 +99,7 @@ namespace Starshine.EventBus
         /// <param name="payload">事件承载（携带）数据</param>
         /// <param name="cancellationToken"> 取消任务 Token</param>
         /// <returns><see cref="Task"/> 实例</returns>
-        public async Task PublishDelayAsync(Enum eventId, long delay, object payload = default, CancellationToken cancellationToken = default)
+        public async Task PublishDelayAsync(Enum eventId, long delay, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishDelayAsync(new ChannelEventSource(eventId, payload, cancellationToken), delay);
         }

@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6</TargetFramework>
-    <Nullable>enable</Nullable>
-	<Authors>Starshine</Authors>
-	<PackageId>Starshine.Sqlsugar</PackageId>
-	<Description>Sqlsugar扩展类</Description>
-	<Version>1.0.2</Version>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<TargetFramework>net6</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <Authors>Starshine</Authors>
+        <Company>Starshine</Company>
+        <Description>Sqlsugar扩展类</Description>
+        <Version>1.0.0</Version>
+        <PackageTags>.NET6, Starshine, ImageSharp</PackageTags>
+        <PackageReleaseNotes>https://github.com/songtaojie/Starshine</PackageReleaseNotes>
+        <PackageId>Starshine.Sqlsugar</PackageId>
+        <Product>Starshine.Sqlsugar for ASP.NET Core</Product>
+        <Copyright>2020 Starshine.Sqlsugar</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

@@ -33,7 +33,7 @@ namespace Starshine.EventBus
         /// <param name="handlerMethod"><see cref="MethodInfo"/> 对象</param>
         /// <param name="cancellationToken">取消任务 Token</param>
         /// <returns></returns>
-        public async Task Subscribe(string eventId, Func<EventHandlerExecutingContext, Task> handler, EventSubscribeAttribute attribute = default, MethodInfo handlerMethod = default, CancellationToken cancellationToken = default)
+        public async Task Subscribe(string eventId, Func<EventHandlerExecutingContext, Task> handler, EventSubscribeAttribute? attribute = default, MethodInfo? handlerMethod = default, CancellationToken cancellationToken = default)
         {
             // 空检查
             if (handler == null) throw new ArgumentNullException(nameof(handler));

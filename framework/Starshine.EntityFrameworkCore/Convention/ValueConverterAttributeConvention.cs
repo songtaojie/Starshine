@@ -15,7 +15,7 @@ namespace Starshine.EntityFrameworkCore
         /// 
         /// </summary>
         /// <param name="dependencies"></param>
-        public ValueConverterAttributeConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
+        public ValueConverterAttributeConvention(ProviderConventionSetBuilderDependencies? dependencies) : base(dependencies)
         {
 
         }

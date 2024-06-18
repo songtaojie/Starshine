@@ -43,13 +43,13 @@ namespace Starshine.EventBus
         /// 是否启用模糊匹配消息
         /// </summary>
         /// <remarks>支持正则表达式，bool 类型，默认为 null</remarks>
-        public object FuzzyMatch { get; set; } = null;
+        public object? FuzzyMatch { get; set; }
 
         /// <summary>
         /// 是否启用执行完成触发 GC 回收
         /// </summary>
         /// <remarks>bool 类型，默认为 null</remarks>
-        public object GCCollect { get; set; } = null;
+        public object? GCCollect { get; set; }
 
         /// <summary>
         /// 重试次数
@@ -60,18 +60,18 @@ namespace Starshine.EventBus
         /// 重试间隔时间
         /// </summary>
         /// <remarks>默认1000毫秒</remarks>
-        public TimeSpan[] RetryTimeout { get; set; }
+        public TimeSpan[]? RetryTimeout { get; set; }
 
         /// <summary>
         /// 可以指定特定异常类型才重试
         /// </summary>
-        public Type[] ExceptionTypes { get; set; }
+        public Type[]? ExceptionTypes { get; set; }
 
         /// <summary>
         /// 重试失败策略配置
         /// </summary>
         /// <remarks>如果没有注册，必须通过 options.AddFallbackPolicy(type) 注册</remarks>
-        public Type FallbackPolicy { get; set; }
+        public Type? FallbackPolicy { get; set; }
 
         /// <summary>
         /// 排序

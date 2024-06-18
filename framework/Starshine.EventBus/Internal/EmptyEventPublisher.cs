@@ -37,25 +37,25 @@ namespace Starshine.EventBus.Internal
         }
 
         /// <inheritdoc cref="IEventPublisher.PublishAsync(string,object,CancellationToken)"/>
-        public async Task PublishAsync(string eventId, object payload = null, CancellationToken cancellationToken = default)
+        public async Task PublishAsync(string eventId, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
         }
 
         /// <inheritdoc cref="IEventPublisher.PublishAsync(Enum,object,CancellationToken)"/>
-        public async Task PublishAsync(Enum eventId, object payload = null, CancellationToken cancellationToken = default)
+        public async Task PublishAsync(Enum eventId, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishAsync(new ChannelEventSource(eventId, payload, cancellationToken));
         }
 
         /// <inheritdoc cref="IEventPublisher.PublishDelayAsync(string,long,object,CancellationToken)"/>
-        public async Task PublishDelayAsync(string eventId, long delay, object payload = null, CancellationToken cancellationToken = default)
+        public async Task PublishDelayAsync(string eventId, long delay, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishDelayAsync(new ChannelEventSource(eventId, payload, cancellationToken), delay);
         }
 
         /// <inheritdoc cref="IEventPublisher.PublishDelayAsync(Enum,long,object,CancellationToken)"/>
-        public async Task PublishDelayAsync(Enum eventId, long delay, object payload = null, CancellationToken cancellationToken = default)
+        public async Task PublishDelayAsync(Enum eventId, long delay, object? payload = default, CancellationToken cancellationToken = default)
         {
             await PublishDelayAsync(new ChannelEventSource(eventId, payload, cancellationToken), delay);
         }

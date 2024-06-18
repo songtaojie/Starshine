@@ -70,7 +70,7 @@ namespace Starshine.Swagger.Internal
             static bool Function(Type type)
             {
                 // 排除 OData 控制器
-                if (type.Assembly.GetName().Name.StartsWith("Microsoft.AspNetCore.OData")) return false;
+                if (type.Assembly.GetName().Name!.StartsWith("Microsoft.AspNetCore.OData")) return false;
 
                 // 不能是非公开、基元类型、值类型、抽象类、接口、泛型类
                 if (!type.IsPublic || type.IsPrimitive || type.IsValueType || type.IsAbstract || type.IsInterface || type.IsGenericType) return false;
@@ -79,7 +79,7 @@ namespace Starshine.Swagger.Internal
                 if (!typeof(Controller).IsAssignableFrom(type) && typeof(ControllerBase).IsAssignableFrom(type))
                 {
                     // 不是能被导出忽略的接口
-                    if (type.IsDefined(typeof(ApiExplorerSettingsAttribute), true) && type.GetCustomAttribute<ApiExplorerSettingsAttribute>(true).IgnoreApi) return false;
+                    if (type.IsDefined(typeof(ApiExplorerSettingsAttribute), true) && type.GetCustomAttribute<ApiExplorerSettingsAttribute>(true)!.IgnoreApi) return false;
 
                     return true;
                 }
@@ -105,7 +105,7 @@ namespace Starshine.Swagger.Internal
             var startCleared = false;
             var endCleared = false;
 
-            string tempStr = null;
+            string? tempStr = null;
             foreach (var affix in affixes)
             {
                 if (string.IsNullOrWhiteSpace(affix)) continue;
@@ -132,9 +132,9 @@ namespace Starshine.Swagger.Internal
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        internal static string[] SplitCamelCase(string str)
+        internal static string[] SplitCamelCase(string? str)
         {
-            if (string.IsNullOrWhiteSpace(str)) return new string[] { str };
+            if (string.IsNullOrWhiteSpace(str)) return new string[] { };
             if (str.Length == 1) return new string[] { str };
 
             return Regex.Split(str, @"(?=\p{Lu}\p{Ll})|(?<=\p{Ll})(?=\p{Lu})")

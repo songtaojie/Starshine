@@ -8,7 +8,7 @@
         /// <summary>
         /// 分组名
         /// </summary>
-        public string Group { get; set; }
+        public string? Group { get; set; }
 
         /// <summary>
         /// 分组排序

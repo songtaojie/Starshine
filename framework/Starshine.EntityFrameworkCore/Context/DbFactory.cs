@@ -16,17 +16,11 @@ namespace Starshine.EntityFrameworkCore
     internal class DbFactory : IDbFactory
     {
         /// <summary>
-        /// 服务的实例
-        /// </summary>
-        public IServiceProvider ServiceProvider { get; }
-        /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="service">服务的实例</param>
         /// <param name="db">服务的实例</param>
-        public DbFactory(IServiceProvider service, DbContext db)
+        public DbFactory( DbContext db)
         {
-            ServiceProvider = service;
             this.Db = db;
         }
         /// <summary>
@@ -36,15 +30,7 @@ namespace Starshine.EntityFrameworkCore
         {
             get;
         }
-        /// <summary>
-        /// 获取使用原生的DI注入的服务类(一般不不用这个，而是使用构造函数注入)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T GetRequiredService<T>()
-        {
-            return ServiceProvider.GetRequiredService<T>();
-        }
+       
         /// <summary>
         /// 根据id获取对象
         /// </summary>

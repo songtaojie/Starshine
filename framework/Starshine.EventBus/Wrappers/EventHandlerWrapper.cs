@@ -28,22 +28,22 @@ namespace Starshine.EventBus
         /// <summary>
         /// 事件处理程序
         /// </summary>
-        internal Func<EventHandlerExecutingContext, Task> Handler { get; set; }
+        internal Func<EventHandlerExecutingContext, Task>? Handler { get; set; }
 
         /// <summary>
         /// 触发的方法
         /// </summary>
-        internal MethodInfo HandlerMethod { get; set; }
+        internal MethodInfo? HandlerMethod { get; set; }
 
         /// <summary>
         /// 订阅特性
         /// </summary>
-        internal EventSubscribeAttribute Attribute { get; set; }
+        internal EventSubscribeAttribute? Attribute { get; set; }
 
         /// <summary>
         /// 正则表达式
         /// </summary>
-        internal Regex Pattern { get; set; }
+        internal Regex? Pattern { get; set; }
 
         /// <summary>
         /// 是否启用执行完成触发 GC 回收

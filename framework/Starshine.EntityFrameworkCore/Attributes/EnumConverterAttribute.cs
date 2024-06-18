@@ -34,7 +34,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 转换器
         /// </summary>
-        public ValueConverter ValueConverter { get; set; }
+        public ValueConverter? ValueConverter { get; set; }
 
         #endregion
     }

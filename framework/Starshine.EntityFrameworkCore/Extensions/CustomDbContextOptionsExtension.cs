@@ -13,14 +13,13 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     internal class CustomDbContextOptionsExtension : IDbContextOptionsExtension
     {
-        private DbContextOptionsExtensionInfo _info;
+        private DbContextOptionsExtensionInfo? _info;
         /// <summary>
         /// 配置服务选项
         /// </summary>
         /// <param name="services"></param>
         public void ApplyServices(IServiceCollection services)
         {
-            //Console.WriteLine("ApplyServices");
             services.AddSingleton<IConventionSetPlugin, CustomConventionSetPlugin>();
         }
         /// <summary>
@@ -36,7 +35,7 @@ namespace Starshine.EntityFrameworkCore
         {
             get
             {
-                DbContextOptionsExtensionInfo result;
+                DbContextOptionsExtensionInfo? result;
                 if ((result = this._info) == null)
                 {
                     result = (this._info = new CustomDbContextOptionsExtension.ExtensionInfo(this));
@@ -47,7 +46,7 @@ namespace Starshine.EntityFrameworkCore
 
         private sealed class ExtensionInfo : DbContextOptionsExtensionInfo
         {
-            private string _logFragment;
+            private string? _logFragment;
 
             public ExtensionInfo(IDbContextOptionsExtension extension) : base(extension)
             {

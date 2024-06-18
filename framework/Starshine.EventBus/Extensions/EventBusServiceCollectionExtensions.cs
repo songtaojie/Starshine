@@ -20,11 +20,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="config">配置</param>
         /// <param name="configureOptionsBuilder">事件总线配置选项构建器委托</param>
         /// <returns></returns>
-        public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration config, Action<EventBusOptionsBuilder> configureOptionsBuilder = default)
+        public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration config, Action<EventBusOptionsBuilder>? configureOptionsBuilder = default)
         {
             // 创建初始事件总线配置选项构建器
             var eventBusOptionsBuilder = EventBusOptionsBuilder.Init(config);
-            configureOptionsBuilder.Invoke(eventBusOptionsBuilder);
+            configureOptionsBuilder?.Invoke(eventBusOptionsBuilder);
 
             if (eventBusOptionsBuilder.IsEnabled == true)
             {
@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="config">配置</param>
         /// <param name="capOptions">cap配置，如果没设置，需要配置EventBus:Cap</param>
         /// <returns></returns>
-        public static IServiceCollection AddCapEventBus(this IServiceCollection services, IConfiguration config, Action<CapOptions> capOptions = null)
+        public static IServiceCollection AddCapEventBus(this IServiceCollection services, IConfiguration config, Action<CapOptions>? capOptions = default)
         {
             services.AddCap(options =>
             {
@@ -79,7 +79,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务集合对象</param>
         /// <param name="eventBusOptionsBuilder">事件总线配置选项构建器</param>
         /// <returns>服务集合实例</returns>
-        public static IServiceCollection AddEventBus(this IServiceCollection services, EventBusOptionsBuilder eventBusOptionsBuilder = default)
+        public static IServiceCollection AddEventBus(this IServiceCollection services, EventBusOptionsBuilder? eventBusOptionsBuilder = default)
         {
             // 初始化事件总线配置项
             eventBusOptionsBuilder ??= new EventBusOptionsBuilder();

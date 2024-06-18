@@ -22,7 +22,7 @@ namespace Starshine.Swagger
         /// <param name="context"></param>
         public void Apply(OpenApiSchema model, SchemaFilterContext context)
         {
-            var type = context.Type;
+            Type type = context.Type;
 
             // 排除其他程序集的枚举
             if (type.IsEnum && Penetrates.Assemblies.Contains(type.Assembly))
@@ -33,13 +33,17 @@ namespace Starshine.Swagger
 
                 var enumValues = Enum.GetValues(type);
                 // 获取枚举实际值类型
-                var enumValueType = type.GetField("value__").FieldType;
+                var enumValueType = type.GetField("value__")?.FieldType;
+                if (enumValueType == null) return;
                 foreach (var value in enumValues)
                 {
                     var numValue = value.ChangeType(enumValueType);
 
                     // 获取枚举成员特性
-                    var fieldinfo = type.GetField(Enum.GetName(type, value));
+                    var numName = Enum.GetName(type, value);
+                    if (string.IsNullOrEmpty(numName)) continue;
+                    var fieldinfo = type.GetField(numName);
+                    if(fieldinfo == null) continue;
                     var descriptionAttribute = fieldinfo.GetCustomAttribute<DescriptionAttribute>(true);
                     model.Enum.Add(OpenApiAnyFactory.CreateFromJson($"{numValue}"));
 

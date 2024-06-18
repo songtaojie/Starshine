@@ -28,7 +28,7 @@ namespace Starshine.Swagger
             // 处理更多描述
             if (method.IsDefined(typeof(ApiDescriptionSettingsAttribute), true))
             {
-                var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true);
+                var apiDescriptionSettings = method.GetCustomAttribute<ApiDescriptionSettingsAttribute>(true)!;
 
                 // 添加单一接口描述
                 if (!string.IsNullOrWhiteSpace(apiDescriptionSettings.Description))
@@ -40,7 +40,7 @@ namespace Starshine.Swagger
             // 处理过时
             if (method.IsDefined(typeof(ObsoleteAttribute), true))
             {
-                var deprecated = method.GetCustomAttribute<ObsoleteAttribute>(true);
+                var deprecated = method.GetCustomAttribute<ObsoleteAttribute>(true)!;
                 if (!string.IsNullOrWhiteSpace(deprecated.Message))
                 {
                     operation.Description = $"<div>{deprecated.Message}</div>" + operation.Description;

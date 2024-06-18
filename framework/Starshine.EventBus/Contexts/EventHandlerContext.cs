@@ -17,8 +17,8 @@ namespace Starshine.EventBus
         /// <param name="attribute">订阅特性</param>
         internal EventHandlerContext(IEventSource eventSource
             , IDictionary<object, object> properties
-            , MethodInfo handlerMethod
-            , EventSubscribeAttribute attribute)
+            , MethodInfo? handlerMethod
+            , EventSubscribeAttribute? attribute)
         {
             Source = eventSource;
             Properties = properties;
@@ -40,12 +40,12 @@ namespace Starshine.EventBus
         /// 触发的方法
         /// </summary>
         /// <remarks>如果是动态订阅，可能为 null</remarks>
-        public MethodInfo HandlerMethod { get; }
+        public MethodInfo? HandlerMethod { get; }
 
         /// <summary>
         /// 订阅特性
         /// </summary>
         /// <remarks><remarks>如果是动态订阅，可能为 null</remarks></remarks>
-        public EventSubscribeAttribute Attribute { get; }
+        public EventSubscribeAttribute? Attribute { get; }
     }
 }

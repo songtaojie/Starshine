@@ -14,7 +14,7 @@ namespace Starshine.EntityFrameworkCore
         /// 构造函数
         /// </summary>
         /// <param name="dependencies"></param>
-        public DecimalPrecisionAttributeConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
+        public DecimalPrecisionAttributeConvention(ProviderConventionSetBuilderDependencies? dependencies) : base(dependencies)
         {
 
         }
