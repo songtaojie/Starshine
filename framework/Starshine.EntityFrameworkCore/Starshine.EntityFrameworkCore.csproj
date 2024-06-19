@@ -4,25 +4,27 @@
 	  <TargetFramework>net6.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <Version>1.0.0</Version>
 	  <Authors>Starshine</Authors>
 	  <Company>Starshine</Company>
-	  <Description>Starshine.EntityFrameworkCore扩展帮助，1.修改DbFactory，添加更新删除通用方法</Description>
-	  <Version>1.0.0</Version>
-	  <PackageTags>ASP.NET Core, Starshine,EventBus</PackageTags>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <Description>EntityFrameworkCore扩展类</Description>
+	  <PackageTags>ASP.NET Core, EntityFrameworkCore</PackageTags>
 	  <PackageReleaseNotes>https://github.com/songtaojie/Starshine</PackageReleaseNotes>
 	  <PackageId>Starshine.EntityFrameworkCore</PackageId>
-	  <Product>Starshine.EntityFrameworkCore for ASP.NET Core</Product>
+	  <Product>Cache for ASP.NET Core</Product>
 	  <Copyright>2020 Starshine.EntityFrameworkCore</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\Starshine.EntityFrameworkCore.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\Starshine.EntityFrameworkCore.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
   </ItemGroup>
 
 </Project>

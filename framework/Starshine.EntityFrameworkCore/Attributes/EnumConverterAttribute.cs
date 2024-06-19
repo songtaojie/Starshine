@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -34,7 +32,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 转换器
         /// </summary>
-        public ValueConverter? ValueConverter { get; set; }
+        public ValueConverter ValueConverter { get; set; }
 
         #endregion
     }

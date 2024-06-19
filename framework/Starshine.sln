@@ -11,11 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.ImageSharp", "Sta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.Swagger", "Starshine.Swagger\Starshine.Swagger.csproj", "{84801B20-AC34-490E-AF4A-6EA12E7EF38A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.DatabaseAccessor", "Starshine.DatabaseAccessor\Starshine.DatabaseAccessor.csproj", "{C4536EDC-9109-491E-A81B-6C827F9F9AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.EntityFrameworkCore", "Starshine.EntityFrameworkCore\Starshine.EntityFrameworkCore.csproj", "{C4536EDC-9109-491E-A81B-6C827F9F9AA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.EventBus", "Starshine.EventBus\Starshine.EventBus.csproj", "{354C37A5-1909-48DE-BF3A-627202909020}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.EntityFrameworkCore", "Starshine.EntityFrameworkCore\Starshine.EntityFrameworkCore.csproj", "{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine.Sqlsugar", "Starshine.Sqlsugar\Starshine.Sqlsugar.csproj", "{84574EFE-33E6-42D7-BADC-6739415232CA}"
 EndProject
@@ -56,10 +54,6 @@ Global
 		{354C37A5-1909-48DE-BF3A-627202909020}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{354C37A5-1909-48DE-BF3A-627202909020}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354C37A5-1909-48DE-BF3A-627202909020}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED9BC008-EBB2-40F6-A68B-0695A4AAF43C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84574EFE-33E6-42D7-BADC-6739415232CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84574EFE-33E6-42D7-BADC-6739415232CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84574EFE-33E6-42D7-BADC-6739415232CA}.Release|Any CPU.ActiveCfg = Release|Any CPU

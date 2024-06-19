@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Starshine.EntityFrameworkCore
 {
