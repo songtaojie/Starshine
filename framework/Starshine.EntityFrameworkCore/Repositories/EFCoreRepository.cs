@@ -129,7 +129,7 @@ namespace Starshine.EntityFrameworkCore
     /// EF Core仓储实现
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public partial class EFCoreRepository<TEntity> : EFCoreRepository<TEntity, MasterDbContextLocator>
+    public partial class EFCoreRepository<TEntity> : EFCoreRepository<TEntity, DefaultDbContextProvider>
         , IRepository<TEntity>
         where TEntity : class, IPrivateEntity, new()
     {

@@ -21,7 +21,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public static IRepository GetRepository(IServiceProvider scoped = default)
         {
-            return Penetrates.GetService<IRepository>(scoped)
+            return DbContextHelper.GetService<IRepository>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository)));
         }
 
@@ -34,7 +34,7 @@ namespace Starshine.EntityFrameworkCore
         public static IRepository<TEntity> GetRepository<TEntity>(IServiceProvider scoped = default)
             where TEntity : class, IPrivateEntity, new()
         {
-            return Penetrates.GetService<IRepository<TEntity>>(scoped)
+            return DbContextHelper.GetService<IRepository<TEntity>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository<TEntity>)));
         }
 
@@ -49,7 +49,7 @@ namespace Starshine.EntityFrameworkCore
             where TEntity : class, IPrivateEntity, new()
             where TDbContextLocator : class, IDbContextLocator
         {
-            return Penetrates.GetService<IRepository<TEntity, TDbContextLocator>>(scoped)
+            return DbContextHelper.GetService<IRepository<TEntity, TDbContextLocator>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(IRepository<TEntity, TDbContextLocator>)));
         }
 
@@ -60,7 +60,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns>ISqlRepository</returns>
         public static ISqlRepository GetSqlRepository(IServiceProvider scoped = default)
         {
-            return Penetrates.GetService<ISqlRepository>(scoped)
+            return DbContextHelper.GetService<ISqlRepository>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlRepository)));
         }
 
@@ -73,7 +73,7 @@ namespace Starshine.EntityFrameworkCore
         public static ISqlRepository<TDbContextLocator> GetSqlRepository<TDbContextLocator>(IServiceProvider scoped = default)
             where TDbContextLocator : class, IDbContextLocator
         {
-            return Penetrates.GetService<ISqlRepository<TDbContextLocator>>(scoped)
+            return DbContextHelper.GetService<ISqlRepository<TDbContextLocator>>(scoped)
                 ?? throw new NotSupportedException(string.Format(NotFoundServiceErrorMessage, nameof(ISqlRepository<TDbContextLocator>)));
         }
 
@@ -84,7 +84,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public static DbContext GetDbContext(IServiceProvider scoped = default)
         {
-            return GetDbContext(typeof(MasterDbContextLocator), scoped);
+            return GetDbContext(typeof(DefaultDbContextProvider), scoped);
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace Starshine.EntityFrameworkCore
         {
             // 判断是否注册了数据库上下文
             // 判断数据库上下文定位器是否绑定
-            Penetrates.CheckDbContextLocator(dbContextLocator, out _);
+            DbContextHelper.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = Penetrates.GetService<Func<Type, DbContext>>(scoped);
+            var dbContextResolve = DbContextHelper.GetService<Func<Type, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator);
         }
 
@@ -122,7 +122,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public static DbContext GetNewDbContext(IServiceProvider scoped = default)
         {
-            return GetNewDbContext(typeof(MasterDbContextLocator), scoped);
+            return GetNewDbContext(typeof(DefaultDbContextProvider), scoped);
         }
 
         /// <summary>
@@ -135,9 +135,9 @@ namespace Starshine.EntityFrameworkCore
         {
             // 判断是否注册了数据库上下文
             // 判断数据库上下文定位器是否绑定
-            Penetrates.CheckDbContextLocator(dbContextLocator, out _);
+            DbContextHelper.CheckDbContextLocator(dbContextLocator, out _);
 
-            var dbContextResolve = Penetrates.GetService<Func<Type, DbContext>>(scoped);
+            var dbContextResolve = DbContextHelper.GetService<Func<Type, DbContext>>(scoped);
             return dbContextResolve(dbContextLocator);
         }
 

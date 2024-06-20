@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Linq;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Starshine.Swagger
 {
@@ -102,6 +104,8 @@ namespace Starshine.Swagger
         /// </summary>
         public bool? EnableAllGroups { get; set; }
 
+        internal Action<SwaggerGenOptions>? SwaggerGenOptionsAction { get; private set; }
+
         /// <summary>
         /// 后置配置
         /// </summary>
@@ -149,5 +153,20 @@ namespace Starshine.Swagger
             options.EnableTagsOrderDocumentFilter ??= true;
             options.EnableAllGroups ??= false;
         }
+
+        /// <summary>
+        /// 配置SwaggerGenOptions
+        /// </summary>
+        /// <param name="action"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void Configure([NotNull] Action<SwaggerGenOptions> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+            SwaggerGenOptionsAction = action;
+        }
+
     }
 }

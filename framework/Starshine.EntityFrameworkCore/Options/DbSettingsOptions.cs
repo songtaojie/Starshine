@@ -21,7 +21,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 是否打印连接信息
         /// </summary>
-        public bool? PrintDbConnectionInfo { get; set; }
+        public bool? PrintConnectionString { get; set; }
 
         /// <summary>
         /// 是否开启日志记录

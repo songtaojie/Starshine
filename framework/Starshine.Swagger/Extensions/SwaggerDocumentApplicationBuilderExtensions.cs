@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="swaggerConfigure"></param>
         /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app, Action<SwaggerOptions>? swaggerConfigure = default, Action<SwaggerUIOptions>? swaggerUIConfigure = default)
+        public static IApplicationBuilder UseStarshineSwagger(this IApplicationBuilder app, Action<SwaggerOptions>? swaggerConfigure = default, Action<SwaggerUIOptions>? swaggerUIConfigure = default)
         {
             var builder = app.ApplicationServices.GetRequiredService<SwaggerDocumentBuilder>();
             // 配置 Swagger 全局参数
@@ -37,7 +37,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="swaggerConfigure"></param>
         /// <param name="swaggerUIConfigure"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app, Action<SwaggerOptions>? swaggerConfigure = default, Action<Knife4UIOptions>? swaggerUIConfigure = default)
+        public static IApplicationBuilder UseStarshineSwaggerKnife4j(this IApplicationBuilder app, Action<SwaggerOptions>? swaggerConfigure = default, Action<Knife4UIOptions>? swaggerUIConfigure = default)
         {
             var builder = app.ApplicationServices.GetRequiredService<SwaggerDocumentBuilder>();
             // 配置 Swagger 全局参数

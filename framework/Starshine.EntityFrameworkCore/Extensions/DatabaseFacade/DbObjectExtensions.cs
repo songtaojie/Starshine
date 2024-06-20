@@ -37,7 +37,7 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         static DbObjectExtensions()
         {
-            var dbSettings = Penetrates.DbSettings;
+            var dbSettings = DbContextHelper.DbSettings;
             EnabledMiniProfiler = dbSettings.EnabledMiniProfiler == true;
             IsPrintDbConnectionInfo = dbSettings.PrintDbConnectionInfo == true;
         }
@@ -356,7 +356,7 @@ namespace Starshine.EntityFrameworkCore
             {
                 var connectionId = databaseFacade.GetService<IRelationalConnection>()?.ConnectionId;
                 // 打印连接信息消息
-                Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {connectionId}] / [Database: {dbConnection.Database}] / [Connection String: {dbConnection.ConnectionString}]");
+                DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {connectionId}] / [Database: {dbConnection.Database}] / [Connection String: {dbConnection.ConnectionString}]");
             }
         }
     }

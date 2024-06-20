@@ -26,14 +26,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="poolSize">池大小</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDbPool<TDbContext>(this IServiceCollection services, string providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, int poolSize = 100, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
+        public static IServiceCollection AddStarshineDbContext<TDbContext>(this IServiceCollection services, string? providerName = default, Action<DbContextOptionsBuilder>? optionBuilder = default, string? connectionString = default, int poolSize = 100, params IInterceptor[] interceptors)
+            where TDbContext : StarshineDbContext<TDbContext>
         {
             // 避免重复注册默认数据库上下文
-            if (Penetrates.DbContextDescriptors.ContainsKey(typeof(MasterDbContextLocator))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
 
             // 注册数据库上下文
-            return services.AddDbPool<TDbContext, MasterDbContextLocator>(providerName, optionBuilder, connectionString, poolSize, interceptors);
+            return services.AddStarshineDbContext<TDbContext, DefaultDbContextProvider>(providerName, optionBuilder, connectionString, poolSize, interceptors);
         }
 
         /// <summary>
@@ -45,21 +45,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="poolSize">池大小</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDbPool<TDbContext>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, int poolSize = 100, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
+        public static IServiceCollection AddStarshineDbContext<TDbContext>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, int poolSize = 100, params IInterceptor[] interceptors)
+            where TDbContext : StarshineDbContext<TDbContext>
         {
-            // 避免重复注册默认数据库上下文
-            if (Penetrates.DbContextDescriptors.ContainsKey(typeof(MasterDbContextLocator))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
-
             // 注册数据库上下文
-            return services.AddDbPool<TDbContext, MasterDbContextLocator>(optionBuilder, poolSize, interceptors);
+            return services.AddStarshineDbContext<TDbContext, DefaultDbContextProvider>(optionBuilder, poolSize, interceptors);
         }
 
         /// <summary>
         /// 添加其他数据库上下文
         /// </summary>
         /// <typeparam name="TDbContext">数据库上下文</typeparam>
-        /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
+        /// <typeparam name="TDbContextProvider">数据库上下文定位器</typeparam>
         /// <param name="services">服务</param>
         /// <param name="providerName">数据库提供器</param>
         /// <param name="optionBuilder"></param>
@@ -67,17 +64,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="poolSize">池大小</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDbPool<TDbContext, TDbContextLocator>(this IServiceCollection services, string providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, int poolSize = 100, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
-            where TDbContextLocator : class, IDbContextLocator
+        public static IServiceCollection AddStarshineDbContext<TDbContext, TDbContextProvider>(this IServiceCollection services, string? providerName = default, Action<DbContextOptionsBuilder>? optionBuilder = default, string? connectionString = default, int poolSize = 100, params IInterceptor[] interceptors)
+            where TDbContext : StarshineDbContext<TDbContext>
+            where TDbContextProvider : class, IDbContextProvider
         {
+            // 避免重复注册默认数据库上下文
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
             // 注册数据库上下文
-            services.RegisterDbContext<TDbContext, TDbContextLocator>();
+            services.RegisterDbContext<TDbContext, TDbContextProvider>();
 
             // 配置数据库上下文
             var connStr = DbProvider.GetConnectionString<TDbContext>(connectionString);
 
-            services.AddDbContextPool<TDbContext>(Penetrates.ConfigureDbContext(options =>
+            services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext(options =>
             {
                 var _options = ConfigureDatabase<TDbContext>(providerName, connStr, options);
                 optionBuilder?.Invoke(_options);
@@ -96,16 +95,17 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="poolSize">池大小</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDbPool<TDbContext, TDbContextLocator>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, int poolSize = 100, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
-            where TDbContextLocator : class, IDbContextLocator
+        public static IServiceCollection AddStarshineDbContext<TDbContext, TDbContextLocator>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, int poolSize = 100, params IInterceptor[] interceptors)
+            where TDbContext : StarshineDbContext<TDbContext>
+            where TDbContextLocator : class, IDbContextProvider
         {
+            // 避免重复注册默认数据库上下文
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
 
             // 配置数据库上下文
-            services.AddDbContextPool<TDbContext>(Penetrates.ConfigureDbContext(optionBuilder, interceptors), poolSize: poolSize);
-
+            services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext(optionBuilder, interceptors), poolSize: poolSize);
             return services;
         }
 
@@ -119,14 +119,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString">连接字符串</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddDb<TDbContext>(this IServiceCollection services, string providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, params IInterceptor[] interceptors)
+        public static IServiceCollection AddDb<TDbContext>(this IServiceCollection services, string? providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, params IInterceptor[] interceptors)
             where TDbContext : DbContext
         {
             // 避免重复注册默认数据库上下文
-            if (Penetrates.DbContextDescriptors.ContainsKey(typeof(MasterDbContextLocator))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
+            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextProvider))) 
+                throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
 
             // 注册数据库上下文
-            return services.AddDb<TDbContext, MasterDbContextLocator>(providerName, optionBuilder, connectionString, interceptors);
+            return services.AddDb<TDbContext, DefaultDbContextProvider>(providerName, optionBuilder, connectionString, interceptors);
         }
 
         /// <summary>
@@ -141,10 +142,10 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : DbContext
         {
             // 避免重复注册默认数据库上下文
-            if (Penetrates.DbContextDescriptors.ContainsKey(typeof(MasterDbContextLocator))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
+            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextProvider))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
 
             // 注册数据库上下文
-            return services.AddDb<TDbContext, MasterDbContextLocator>(optionBuilder, interceptors);
+            return services.AddDb<TDbContext, DefaultDbContextProvider>(optionBuilder, interceptors);
         }
 
         /// <summary>
@@ -159,15 +160,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
         public static IServiceCollection AddDb<TDbContext, TDbContextLocator>(this IServiceCollection services, string providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
-            where TDbContextLocator : class, IDbContextLocator
+            where TDbContext : StarshineDbContext<TDbContext>
+            where TDbContextLocator : class, IDbContextProvider
         {
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
 
             // 配置数据库上下文
             var connStr = DbProvider.GetConnectionString<TDbContext>(connectionString);
-            services.AddDbContext<TDbContext>(Penetrates.ConfigureDbContext(options =>
+            services.AddDbContext<TDbContext>(DbContextHelper.ConfigureDbContext(options =>
             {
                 var _options = ConfigureDatabase<TDbContext>(providerName, connStr, options);
                 optionBuilder?.Invoke(_options);
@@ -186,14 +187,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="interceptors">拦截器</param>
         /// <returns>服务集合</returns>
         public static IServiceCollection AddDb<TDbContext, TDbContextLocator>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, params IInterceptor[] interceptors)
-            where TDbContext : DbContext
-            where TDbContextLocator : class, IDbContextLocator
+            where TDbContext : StarshineDbContext<TDbContext>
+            where TDbContextLocator : class, IDbContextProvider
         {
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
 
             // 配置数据库上下文
-            services.AddDbContext<TDbContext>(Penetrates.ConfigureDbContext(optionBuilder, interceptors));
+            services.AddDbContext<TDbContext>(DbContextHelper.ConfigureDbContext(optionBuilder, interceptors));
 
             return services;
         }
@@ -243,7 +244,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                         // 处理迁移程序集
                         optionsType.GetMethod("MigrationsAssembly")
-                                   .Invoke(options, new[] { Penetrates.DbSettings.MigrationAssemblyName });
+                                   .Invoke(options, new[] { DbContextHelper.DbSettings.MigrationAssemblyName });
                     };
 
                     dbContextOptionsBuilder = UseMethod
@@ -281,7 +282,7 @@ namespace Microsoft.Extensions.DependencyInjection
             DatabaseProviderUseMethodCollection = new ConcurrentDictionary<string, (MethodInfo, object)>();
             MigrationsAssemblyAction = options => options.GetType()
                 .GetMethod("MigrationsAssembly")
-                .Invoke(options, new[] { Penetrates.DbSettings.MigrationAssemblyName });
+                .Invoke(options, new[] { DbContextHelper.DbSettings.MigrationAssemblyName });
         }
 
         /// <summary>
@@ -378,6 +379,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             string providerVersion = providerNameAndVersion.Length > 1 ? providerNameAndVersion[1] : default;
             return (providerName, providerVersion);
+        }
+
+        private static void CheckDbContextProvider<TDbContextProvider>()
+            where TDbContextProvider : class, IDbContextProvider
+        { 
+            
         }
     }
 }

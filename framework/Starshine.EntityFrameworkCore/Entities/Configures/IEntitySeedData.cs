@@ -6,7 +6,7 @@ namespace Starshine.EntityFrameworkCore
     /// 数据库种子数据依赖接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public interface IEntitySeedData<TEntity> : IEntitySeedData<TEntity, MasterDbContextLocator>
+    public interface IEntitySeedData<TEntity> : IEntitySeedData<TEntity, DefaultDbContextProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

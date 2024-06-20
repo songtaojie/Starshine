@@ -158,7 +158,7 @@ namespace Starshine.EntityFrameworkCore
             if (connStr.Contains("=")) return connStr;
             else
             {
-                var configuration = Penetrates.GetService<IConfiguration>();
+                var configuration = DbContextHelper.GetService<IConfiguration>();
 
                 // 如果包含 : 符号，那么认为是一个 Key 路径
                 if (connStr.Contains(":")) return configuration[connStr];

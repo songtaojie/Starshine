@@ -38,7 +38,7 @@ namespace Starshine.EntityFrameworkCore
         public EntityExecutePart<TEntity> Change<TDbContextLocator>()
             where TDbContextLocator : class, IDbContextLocator
         {
-            DbContextLocator = typeof(TDbContextLocator) ?? typeof(MasterDbContextLocator);
+            DbContextLocator = typeof(TDbContextLocator) ?? typeof(DefaultDbContextProvider);
             return this;
         }
 
@@ -48,7 +48,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public EntityExecutePart<TEntity> Change(Type dbContextLocator)
         {
-            DbContextLocator = dbContextLocator ?? typeof(MasterDbContextLocator);
+            DbContextLocator = dbContextLocator ?? typeof(DefaultDbContextProvider);
             return this;
         }
     }

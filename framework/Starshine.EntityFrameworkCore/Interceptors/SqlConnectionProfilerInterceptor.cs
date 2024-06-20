@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -19,14 +20,13 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 是否打印数据库连接信息
         /// </summary>
-        private readonly bool IsPrintDbConnectionInfo;
-
+        private readonly DbSettingsOptions _dbSettings;
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SqlConnectionProfilerInterceptor()
+        public SqlConnectionProfilerInterceptor(IOptionsSnapshot<DbSettingsOptions> options)
         {
-            IsPrintDbConnectionInfo = Penetrates.DbSettings.PrintDbConnectionInfo == true;
+            _dbSettings = options.Value;
         }
 
         /// <summary>
@@ -67,8 +67,11 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="eventData">数据库连接事件数据</param>
         private void PrintConnectionToMiniProfiler(DbConnection connection, ConnectionEventData eventData)
         {
-            // 打印连接信息消息
-            Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {eventData.ConnectionId}] / [Database: {connection.Database}]{(IsPrintDbConnectionInfo ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}");
+            if (_dbSettings.EnabledMiniProfiler == true)
+            {
+                // 打印连接信息消息
+                DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Information", $"[Connection Id: {eventData.ConnectionId}] / [Database: {connection.Database}]{(_dbSettings.PrintConnectionString == true ? $" / [Connection String: {connection.ConnectionString}]" : string.Empty)}");
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Starshine.EntityFrameworkCore
     /// <summary>
     /// 工作单元拦截器
     /// </summary>
-    internal sealed class UnitOfWorkFilter : IAsyncActionFilter, IOrderedFilter
+    internal sealed class StarshineUnitOfWorkActionFilter : IAsyncActionFilter, IOrderedFilter
     {
         /// <summary>
         /// MiniProfiler 分类名
@@ -31,7 +31,7 @@ namespace Starshine.EntityFrameworkCore
         /// 构造函数
         /// </summary>
         /// <param name="dbContextPool"></param>
-        public UnitOfWorkFilter(IDbContextPool dbContextPool)
+        public StarshineUnitOfWorkActionFilter(IDbContextPool dbContextPool)
         {
             _dbContextPool = dbContextPool;
         }
@@ -44,8 +44,14 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            // 获取动作方法描述器
             var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor == null)
+            {
+                await next();
+                return;
+            }
+
+            // 获取动作方法描述器
             var method = actionDescriptor.MethodInfo;
 
             // 判断是否贴有工作单元特性
@@ -60,7 +66,7 @@ namespace Starshine.EntityFrameworkCore
             else
             {
                 // 打印事务开始消息
-                Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Beginning");
+                DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Beginning");
 
                 var dbContexts = _dbContextPool.GetDbContexts();
                 IDbContextTransaction dbContextTransaction;
@@ -86,7 +92,7 @@ namespace Starshine.EntityFrameworkCore
                 // 创建临时数据库上下文
                 else
                 {
-                    var defaultDbContextLocator = Penetrates.DbContextDescriptors.LastOrDefault();
+                    var defaultDbContextLocator = DbContextHelper.DbContextDescriptors.LastOrDefault();
 
                     var newDbContext = Db.GetDbContext(defaultDbContextLocator.Key);
 
@@ -111,7 +117,7 @@ namespace Starshine.EntityFrameworkCore
                         dbContextTransaction?.Commit();
 
                         // 打印事务提交消息
-                        Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Completed", $"Transaction Completed! Has {hasChangesCount} DbContext Changes.");
+                        DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Completed", $"Transaction Completed! Has {hasChangesCount} DbContext Changes.");
                     }
                     catch
                     {
@@ -119,7 +125,7 @@ namespace Starshine.EntityFrameworkCore
                         if (dbContextTransaction.GetDbTransaction().Connection != null) dbContextTransaction?.Rollback();
 
                         // 打印事务回滚消息
-                        Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
+                        DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
 
                         throw;
                     }
@@ -135,7 +141,7 @@ namespace Starshine.EntityFrameworkCore
                     dbContextTransaction?.Dispose();
 
                     // 打印事务回滚消息
-                    Penetrates.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
+                    DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
                 }
             }
 

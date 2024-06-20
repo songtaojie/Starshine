@@ -4,7 +4,7 @@ namespace Starshine.EntityFrameworkCore
     /// <summary>
     /// 数据库实体依赖基接口（使用默认的数据库上下文定位器）
     /// </summary>
-    public interface IEntity : IEntity<MasterDbContextLocator>
+    public interface IEntity : IEntity<DefaultDbContextProvider>
     {
     }
 

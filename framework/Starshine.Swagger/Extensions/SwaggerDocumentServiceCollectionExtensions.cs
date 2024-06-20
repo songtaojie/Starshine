@@ -16,13 +16,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <param name="swaggerSettings">swagger配置</param>
-        /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddSwaggerDocuments(this IServiceCollection services, Action<SwaggerSettingsOptions>? swaggerSettings = default, Action<SwaggerGenOptions>? swaggerGenConfigure = default)
+        public static IServiceCollection AddStarshineSwagger(this IServiceCollection services, Action<SwaggerSettingsOptions>? swaggerSettings = default)
         {
             services.AddOptions<SwaggerSettingsOptions>()
                 .BindConfiguration("SwaggerSettings")
-                .Configure<IConfiguration>((options, configuration) =>
+                .Configure(options =>
                 {
                     options.Configure(options);
                     swaggerSettings?.Invoke(options);
@@ -32,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddOptions<SwaggerGenOptions>()
                 .Configure<SwaggerDocumentBuilder>((options, builder) =>
                 {
-                    builder.BuildSwaggerGen(options, swaggerGenConfigure);
+                    builder.BuildSwaggerGen(options);
                 });
 
             return services;
@@ -43,11 +42,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="mvcBuilder">Mvc 构建器</param>
         /// <param name="swaggerSettings">swagger配置</param>
-        /// <param name="swaggerGenConfigure">自定义配置</param>
         /// <returns>服务集合</returns>
-        public static IMvcBuilder AddSwaggerDocuments(this IMvcBuilder mvcBuilder, Action<SwaggerSettingsOptions>? swaggerSettings = default, Action<SwaggerGenOptions>? swaggerGenConfigure = default)
+        public static IMvcBuilder AddStarshineSwagger(this IMvcBuilder mvcBuilder, Action<SwaggerSettingsOptions>? swaggerSettings = default)
         {
-            mvcBuilder.Services.AddSwaggerDocuments(swaggerSettings, swaggerGenConfigure);
+            mvcBuilder.Services.AddStarshineSwagger(swaggerSettings);
             return mvcBuilder;
         }
     }

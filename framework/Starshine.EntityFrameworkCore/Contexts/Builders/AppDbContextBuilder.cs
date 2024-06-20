@@ -40,7 +40,7 @@ namespace Starshine.EntityFrameworkCore
         {
 
             // 扫描程序集，获取数据库实体相关类型
-            EntityCorrelationTypes = Penetrates.EffectiveTypes.Where(t => (typeof(IPrivateEntity).IsAssignableFrom(t) || typeof(IPrivateModelBuilder).IsAssignableFrom(t))
+            EntityCorrelationTypes = DbContextHelper.EffectiveTypes.Where(t => (typeof(IPrivateEntity).IsAssignableFrom(t) || typeof(IPrivateModelBuilder).IsAssignableFrom(t))
                 && t.IsClass && !t.IsAbstract && !t.IsGenericType && !t.IsInterface && !t.IsDefined(typeof(NonAutomaticAttribute), true))
                 .ToList();
 
@@ -53,7 +53,7 @@ namespace Starshine.EntityFrameworkCore
             }
 
             // 查找所有数据库函数，必须是公开静态方法，且所在父类也必须是公开静态方法
-            DbFunctionMethods = Penetrates.EffectiveTypes
+            DbFunctionMethods = DbContextHelper.EffectiveTypes
                 .Where(t => t.IsAbstract && t.IsSealed && t.IsClass && !t.IsDefined(typeof(NonAutomaticAttribute), true))
                 .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(m => m.IsDefined(typeof(QueryableFunctionAttribute), true))).ToList();
         }
@@ -370,7 +370,7 @@ namespace Starshine.EntityFrameworkCore
             var queryableFunctionAttribute = method.GetCustomAttribute<QueryableFunctionAttribute>(true);
 
             // 如果数据库上下文定位器为默认定位器且该函数没有定义数据库上下文定位器，则返回 true
-            if (dbContextLocator == typeof(MasterDbContextLocator) && queryableFunctionAttribute.DbContextLocators.Length == 0) return true;
+            if (dbContextLocator == typeof(DefaultDbContextProvider) && queryableFunctionAttribute.DbContextLocators.Length == 0) return true;
 
             // 判断是否包含当前数据库上下文
             if (queryableFunctionAttribute.DbContextLocators.Contains(dbContextLocator)) return true;
@@ -430,7 +430,7 @@ namespace Starshine.EntityFrameworkCore
                             if (typeof(DbContext).IsAssignableFrom(entityCorrelationType))
                             {
                                 // 判断是否已经注册了上下文并且是否等于当前上下文
-                                if (Penetrates.DbContextDescriptors.Values.Contains(entityCorrelationType) && entityCorrelationType == dbContext.GetType())
+                                if (DbContextHelper.DbContextDescriptors.Values.Contains(entityCorrelationType) && entityCorrelationType == dbContext.GetType())
                                 {
                                     result.ModelBuilderFilterInstances.Add(dbContext as IPrivateModelBuilderFilter);
                                 }

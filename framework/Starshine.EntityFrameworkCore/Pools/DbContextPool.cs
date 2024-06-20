@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -23,13 +24,13 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         private readonly bool EnabledMiniProfiler;
 
+        private readonly DbSettingsOptions _dbSettings;
         /// <summary>
         /// 构造函数
         /// </summary>
-        public DbContextPool()
+        public DbContextPool(IOptionsSnapshot<DbSettingsOptions> options)
         {
-            EnabledMiniProfiler = Penetrates.DbSettings.EnabledMiniProfiler == true;
-
+            _dbSettings = options.Value;
             dbContexts = new ConcurrentBag<DbContext>();
             failedDbContexts = new ConcurrentBag<DbContext>();
         }

@@ -15,7 +15,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 数据库上下文定位器
         /// </summary>
-        public Type DbContextLocator { get; private set; } = typeof(MasterDbContextLocator);
+        public Type DbContextLocator { get; private set; } = typeof(DefaultDbContextProvider);
 
         /// <summary>
         /// 设置服务提供器

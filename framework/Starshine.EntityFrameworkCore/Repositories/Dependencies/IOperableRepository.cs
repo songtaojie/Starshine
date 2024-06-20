@@ -12,7 +12,7 @@ namespace Starshine.EntityFrameworkCore
     /// 可操作性仓储接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public partial interface IOperableRepository<TEntity> : IOperableRepository<TEntity, MasterDbContextLocator>
+    public partial interface IOperableRepository<TEntity> : IOperableRepository<TEntity, DefaultDbContextProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

@@ -130,7 +130,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 else
                 {
-                    return null!;
+                    throw new NotImplementedException(nameof(IRedisClient));
                 }
             });
             services.TryAddSingleton<ICache>(sp =>

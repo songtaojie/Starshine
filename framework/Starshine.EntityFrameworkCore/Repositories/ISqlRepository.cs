@@ -6,7 +6,7 @@ namespace Starshine.EntityFrameworkCore
     /// <summary>
     /// Sql 操作仓储接口
     /// </summary>
-    public interface ISqlRepository : ISqlRepository<MasterDbContextLocator>
+    public interface ISqlRepository : ISqlRepository<DefaultDbContextProvider>
         , ISqlExecutableRepository
         , ISqlReaderRepository
     {

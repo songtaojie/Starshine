@@ -6,7 +6,7 @@ namespace Starshine.EntityFrameworkCore
     /// 动态表名依赖接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public interface IEntityMutableTable<TEntity> : IEntityMutableTable<TEntity, MasterDbContextLocator>
+    public interface IEntityMutableTable<TEntity> : IEntityMutableTable<TEntity, DefaultDbContextProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

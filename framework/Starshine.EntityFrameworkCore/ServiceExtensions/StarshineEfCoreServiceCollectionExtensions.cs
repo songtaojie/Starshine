@@ -19,8 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = null)
         {
-            Penetrates.InternalServices = services;
-            ConfigureDbOptions(services, optionsBuilder);
+            ConfigureDbSettingsOptions(services, optionsBuilder);
 
             // 注册数据库上下文池
             services.TryAddScoped<IDbContextPool, DbContextPool>();
@@ -60,9 +59,9 @@ namespace Microsoft.Extensions.DependencyInjection
             // 注册全局工作单元过滤器
             services.Configure<AspNetCore.Mvc.MvcOptions>(options =>
             {
-                options.Filters.Add<UnitOfWorkFilter>();
+                options.Filters.Add<StarshineUnitOfWorkActionFilter>();
             });
-            if (Penetrates.DbSettings.EnabledMiniProfiler == true)
+            if (DbContextHelper.DbSettings.EnabledMiniProfiler == true)
             {
                 services.AddMiniProfilerService();
             }
@@ -78,7 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private static DbContext ResolveDbContext(IServiceProvider provider, Type dbContextLocator)
         {
             // 判断定位器是否绑定了数据库上下文
-            Penetrates.CheckDbContextLocator(dbContextLocator, out var dbContextType);
+            DbContextHelper.CheckDbContextLocator(dbContextLocator, out Type dbContextType);
 
             // 动态解析数据库上下文
             var dbContext = provider.GetService(dbContextType) as DbContext;
@@ -103,23 +102,23 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="TDbContext">数据库上下文</typeparam>
         /// <param name="services">服务提供器</param>
         public static IServiceCollection RegisterDbContext<TDbContext>(this IServiceCollection services)
-            where TDbContext : DbContext
+            where TDbContext : StarshineDbContext<TDbContext>
         {
-            return services.RegisterDbContext<TDbContext, MasterDbContextLocator>();
+            return services.RegisterDbContext<TDbContext, DefaultDbContextProvider>();
         }
 
         /// <summary>
         /// 注册数据库上下文
         /// </summary>
         /// <typeparam name="TDbContext">数据库上下文</typeparam>
-        /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
+        /// <typeparam name="TDbContextProvider">数据库上下文定位器</typeparam>
         /// <param name="services">服务提供器</param>
-        public static IServiceCollection RegisterDbContext<TDbContext, TDbContextLocator>(this IServiceCollection services)
-            where TDbContext : DbContext
-            where TDbContextLocator : class, IDbContextLocator
+        public static IServiceCollection RegisterDbContext<TDbContext, TDbContextProvider>(this IServiceCollection services)
+            where TDbContext : StarshineDbContext<TDbContext>
+            where TDbContextProvider : class, IDbContextProvider
         {
             // 存储数据库上下文和定位器关系
-            Penetrates.DbContextDescriptors.AddOrUpdate(typeof(TDbContextLocator), typeof(TDbContext), (key, value) => typeof(TDbContext));
+            DbContextHelper.AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>();
             // 注册数据库上下文
             services.TryAddScoped<TDbContext>();
 
@@ -131,7 +130,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services"></param>
         /// <param name="dbSettings">配置</param>
-        private static void ConfigureDbOptions(IServiceCollection services, Action<DbSettingsOptions>? dbSettings)
+        private static void ConfigureDbSettingsOptions(IServiceCollection services, Action<DbSettingsOptions>? dbSettings)
         {
             // 配置验证
             services.AddOptions<DbSettingsOptions>()

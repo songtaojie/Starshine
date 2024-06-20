@@ -696,7 +696,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         private IPrivateRepository<TEntity> GetRepository()
         {
-            return Penetrates.GetService(typeof(IRepository<,>).MakeGenericType(typeof(TEntity), DbContextLocator), ContextScoped) as IPrivateRepository<TEntity>;
+            return DbContextHelper.GetService(typeof(IRepository<,>).MakeGenericType(typeof(TEntity), DbContextLocator), ContextScoped) as IPrivateRepository<TEntity>;
         }
     }
 }

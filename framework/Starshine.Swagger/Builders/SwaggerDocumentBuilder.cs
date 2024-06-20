@@ -103,8 +103,7 @@ internal class SwaggerDocumentBuilder
     /// Swagger 生成器构建
     /// </summary>
     /// <param name="swaggerGenOptions">Swagger 生成器配置</param>
-    /// <param name="configure">自定义配置</param>
-    internal void BuildSwaggerGen(SwaggerGenOptions swaggerGenOptions, Action<SwaggerGenOptions>? configure = default)
+    internal void BuildSwaggerGen(SwaggerGenOptions swaggerGenOptions)
     {
         //// 创建分组文档
         CreateSwaggerDocs(swaggerGenOptions, _swaggerSettings);
@@ -140,7 +139,7 @@ internal class SwaggerDocumentBuilder
         swaggerGenOptions.OperationFilter<ApiActionFilter>();
 
         // 自定义配置
-        configure?.Invoke(swaggerGenOptions);
+        _swaggerSettings.SwaggerGenOptionsAction?.Invoke(swaggerGenOptions);
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ namespace Starshine.EntityFrameworkCore
     /// 可写仓储接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public partial interface IWritableRepository<TEntity> : IWritableRepository<TEntity, MasterDbContextLocator>
+    public partial interface IWritableRepository<TEntity> : IWritableRepository<TEntity, DefaultDbContextProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

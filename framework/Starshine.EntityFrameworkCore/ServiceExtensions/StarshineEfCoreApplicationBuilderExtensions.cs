@@ -14,9 +14,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseDatabaseMiniProfiler(this IApplicationBuilder app)
         {
-            Penetrates.ServiceProvider = app.ApplicationServices;
+            DbContextHelper.ServiceProvider = app.ApplicationServices;
 
-            if (Penetrates.DbSettings.EnabledMiniProfiler == true)
+            if (DbContextHelper.DbSettings.EnabledMiniProfiler == true)
             {
                 app.UseMiniProfiler();
             }
