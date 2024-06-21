@@ -121,7 +121,7 @@ namespace Starshine.EntityFrameworkCore
                 InMemoryDatabase
             };
 
-            DbContextAppDbContextAttributes = new ConcurrentDictionary<Type, AppDbContextAttribute>();
+            DbContextAppDbContextAttributes = new ConcurrentDictionary<Type, StarshineDbContextAttribute>();
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Starshine.EntityFrameworkCore
         /// <typeparam name="TDbContext"></typeparam>
         /// <param name="connectionString"></param>
         /// <returns></returns>
-        public static string GetConnectionString<TDbContext>(string connectionString = default)
+        public static string? GetConnectionString<TDbContext>(string? connectionString = default)
             where TDbContext : DbContext
         {
             if (!string.IsNullOrWhiteSpace(connectionString)) return connectionString;
@@ -186,25 +186,21 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 数据库上下文 [AppDbContext] 特性缓存
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, AppDbContextAttribute> DbContextAppDbContextAttributes;
+        private static readonly ConcurrentDictionary<Type, StarshineDbContextAttribute?> DbContextAppDbContextAttributes;
 
         /// <summary>
         /// 获取数据库上下文 [AppDbContext] 特性
         /// </summary>
         /// <param name="dbContexType"></param>
         /// <returns></returns>
-        internal static AppDbContextAttribute GetAppDbContextAttribute(Type dbContexType)
+        internal static StarshineDbContextAttribute? GetAppDbContextAttribute(Type dbContexType)
         {
-            return DbContextAppDbContextAttributes.GetOrAdd(dbContexType, Function);
+            return DbContextAppDbContextAttributes.GetOrAdd(dbContexType, GetOrAddFunction);
 
             // 本地静态函数
-            static AppDbContextAttribute Function(Type dbContextType)
+            static StarshineDbContextAttribute? GetOrAddFunction(Type dbContextType)
             {
-                if (!dbContextType.IsDefined(typeof(AppDbContextAttribute), true)) return default;
-
-                var appDbContextAttribute = dbContextType.GetCustomAttribute<AppDbContextAttribute>(true);
-
-                return appDbContextAttribute;
+                return dbContextType.GetCustomAttribute<StarshineDbContextAttribute>(true);
             }
         }
 

@@ -9,7 +9,7 @@ namespace Starshine.EntityFrameworkCore
     /// <summary>
     /// Sql 操作仓储实现
     /// </summary>
-    public partial class SqlRepository : SqlRepository<DefaultDbContextProvider>, ISqlRepository
+    public partial class SqlRepository : SqlRepository<DefaultDbContextTypeProvider>, ISqlRepository
     {
         /// <summary>
         /// 构造函数

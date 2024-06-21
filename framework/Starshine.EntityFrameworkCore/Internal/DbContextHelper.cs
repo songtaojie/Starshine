@@ -28,26 +28,13 @@ namespace Starshine.EntityFrameworkCore.Internal
         /// 数据库上下文描述器
         /// </summary>
         private static readonly ConcurrentDictionary<Type, Type> DbContextProviders;
-        /// <summary>
-        /// 应用有效程序集
-        /// </summary>
-        internal static readonly IEnumerable<Assembly> Assemblies;
 
-        /// <summary>
-        /// 有效程序集类型
-        /// </summary>
-        internal static readonly IEnumerable<Type> EffectiveTypes;
         /// <summary>
         /// 构造函数
         /// </summary>
         static DbContextHelper()
         {
             DbContextProviders = new ConcurrentDictionary<Type, Type>();
-
-            Assemblies = GetAssemblies();
-
-            EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()
-                .Where(u => u.IsPublic));
         }
 
         /// <summary>
@@ -57,7 +44,7 @@ namespace Starshine.EntityFrameworkCore.Internal
         /// <typeparam name="TDbContextProvider"></typeparam>
         internal static void AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>( )
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextProvider
+            where TDbContextProvider : class, IDbContextTypeProvider
         {
             DbContextProviders.AddOrUpdate(typeof(TDbContextProvider), typeof(TDbContext), (key, value) => typeof(TDbContext));
         }
@@ -79,20 +66,21 @@ namespace Starshine.EntityFrameworkCore.Internal
         /// <param name="optionBuilder">数据库上下文选项构建器</param>
         /// <param name="interceptors">拦截器</param>
         /// <returns></returns>
-        internal static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureDbContext(Action<DbContextOptionsBuilder> optionBuilder, params IInterceptor[] interceptors)
+        internal static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureDbContext(Action<IServiceProvider,DbContextOptionsBuilder> optionBuilder, params IInterceptor[] interceptors)
         {
-            return (scoped, options) =>
+            return (provider, options) =>
             {
-                var dbSettingsOptions =  scoped.GetRequiredService<IOptionsSnapshot<DbSettingsOptions>>();
+                var dbSettingsOptions = provider.GetRequiredService<IOptionsSnapshot<DbSettingsOptions>>();
                 if (dbSettingsOptions.Value.EnabledSqlLog == true)
                 {
                     options.EnableDetailedErrors()
                                 .EnableSensitiveDataLogging();
                 }
 
-                optionBuilder.Invoke(options);
+                optionBuilder.Invoke(provider,options);
                 // 添加拦截器
                 AddInterceptors(interceptors, options, dbSettingsOptions);
+                options.UseApplicationServiceProvider(provider);
                 //options.UseInternalServiceProvider(scoped);
             };
         }
@@ -150,30 +138,6 @@ namespace Starshine.EntityFrameworkCore.Internal
             // 判断是否是警告消息
             if (isError) customTiming.Errored = true;
         }
-
-        /// <summary>
-        /// 获取应用有效程序集
-        /// </summary>
-        /// <returns>IEnumerable</returns>
-        private static IEnumerable<Assembly> GetAssemblies()
-        {
-            // 需排除的程序集后缀
-            var excludeAssemblyNames = new string[] {
-                "Database.Migrations"
-            };
-
-            // 读取应用配置
-            var dependencyContext = DependencyContext.Default;
-
-            // 读取项目程序集或 Hx.Sdk 发布的包，或手动添加引用的dll，或配置特定的包前缀
-            var scanAssemblies = dependencyContext.CompileLibraries
-                .Where(u =>
-                       (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith(nameof(Starshine))))
-                .Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
-                .ToList();
-
-            return scanAssemblies;
-        }
+       
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Starshine.EntityFrameworkCore;
 using StackExchange.Profiling.Internal;
 using System;
+using Starshine;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -20,11 +21,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddMiniProfilerService(this IServiceCollection services)
         {
-            // 注册MiniProfiler 组件
-            services.AddMiniProfiler(options =>
+            if (App.GetConfig<bool>("DbSettings:EnabledMiniProfiler"))
             {
-                options.RouteBasePath = MiniProfilerRouteBasePath;
-            }).AddRelationalDiagnosticListener();
+                // 注册MiniProfiler 组件
+                services.AddMiniProfiler(options =>
+                {
+                    options.RouteBasePath = MiniProfilerRouteBasePath;
+                }).AddRelationalDiagnosticListener();
+            }
             return services;
         }
 

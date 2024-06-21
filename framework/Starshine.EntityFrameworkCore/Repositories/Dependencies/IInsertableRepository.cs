@@ -10,7 +10,7 @@ namespace Starshine.EntityFrameworkCore
     /// 可插入仓储接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public partial interface IInsertableRepository<TEntity> : IInsertableRepository<TEntity, DefaultDbContextProvider>
+    public partial interface IInsertableRepository<TEntity> : IInsertableRepository<TEntity, DefaultDbContextTypeProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

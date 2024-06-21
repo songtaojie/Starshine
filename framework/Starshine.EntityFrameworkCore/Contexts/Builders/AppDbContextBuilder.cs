@@ -111,7 +111,7 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="dbContextCorrelationType"></param>
         /// <param name="appDbContextAttribute">数据库上下文特性</param>
         /// <returns>EntityTypeBuilder</returns>
-        private static EntityTypeBuilder CreateEntityTypeBuilder(Type type, ModelBuilder modelBuilder, DbContext dbContext, Type dbContextType, Type dbContextLocator, DbContextCorrelationType dbContextCorrelationType, AppDbContextAttribute appDbContextAttribute = null)
+        private static EntityTypeBuilder CreateEntityTypeBuilder(Type type, ModelBuilder modelBuilder, DbContext dbContext, Type dbContextType, Type dbContextLocator, DbContextCorrelationType dbContextCorrelationType, StarshineDbContextAttribute appDbContextAttribute = null)
         {
             // 反射创建实体类型构建器
             var entityTypeBuilder = ModelBuildEntityMethod.MakeGenericMethod(type).Invoke(modelBuilder, null) as EntityTypeBuilder;
@@ -134,7 +134,7 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="entityTypeBuilder">实体类型构建器</param>
         /// <param name="dbContext">数据库上下文</param>
         /// <param name="dbContextType">数据库上下文类型</param>
-        private static void ConfigureEntityTableName(Type type, AppDbContextAttribute appDbContextAttribute, EntityTypeBuilder entityTypeBuilder, DbContext dbContext, Type dbContextType)
+        private static void ConfigureEntityTableName(Type type, StarshineDbContextAttribute appDbContextAttribute, EntityTypeBuilder entityTypeBuilder, DbContext dbContext, Type dbContextType)
         {
             // 获取表是否定义 [Table] 特性
             var tableAttribute = type.IsDefined(typeof(TableAttribute), true) ? type.GetCustomAttribute<TableAttribute>(true) : default;
@@ -370,7 +370,7 @@ namespace Starshine.EntityFrameworkCore
             var queryableFunctionAttribute = method.GetCustomAttribute<QueryableFunctionAttribute>(true);
 
             // 如果数据库上下文定位器为默认定位器且该函数没有定义数据库上下文定位器，则返回 true
-            if (dbContextLocator == typeof(DefaultDbContextProvider) && queryableFunctionAttribute.DbContextLocators.Length == 0) return true;
+            if (dbContextLocator == typeof(DefaultDbContextTypeProvider) && queryableFunctionAttribute.DbContextLocators.Length == 0) return true;
 
             // 判断是否包含当前数据库上下文
             if (queryableFunctionAttribute.DbContextLocators.Contains(dbContextLocator)) return true;

@@ -84,7 +84,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public static DbContext GetDbContext(IServiceProvider scoped = default)
         {
-            return GetDbContext(typeof(DefaultDbContextProvider), scoped);
+            return GetDbContext(typeof(DefaultDbContextTypeProvider), scoped);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public static DbContext GetNewDbContext(IServiceProvider scoped = default)
         {
-            return GetNewDbContext(typeof(DefaultDbContextProvider), scoped);
+            return GetNewDbContext(typeof(DefaultDbContextTypeProvider), scoped);
         }
 
         /// <summary>

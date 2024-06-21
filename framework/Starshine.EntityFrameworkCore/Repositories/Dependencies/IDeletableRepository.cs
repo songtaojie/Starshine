@@ -10,7 +10,7 @@ namespace Starshine.EntityFrameworkCore
     /// 可删除仓储接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public partial interface IDeletableRepository<TEntity> : IDeletableRepository<TEntity, DefaultDbContextProvider>
+    public partial interface IDeletableRepository<TEntity> : IDeletableRepository<TEntity, DefaultDbContextTypeProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

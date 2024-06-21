@@ -13,7 +13,7 @@ namespace Starshine.EntityFrameworkCore
     /// 默认应用数据库上下文
     /// </summary>
     /// <typeparam name="TDbContext">数据库上下文</typeparam>
-    public abstract class StarshineDbContext<TDbContext> : StarshineDbContext<TDbContext, DefaultDbContextProvider>
+    public abstract class StarshineDbContext<TDbContext> : StarshineDbContext<TDbContext, DefaultDbContextTypeProvider>
         where TDbContext : DbContext
     {
         /// <summary>

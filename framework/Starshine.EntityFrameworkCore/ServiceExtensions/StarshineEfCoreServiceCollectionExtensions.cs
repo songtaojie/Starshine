@@ -2,6 +2,7 @@
 using Starshine.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Starshine;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -10,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class StarshineEfCoreServiceCollectionExtensions
     {
-        private const string DbSettingsOptionsKey = "ConnectionStrings";
+        private const string DbSettingsOptionsKey = "DbSettings";
         /// <summary>
         /// 添加数据库上下文
         /// </summary>
@@ -61,10 +62,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.Filters.Add<StarshineUnitOfWorkActionFilter>();
             });
-            if (DbContextHelper.DbSettings.EnabledMiniProfiler == true)
-            {
-                services.AddMiniProfilerService();
-            }
+            services.AddMiniProfilerService();
             return services;
         }
 
@@ -91,9 +89,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // 添加数据库上下文到池中
             var dbContextPool = provider.GetService<IDbContextPool>();
-            dbContextPool?.AddToPool(dbContext);
+            dbContextPool?.AddToPool(dbContext!);
 
-            return dbContext;
+            return dbContext!;
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection RegisterDbContext<TDbContext>(this IServiceCollection services)
             where TDbContext : StarshineDbContext<TDbContext>
         {
-            return services.RegisterDbContext<TDbContext, DefaultDbContextProvider>();
+            return services.RegisterDbContext<TDbContext, DefaultDbContextTypeProvider>();
         }
 
         /// <summary>
@@ -115,7 +113,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">服务提供器</param>
         public static IServiceCollection RegisterDbContext<TDbContext, TDbContextProvider>(this IServiceCollection services)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextProvider
+            where TDbContextProvider : class, IDbContextTypeProvider
         {
             // 存储数据库上下文和定位器关系
             DbContextHelper.AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>();

@@ -5,7 +5,7 @@ namespace Starshine.EntityFrameworkCore
     /// 数据库实体类型配置依赖接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public interface IEntityTypeBuilder<TEntity> : IEntityTypeBuilder<TEntity, DefaultDbContextProvider>
+    public interface IEntityTypeBuilder<TEntity> : IEntityTypeBuilder<TEntity, DefaultDbContextTypeProvider>
         where TEntity : class, IPrivateEntity, new()
     {
     }

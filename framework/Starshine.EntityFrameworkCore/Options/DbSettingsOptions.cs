@@ -41,7 +41,7 @@ namespace Starshine.EntityFrameworkCore
         public void PostConfigure(string name, DbSettingsOptions options)
         {
             options.EnabledMiniProfiler ??= true;
-            options.PrintDbConnectionInfo ??= true;
+            options.PrintConnectionString ??= true;
             options.EnabledSqlLog ??= true;
             MigrationAssemblyName ??= Assembly.GetEntryAssembly()?.GetName()?.Name;
         }

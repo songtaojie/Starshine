@@ -30,10 +30,10 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : StarshineDbContext<TDbContext>
         {
             // 避免重复注册默认数据库上下文
-            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextTypeProvider));
 
             // 注册数据库上下文
-            return services.AddStarshineDbContext<TDbContext, DefaultDbContextProvider>(providerName, optionBuilder, connectionString, poolSize, interceptors);
+            return services.AddStarshineDbContext<TDbContext, DefaultDbContextTypeProvider>(providerName, optionBuilder, connectionString, poolSize, interceptors);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : StarshineDbContext<TDbContext>
         {
             // 注册数据库上下文
-            return services.AddStarshineDbContext<TDbContext, DefaultDbContextProvider>(optionBuilder, poolSize, interceptors);
+            return services.AddStarshineDbContext<TDbContext, DefaultDbContextTypeProvider>(optionBuilder, poolSize, interceptors);
         }
 
         /// <summary>
@@ -66,18 +66,24 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddStarshineDbContext<TDbContext, TDbContextProvider>(this IServiceCollection services, string? providerName = default, Action<DbContextOptionsBuilder>? optionBuilder = default, string? connectionString = default, int poolSize = 100, params IInterceptor[] interceptors)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextProvider
+            where TDbContextProvider : class, IDbContextTypeProvider
         {
             // 避免重复注册默认数据库上下文
-            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextTypeProvider));
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextProvider>();
 
             // 配置数据库上下文
             var connStr = DbProvider.GetConnectionString<TDbContext>(connectionString);
 
-            services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext(options =>
+            services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext((provider, options) =>
             {
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    var dbContextProvider = provider.GetRequiredService<IDbContextProvider>();
+                    connectionString = dbContextProvider.GetConnectionString<TDbContext>();
+                }
+
                 var _options = ConfigureDatabase<TDbContext>(providerName, connStr, options);
                 optionBuilder?.Invoke(_options);
             }, interceptors), poolSize: poolSize);
@@ -97,10 +103,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddStarshineDbContext<TDbContext, TDbContextLocator>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, int poolSize = 100, params IInterceptor[] interceptors)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextLocator : class, IDbContextProvider
+            where TDbContextLocator : class, IDbContextTypeProvider
         {
             // 避免重复注册默认数据库上下文
-            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextProvider));
+            DbContextHelper.CheckExistDbContextProvider(typeof(DefaultDbContextTypeProvider));
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
 
@@ -123,11 +129,11 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : DbContext
         {
             // 避免重复注册默认数据库上下文
-            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextProvider))) 
+            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextTypeProvider))) 
                 throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
 
             // 注册数据库上下文
-            return services.AddDb<TDbContext, DefaultDbContextProvider>(providerName, optionBuilder, connectionString, interceptors);
+            return services.AddDb<TDbContext, DefaultDbContextTypeProvider>(providerName, optionBuilder, connectionString, interceptors);
         }
 
         /// <summary>
@@ -142,10 +148,10 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : DbContext
         {
             // 避免重复注册默认数据库上下文
-            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextProvider))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
+            if (DbContextHelper.DbContextDescriptors.ContainsKey(typeof(DefaultDbContextTypeProvider))) throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
 
             // 注册数据库上下文
-            return services.AddDb<TDbContext, DefaultDbContextProvider>(optionBuilder, interceptors);
+            return services.AddDb<TDbContext, DefaultDbContextTypeProvider>(optionBuilder, interceptors);
         }
 
         /// <summary>
@@ -161,7 +167,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddDb<TDbContext, TDbContextLocator>(this IServiceCollection services, string providerName = default, Action<DbContextOptionsBuilder> optionBuilder = null, string connectionString = default, params IInterceptor[] interceptors)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextLocator : class, IDbContextProvider
+            where TDbContextLocator : class, IDbContextTypeProvider
         {
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
@@ -188,7 +194,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IServiceCollection AddDb<TDbContext, TDbContextLocator>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionBuilder, params IInterceptor[] interceptors)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextLocator : class, IDbContextProvider
+            where TDbContextLocator : class, IDbContextTypeProvider
         {
             // 注册数据库上下文
             services.RegisterDbContext<TDbContext, TDbContextLocator>();
@@ -206,7 +212,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="providerName">数据库提供器</param>
         /// <param name="connectionString">数据库连接字符串</param>
         /// <param name="options">数据库上下文选项构建器</param>
-        private static DbContextOptionsBuilder ConfigureDatabase<TDbContext>(string providerName, string connectionString, DbContextOptionsBuilder options)
+        private static DbContextOptionsBuilder ConfigureDatabase<TDbContext>(string? providerName, string? connectionString, DbContextOptionsBuilder options)
              where TDbContext : DbContext
         {
             var dbContextOptionsBuilder = options;
@@ -264,11 +270,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return dbContextOptionsBuilder;
         }
 
-        /// <summary>
-        /// 数据库提供器 UseXXX 方法缓存集合
-        /// </summary>
-        private static readonly ConcurrentDictionary<string, (MethodInfo, object)> DatabaseProviderUseMethodCollection;
-
+       
         /// <summary>
         /// 配置Code First 程序集 Action委托
         /// </summary>
@@ -285,87 +287,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .Invoke(options, new[] { DbContextHelper.DbSettings.MigrationAssemblyName });
         }
 
-        /// <summary>
-        /// 获取数据库提供器对应的 useXXX 方法
-        /// </summary>
-        /// <param name="providerName">数据库提供器</param>
-        /// <param name="version"></param>
-        /// <returns></returns>
-        private static (MethodInfo UseMethod, object MySqlVersion) GetDatabaseProviderUseMethod(string providerName, string version)
-        {
-            return DatabaseProviderUseMethodCollection.GetOrAdd(providerName, Function(providerName, version));
-
-            // 本地静态方法
-            static (MethodInfo, object) Function(string providerName, string version)
-            {
-                // 处理最新 MySql 包兼容问题
-                // https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/commit/83c699f5b747253dc1b6fa9c470f469467d77686
-                object mySqlVersionInstance = default;
-
-                // 加载对应的数据库提供器程序集
-                var databaseProviderAssembly = Assembly.Load(providerName);
-
-                // 数据库提供器服务拓展类型名
-                var databaseProviderServiceExtensionTypeName = providerName switch
-                {
-                    DbProvider.SqlServer => "SqlServerDbContextOptionsExtensions",
-                    DbProvider.Sqlite => "SqliteDbContextOptionsBuilderExtensions",
-                    DbProvider.Cosmos => "CosmosDbContextOptionsExtensions",
-                    DbProvider.InMemoryDatabase => "InMemoryDbContextOptionsExtensions",
-                    DbProvider.MySql => "MySqlDbContextOptionsBuilderExtensions",
-                    DbProvider.MySqlOfficial => "MySQLDbContextOptionsExtensions",
-                    DbProvider.Npgsql => "NpgsqlDbContextOptionsBuilderExtensions",
-                    DbProvider.Oracle => "OracleDbContextOptionsExtensions",
-                    DbProvider.Firebird => "FbDbContextOptionsBuilderExtensions",
-                    DbProvider.Dm => "DmDbContextOptionsExtensions",
-                    _ => null
-                };
-
-                // 加载拓展类型
-                var databaseProviderServiceExtensionType = databaseProviderAssembly.GetType($"Microsoft.EntityFrameworkCore.{databaseProviderServiceExtensionTypeName}");
-
-                // useXXX方法名
-                var useMethodName = providerName switch
-                {
-                    DbProvider.SqlServer => $"Use{nameof(DbProvider.SqlServer)}",
-                    DbProvider.Sqlite => $"Use{nameof(DbProvider.Sqlite)}",
-                    DbProvider.Cosmos => $"Use{nameof(DbProvider.Cosmos)}",
-                    DbProvider.InMemoryDatabase => $"Use{nameof(DbProvider.InMemoryDatabase)}",
-                    DbProvider.MySql => $"Use{nameof(DbProvider.MySql)}",
-                    DbProvider.MySqlOfficial => $"UseMySQL",
-                    DbProvider.Npgsql => $"Use{nameof(DbProvider.Npgsql)}",
-                    DbProvider.Oracle => $"Use{nameof(DbProvider.Oracle)}",
-                    DbProvider.Firebird => $"Use{nameof(DbProvider.Firebird)}",
-                    DbProvider.Dm => $"Use{nameof(DbProvider.Dm)}",
-                    _ => null
-                };
-
-                // 获取UseXXX方法
-                MethodInfo useMethod;
-
-                // 处理最新 MySql 第三方包兼容问题
-                // https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/commit/83c699f5b747253dc1b6fa9c470f469467d77686
-                if (DbProvider.IsDatabaseFor(providerName, DbProvider.MySql))
-                {
-                    useMethod = databaseProviderServiceExtensionType
-                        .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                        .FirstOrDefault(u => u.Name == useMethodName && !u.IsGenericMethod && u.GetParameters().Length == 4 && u.GetParameters()[1].ParameterType == typeof(string));
-
-                    // 解析mysql版本类型
-                    var mysqlVersionType = databaseProviderAssembly.GetType("Microsoft.EntityFrameworkCore.MySqlServerVersion");
-                    mySqlVersionInstance = Activator.CreateInstance(mysqlVersionType, new object[] { new Version(version ?? "8.0.22") });
-                }
-                else
-                {
-                    useMethod = databaseProviderServiceExtensionType
-                        .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                        .FirstOrDefault(u => u.Name == useMethodName && !u.IsGenericMethod && u.GetParameters().Length == 3 && u.GetParameters()[1].ParameterType == typeof(string));
-                }
-
-                return (useMethod, mySqlVersionInstance);
-            }
-        }
-
+       
         /// <summary>
         /// 解析数据库提供器信息
         /// </summary>
@@ -382,7 +304,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         private static void CheckDbContextProvider<TDbContextProvider>()
-            where TDbContextProvider : class, IDbContextProvider
+            where TDbContextProvider : class, IDbContextTypeProvider
         { 
             
         }

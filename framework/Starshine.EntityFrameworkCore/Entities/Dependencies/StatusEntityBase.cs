@@ -11,7 +11,7 @@
     /// 数据库实体依赖基类（使用默认的数据库上下文定位器）
     /// </summary>
     /// <typeparam name="TKeyType">主键类型</typeparam>
-    public abstract class StatusEntityBase<TKeyType> : StatusEntityBase<TKeyType, DefaultDbContextProvider>, IEntity
+    public abstract class StatusEntityBase<TKeyType> : StatusEntityBase<TKeyType, DefaultDbContextTypeProvider>, IEntity
     {
     }
 
