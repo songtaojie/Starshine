@@ -4,6 +4,7 @@
 //
 // 电话/微信：song977601042
 
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -100,64 +101,45 @@ internal class DbProviderHelper
     /// <summary>
     /// 数据库提供器 UseXXX 方法缓存集合
     /// </summary>
-    private static readonly ConcurrentDictionary<string, MethodInfo> DatabaseProviderUseMethods;
+    private static readonly ConcurrentDictionary<DatabaseProvider, MethodInfo?> DatabaseProviderUseMethods;
 
 
     /// <summary>
     /// 获取数据库提供器对应的 useXXX 方法
     /// </summary>
     /// <param name="databaseProvider">数据库提供器</param>
-    /// <param name="version"></param>
     /// <returns></returns>
-    private static (MethodInfo UseMethod, object MySqlVersion) GetDatabaseProviderUseMethod(DatabaseProvider databaseProvider, string version)
+    internal static MethodInfo? GetDatabaseProviderUseMethod(DatabaseProvider databaseProvider)
     {
-        return DatabaseProviderUseMethods.GetOrAdd(providerName, GetOrAddFunction(databaseProvider, version));
+        return DatabaseProviderUseMethods.GetOrAdd(databaseProvider, GetOrAddFunction(databaseProvider));
 
-        static (MethodInfo, object) GetOrAddFunction(DatabaseProvider databaseProvider, string version)
+        static MethodInfo? GetOrAddFunction(DatabaseProvider databaseProvider)
         {
-            // 处理最新 MySql 包兼容问题
-            // https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/commit/83c699f5b747253dc1b6fa9c470f469467d77686
-            object mySqlVersionInstance = default;
-
             // 加载对应的数据库提供器程序集
             var databaseProviderAssembly = GetDatabaseProviderAssembly(databaseProvider);
 
+            if (databaseProviderAssembly == null) return null;
+
             // 数据库提供器服务拓展类型名
             var databaseProviderServiceExtensionTypeName = GetDatabaseProviderServiceExtensionTypeName(databaseProvider);
+            if(string.IsNullOrWhiteSpace(databaseProviderServiceExtensionTypeName)) return null;
 
             // 加载拓展类型
-            var databaseProviderServiceExtensionType = databaseProviderAssembly.GetType($"Microsoft.EntityFrameworkCore.{databaseProviderServiceExtensionTypeName}");
+            var databaseProviderServiceExtensionType = databaseProviderAssembly.GetType(databaseProviderServiceExtensionTypeName);
+            if(databaseProviderServiceExtensionType == null) return null;
 
             // useXXX方法名
-            var useMethodName = providerName switch
-            {
-                DbProvider.SqlServer => $"Use{nameof(DbProvider.SqlServer)}",
-                DbProvider.Sqlite => $"Use{nameof(DbProvider.Sqlite)}",
-                DbProvider.Cosmos => $"Use{nameof(DbProvider.Cosmos)}",
-                DbProvider.InMemoryDatabase => $"Use{nameof(DbProvider.InMemoryDatabase)}",
-                DbProvider.MySql => $"Use{nameof(DbProvider.MySql)}",
-                DbProvider.MySqlOfficial => $"UseMySQL",
-                DbProvider.Npgsql => $"Use{nameof(DbProvider.Npgsql)}",
-                DbProvider.Oracle => $"Use{nameof(DbProvider.Oracle)}",
-                DbProvider.Firebird => $"Use{nameof(DbProvider.Firebird)}",
-                DbProvider.Dm => $"Use{nameof(DbProvider.Dm)}",
-                _ => null
-            };
+            var useMethodName = GetDatabaseProviderServiceExtensionUseMethodName(databaseProvider);
 
             // 获取UseXXX方法
-            MethodInfo useMethod;
+            MethodInfo? useMethod;
 
             // 处理最新 MySql 第三方包兼容问题
-            // https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/commit/83c699f5b747253dc1b6fa9c470f469467d77686
-            if (DbProvider.IsDatabaseFor(providerName, DbProvider.MySql))
+            if (databaseProvider == DatabaseProvider.MySql)
             {
                 useMethod = databaseProviderServiceExtensionType
-                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .FirstOrDefault(u => u.Name == useMethodName && !u.IsGenericMethod && u.GetParameters().Length == 4 && u.GetParameters()[1].ParameterType == typeof(string));
-
-                // 解析mysql版本类型
-                var mysqlVersionType = databaseProviderAssembly.GetType("Microsoft.EntityFrameworkCore.MySqlServerVersion");
-                mySqlVersionInstance = Activator.CreateInstance(mysqlVersionType, new object[] { new Version(version ?? "8.0.22") });
+                   .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                   .FirstOrDefault(u => u.Name == useMethodName && !u.IsGenericMethod && u.GetParameters().Length == 4 && u.GetParameters()[1].ParameterType == typeof(string));
             }
             else
             {
@@ -165,11 +147,38 @@ internal class DbProviderHelper
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
                     .FirstOrDefault(u => u.Name == useMethodName && !u.IsGenericMethod && u.GetParameters().Length == 3 && u.GetParameters()[1].ParameterType == typeof(string));
             }
-
-            return (useMethod, mySqlVersionInstance);
+            return useMethod;
         }
     }
 
+    /// <summary>
+    /// 连接字符串
+    /// </summary>
+    /// <param name="connectionString"></param>
+    /// <returns></returns>
+    internal static object? GetMySqlVersion(string connectionString)
+    {
+        // 加载对应的数据库提供器程序集
+        var databaseProviderAssembly = GetDatabaseProviderAssembly(DatabaseProvider.MySql);
+
+        if (databaseProviderAssembly == null) return null;
+        try
+        { 
+            // 解析mysql版本类型
+            var serverVersion = databaseProviderAssembly.GetType("Microsoft.EntityFrameworkCore.ServerVersion");
+            if (serverVersion == null) return null;
+           
+            // 获取静态方法的信息
+            var autoDetect = serverVersion.GetMethod("AutoDetect");
+            if(autoDetect == null) return null;
+            // 调用静态方法
+            return autoDetect.Invoke(null, new object[] { connectionString });
+        }
+        catch
+        { 
+            return null; 
+        }
+    }
 
     /// <summary>
     /// 加载
@@ -219,5 +228,29 @@ internal class DbProviderHelper
             _ => null
         };
         return $"Microsoft.EntityFrameworkCore.{className}";
+    }
+
+    /// <summary>
+    /// 获取对应程序集中的扩展程序类名
+    /// </summary>
+    /// <param name="databaseProvider"></param>
+    /// <returns></returns>
+    private static string? GetDatabaseProviderServiceExtensionUseMethodName(DatabaseProvider databaseProvider)
+    {
+        var useMethodName = databaseProvider switch
+        {
+            DatabaseProvider.SqlServer => $"Use{nameof(DatabaseProvider.SqlServer)}",
+            DatabaseProvider.Sqlite => $"Use{nameof(DatabaseProvider.Sqlite)}",
+            DatabaseProvider.Cosmos => $"Use{nameof(DatabaseProvider.Cosmos)}",
+            DatabaseProvider.InMemory => $"UseInMemoryDatabase",
+            DatabaseProvider.MySql => $"Use{nameof(DatabaseProvider.MySql)}",
+            DatabaseProvider.MySqlOfficial => $"UseMySQL",
+            DatabaseProvider.PostgreSQL => $"UseNpgsql",
+            DatabaseProvider.Oracle => $"Use{nameof(DatabaseProvider.Oracle)}",
+            DatabaseProvider.Firebird => $"Use{nameof(DatabaseProvider.Firebird)}",
+            DatabaseProvider.Dm => $"Use{nameof(DatabaseProvider.Dm)}",
+            _ => null
+        };
+        return useMethodName;
     }
 }

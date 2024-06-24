@@ -16,6 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore;
+/// <summary>
+/// 
+/// </summary>
 public class DbContextProvider: IDbContextProvider
 {
     /// <summary>

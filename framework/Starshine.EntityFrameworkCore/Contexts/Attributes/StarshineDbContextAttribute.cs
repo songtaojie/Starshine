@@ -21,11 +21,11 @@ namespace Starshine.EntityFrameworkCore
         /// 构造函数
         /// </summary>
         /// <param name="connectionString"></param>
-        /// <param name="providerName"></param>
-        public StarshineDbContextAttribute(string connectionString, string providerName)
+        /// <param name="provider"></param>
+        public StarshineDbContextAttribute(string connectionString, DatabaseProvider provider)
         {
             ConnectionString = connectionString;
-            ProviderName = providerName;
+            Provider = provider;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 数据库提供器名称
         /// </summary>
-        public string? ProviderName { get; set; }
+        public DatabaseProvider? Provider { get; set; }
 
         /// <summary>
         /// 数据库上下文模式

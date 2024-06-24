@@ -12,41 +12,19 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class StarshineEfCoreServiceCollectionExtensions
     {
         private const string DbSettingsOptionsKey = "DbSettings";
+
         /// <summary>
         /// 添加数据库上下文
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <param name="optionsBuilder">配置</param>
         /// <returns>服务集合</returns>
-        public static IServiceCollection AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = null)
+        public static IStarshineEfCoreBuilder AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = default)
         {
-            ConfigureDbSettingsOptions(services, optionsBuilder);
 
+            ConfigureDbSettingsOptions(services, optionsBuilder);
             // 注册数据库上下文池
             services.TryAddScoped<IDbContextPool, DbContextPool>();
-
-            // 注册 Sql 仓储
-            services.TryAddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
-
-            // 注册 Sql 非泛型仓储
-            services.TryAddScoped<ISqlRepository, SqlRepository>();
-
-            // 注册多数据库上下文仓储
-            services.TryAddScoped(typeof(IRepository<,>), typeof(EFCoreRepository<,>));
-
-            // 注册泛型仓储
-            services.TryAddScoped(typeof(IRepository<>), typeof(EFCoreRepository<>));
-
-            // 注册主从库仓储
-            services.TryAddScoped(typeof(IMSRepository<,>), typeof(MSRepository<,>));
-            services.TryAddScoped(typeof(IMSRepository<,,>), typeof(MSRepository<,,>));
-
-            // 注册非泛型仓储
-            services.TryAddScoped<IRepository, EFCoreRepository>();
-
-            // 注册多数据库仓储
-            services.TryAddScoped(typeof(IDbRepository<>), typeof(DbRepository<>));
-
             // 解析数据库上下文
             services.AddScoped(provider =>
             {
@@ -62,8 +40,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.Filters.Add<StarshineUnitOfWorkActionFilter>();
             });
-            services.AddMiniProfilerService();
-            return services;
+            return new StarshineEfCoreBuilder(services)
+                .AddStarshineRepositories();
         }
 
         /// <summary>
@@ -94,34 +72,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return dbContext!;
         }
 
-        /// <summary>
-        /// 注册默认数据库上下文
-        /// </summary>
-        /// <typeparam name="TDbContext">数据库上下文</typeparam>
-        /// <param name="services">服务提供器</param>
-        public static IServiceCollection RegisterDbContext<TDbContext>(this IServiceCollection services)
-            where TDbContext : StarshineDbContext<TDbContext>
-        {
-            return services.RegisterDbContext<TDbContext, DefaultDbContextTypeProvider>();
-        }
-
-        /// <summary>
-        /// 注册数据库上下文
-        /// </summary>
-        /// <typeparam name="TDbContext">数据库上下文</typeparam>
-        /// <typeparam name="TDbContextProvider">数据库上下文定位器</typeparam>
-        /// <param name="services">服务提供器</param>
-        public static IServiceCollection RegisterDbContext<TDbContext, TDbContextProvider>(this IServiceCollection services)
-            where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextTypeProvider
-        {
-            // 存储数据库上下文和定位器关系
-            DbContextHelper.AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>();
-            // 注册数据库上下文
-            services.TryAddScoped<TDbContext>();
-
-            return services;
-        }
+       
 
         /// <summary>
         /// 添加 Swagger配置
