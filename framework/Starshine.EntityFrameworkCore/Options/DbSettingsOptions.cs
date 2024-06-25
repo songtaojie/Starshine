@@ -28,11 +28,7 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         public bool? EnabledSqlLog { get; set; }
 
-        /// <summary>
-        /// 迁移类库名称
-        /// </summary>
-        public string? MigrationAssemblyName { get; set; }
-
+       
         /// <summary>
         /// 后置配置
         /// </summary>
@@ -43,7 +39,6 @@ namespace Starshine.EntityFrameworkCore
             options.EnabledMiniProfiler ??= true;
             options.PrintConnectionString ??= true;
             options.EnabledSqlLog ??= true;
-            MigrationAssemblyName ??= Assembly.GetEntryAssembly()?.GetName()?.Name;
         }
     }
 }

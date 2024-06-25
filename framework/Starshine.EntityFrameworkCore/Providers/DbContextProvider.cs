@@ -69,13 +69,4 @@ public class DbContextProvider: IDbContextProvider
             }
         }
     }
-
-
-    public MethodInfo GetDatabaseProviderUseMethod(DatabaseProvider databaseProvider, string version)
-    { 
-        
-    }
-
-
-
 }

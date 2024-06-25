@@ -52,7 +52,7 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="result">拦截器结果</param>
         /// <param name="cancellationToken">取消异步Token</param>
         /// <returns></returns>
-        public override Task<InterceptionResult> ConnectionOpeningAsync(DbConnection connection, ConnectionEventData eventData, InterceptionResult result, CancellationToken cancellationToken = default)
+        public override ValueTask<InterceptionResult> ConnectionOpeningAsync(DbConnection connection, ConnectionEventData eventData, InterceptionResult result, CancellationToken cancellationToken = default)
         {
             // 打印数据库连接信息到 MiniProfiler
             PrintConnectionToMiniProfiler(connection, eventData);

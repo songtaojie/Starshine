@@ -18,12 +18,6 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     public class DbContextPool : IDbContextPool
     {
-
-        /// <summary>
-        /// MiniProfiler 组件状态
-        /// </summary>
-        private readonly bool EnabledMiniProfiler;
-
         private readonly DbSettingsOptions _dbSettings;
         /// <summary>
         /// 构造函数
@@ -151,7 +145,7 @@ namespace Starshine.EntityFrameworkCore
                 var conn = dbContext.Database.GetDbConnection();
                 if (conn.State == ConnectionState.Open)
                 {
-                    var wrapConn = EnabledMiniProfiler ? new ProfiledDbConnection(conn, MiniProfiler.Current) : conn;
+                    var wrapConn = _dbSettings.EnabledMiniProfiler == true ? new ProfiledDbConnection(conn, MiniProfiler.Current) : conn;
                     wrapConn.Close();
                 }
             }

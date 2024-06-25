@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -15,7 +17,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// MiniProfiler 分类名
         /// </summary>
-        private const string MiniProfilerCategory = "unitOfWork";
+        private const string MiniProfilerCategory = "StarshineUnitOfWork";
 
         /// <summary>
         /// 排序属性
@@ -44,16 +46,31 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            if (actionDescriptor == null)
+            if (!context.ActionDescriptor.IsControllerAction())
+            {
+                await next();
+                return;
+            }
+            var actionDescriptor = context.ActionDescriptor.AsControllerActionDescriptor();
+            // 获取动作方法描述器
+            var method = actionDescriptor.MethodInfo;
+            var unitOfWorkAttr = UnitOfWorkHelper.GetUnitOfWorkAttribute(method);
+            if (unitOfWorkAttr?.IsDisabled == true)
             {
                 await next();
                 return;
             }
 
-            // 获取动作方法描述器
-            var method = actionDescriptor.MethodInfo;
 
+            if (unitOfWorkAttr == null)
+            {
+                // 调用方法
+                var resultContext = await next();
+            }
+            else
+            {
+                
+            }
             // 判断是否贴有工作单元特性
             if (!method.IsDefined(typeof(UnitOfWorkAttribute), true))
             {
@@ -148,5 +165,25 @@ namespace Starshine.EntityFrameworkCore
             // 手动关闭
             _dbContextPool.CloseAll();
         }
+
+
+
+        private UnitOfWorkOptions CreateOptions(ActionExecutingContext context, UnitOfWorkAttribute? unitOfWorkAttribute)
+        {
+            var options = new UnitOfWorkOptions();
+
+            unitOfWorkAttribute?.SetOptions(options);
+
+            if (unitOfWorkAttribute?.IsTransactional == null)
+            {
+                var abpUnitOfWorkDefaultOptions = context.GetRequiredService<IOptions<AbpUnitOfWorkDefaultOptions>>().Value;
+                options.IsTransactional = abpUnitOfWorkDefaultOptions.CalculateIsTransactional(
+                    autoValue: !string.Equals(context.HttpContext.Request.Method, HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            return options;
+        }
+
     }
 }

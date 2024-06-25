@@ -21,7 +21,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>服务集合</returns>
         public static IStarshineEfCoreBuilder AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = default)
         {
-
             ConfigureDbSettingsOptions(services, optionsBuilder);
             // 注册数据库上下文池
             services.TryAddScoped<IDbContextPool, DbContextPool>();
