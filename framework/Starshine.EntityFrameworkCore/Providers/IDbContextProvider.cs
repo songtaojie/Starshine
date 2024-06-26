@@ -25,3 +25,16 @@ public interface IDbContextProvider
     string? GetConnectionString<TDbContext>()
         where TDbContext : DbContext;
 }
+/// <summary>
+/// DbContext提供器
+/// </summary>
+/// <typeparam name="TDbContext"></typeparam>
+public interface IDbContextProvider<TDbContext>
+    where TDbContext : DbContext
+{
+    /// <summary>
+    /// 获取DbContext
+    /// </summary>
+    /// <returns></returns>
+    Task<TDbContext> GetDbContextAsync();
+}

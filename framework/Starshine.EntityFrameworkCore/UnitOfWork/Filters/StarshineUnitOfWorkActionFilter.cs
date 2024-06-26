@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -25,17 +26,10 @@ namespace Starshine.EntityFrameworkCore
         public int Order => 9999;
 
         /// <summary>
-        /// 数据库上下文池
-        /// </summary>
-        private readonly IDbContextPool _dbContextPool;
-
-        /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="dbContextPool"></param>
-        public StarshineUnitOfWorkActionFilter(IDbContextPool dbContextPool)
+        public StarshineUnitOfWorkActionFilter()
         {
-            _dbContextPool = dbContextPool;
         }
 
         /// <summary>
@@ -60,7 +54,12 @@ namespace Starshine.EntityFrameworkCore
                 await next();
                 return;
             }
+            var options = CreateOptions(context, unitOfWorkAttr);
+            var dbContextPool = context.HttpContext.RequestServices.GetRequiredService<IDbContextPool>();
 
+            // 解析工作单元服务
+            var unitOfWork = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
+            unitOfWork.BeginTransaction(context, options);
 
             if (unitOfWorkAttr == null)
             {
@@ -174,15 +173,25 @@ namespace Starshine.EntityFrameworkCore
 
             unitOfWorkAttribute?.SetOptions(options);
 
-            if (unitOfWorkAttribute?.IsTransactional == null)
-            {
-                var abpUnitOfWorkDefaultOptions = context.GetRequiredService<IOptions<AbpUnitOfWorkDefaultOptions>>().Value;
-                options.IsTransactional = abpUnitOfWorkDefaultOptions.CalculateIsTransactional(
-                    autoValue: !string.Equals(context.HttpContext.Request.Method, HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
-                );
-            }
+            //if (unitOfWorkAttribute?.IsTransactional == null)
+            //{
+            //    var abpUnitOfWorkDefaultOptions = context.GetRequiredService<IOptions<AbpUnitOfWorkDefaultOptions>>().Value;
+            //    options.IsTransactional = abpUnitOfWorkDefaultOptions.CalculateIsTransactional(
+            //        autoValue: !string.Equals(context.HttpContext.Request.Method, HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
+            //    );
+            //}
 
             return options;
+        }
+
+        /// <summary>
+        /// 判断请求是否成功
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private static bool Succeed(ActionExecutedContext result)
+        {
+            return result.Exception == null || result.ExceptionHandled;
         }
 
     }

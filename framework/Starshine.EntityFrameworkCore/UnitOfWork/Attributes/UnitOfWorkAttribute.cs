@@ -31,10 +31,15 @@ namespace Starshine.EntityFrameworkCore
         public IsolationLevel? IsolationLevel { get; set; }
 
         /// <summary>
+        /// UOW超时时间(单位:毫秒)
+        /// 如果未提供，则使用默认值。
+        /// </summary>
+        public int? Timeout { get; set; }
+
+        /// <summary>
         /// 排序
         /// </summary>
         public int Order => 9999;
-
 
         /// <summary>
         /// 用于防止启动该方法的工作单元。如果已经有启动的工作单元，则忽略此属性。
@@ -48,11 +53,6 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="options"></param>
         public void SetOptions(UnitOfWorkOptions options)
         {
-            if (IsTransactional.HasValue)
-            {
-                options.IsTransactional = IsTransactional.Value;
-            }
-
             if (Timeout.HasValue)
             {
                 options.Timeout = Timeout;

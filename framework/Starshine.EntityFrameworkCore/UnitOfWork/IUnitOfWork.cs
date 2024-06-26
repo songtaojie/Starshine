@@ -22,22 +22,22 @@ public interface IUnitOfWork
     /// 开启工作单元处理
     /// </summary>
     /// <param name="context"></param>
-    /// <param name="unitOfWork"></param>
-    void BeginTransaction(FilterContext context, UnitOfWorkAttribute unitOfWork);
+    /// <param name="options"></param>
+    void BeginTransaction(FilterContext context, UnitOfWorkOptions options);
 
     /// <summary>
     /// 提交工作单元处理
     /// </summary>
     /// <param name="resultContext"></param>
-    /// <param name="unitOfWork"></param>
-    void CommitTransaction(FilterContext resultContext, UnitOfWorkAttribute unitOfWork);
+    /// <param name="options"></param>
+    void CommitTransaction(FilterContext resultContext, UnitOfWorkOptions options);
 
     /// <summary>
     /// 回滚工作单元处理
     /// </summary>
     /// <param name="resultContext"></param>
-    /// <param name="unitOfWork"></param>
-    void RollbackTransaction(FilterContext resultContext, UnitOfWorkAttribute unitOfWork);
+    /// <param name="options"></param>
+    void RollbackTransaction(FilterContext resultContext, UnitOfWorkOptions options);
 
     /// <summary>
     /// 执行完毕（无论成功失败）
