@@ -8,8 +8,7 @@ namespace Starshine.Common
     /// 实体接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    [SkipScan]
-    public class IEntity<TKey>
+    public interface IEntity<TKey>
     {
         /// <summary>
         /// 主键id

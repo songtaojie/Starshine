@@ -22,7 +22,7 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         /// <param name="connectionString"></param>
         /// <param name="provider"></param>
-        public StarshineDbContextAttribute(string connectionString, DatabaseProvider provider)
+        public StarshineDbContextAttribute(string connectionString, EfCoreDatabaseProvider provider)
         {
             ConnectionString = connectionString;
             Provider = provider;
@@ -36,7 +36,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 数据库提供器名称
         /// </summary>
-        public DatabaseProvider? Provider { get; set; }
+        public EfCoreDatabaseProvider? Provider { get; set; }
 
         /// <summary>
         /// 数据库上下文模式

@@ -1,4 +1,5 @@
-﻿using Starshine.EntityFrameworkCore.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Starshine.EntityFrameworkCore.Internal;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -6,34 +7,30 @@ namespace Starshine.EntityFrameworkCore
     /// 动态表名依赖接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public interface IEntityMutableTable<TEntity> : IEntityMutableTable<TEntity, DefaultDbContextTypeProvider>
-        where TEntity : class, IPrivateEntity, new()
+    public interface IEntityMutableTable<TEntity>
+        where TEntity : class, new()
     {
+        /// <summary>
+        /// 获取表名
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <returns></returns>
+        StarshineTableName GetTableName(DbContext dbContext);
     }
 
     /// <summary>
-    /// 动态表名依赖接口
+    /// 表名
     /// </summary>
-    /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
-    public interface IEntityMutableTable<TEntity, TDbContextLocator1> : IPrivateEntityMutableTable<TEntity>
-        where TEntity : class, IPrivateEntity, new()
-        where TDbContextLocator1 : class, IDbContextLocator
-    {
+    public class StarshineTableName
+    { 
+        /// <summary>
+        /// 表名称
+        /// </summary>
+        public string? TableName {  get; set; } = null;
+
+        /// <summary>
+        /// Default value: null.
+        /// </summary>
+        public string? Schema { get; set; } = null;
     }
-
-    /// <summary>
-    /// 动态表名依赖接口
-    /// </summary>
-    /// <typeparam name="TEntity">实体类型</typeparam>
-    /// <typeparam name="TDbContextLocator1">数据库上下文定位器</typeparam>
-    /// <typeparam name="TDbContextLocator2">数据库上下文定位器</typeparam>
-    public interface IEntityMutableTable<TEntity, TDbContextLocator1, TDbContextLocator2> : IPrivateEntityMutableTable<TEntity>
-        where TEntity : class, IPrivateEntity, new()
-        where TDbContextLocator1 : class, IDbContextLocator
-        where TDbContextLocator2 : class, IDbContextLocator
-    {
-    }
-
-
 }

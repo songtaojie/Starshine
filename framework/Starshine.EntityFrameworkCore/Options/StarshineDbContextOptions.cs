@@ -31,7 +31,7 @@ public class StarshineDbContextOptions
     /// <summary>
     /// 数据库提供商
     /// </summary>
-    public DatabaseProvider?  Provider { get; set; }
+    public EfCoreDatabaseProvider?  Provider { get; set; }
 
     /// <summary>
     /// 数据库连接字符串

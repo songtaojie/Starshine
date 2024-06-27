@@ -14,7 +14,7 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 数据库提供商
 /// </summary>
-public enum DatabaseProvider
+public enum EfCoreDatabaseProvider
 {
     /// <summary>
     /// 内存数据库
