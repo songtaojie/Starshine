@@ -5,6 +5,7 @@
 // 电话/微信：song977601042
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Starshine.EntityFrameworkCore.Extensions;
 using Starshine.EntityFrameworkCore.Extensions.LinqBuilder;
@@ -24,16 +25,23 @@ public static class StarshineEntityTypeBuilderExtensions
 {
 
     private static IEnumerable<Type> _entityMutableTableTypes;
+    /// <summary>
+    /// 模型构建器筛选器实例
+    /// </summary>
+    private static IEnumerable<Type> _modelBuilderFilters { get; set; }
+
     static StarshineEntityTypeBuilderExtensions()
     {
         _entityMutableTableTypes = App.EffectiveTypes.Where(u => u.GetInterfaces()
                     .Any(i => i.HasImplementedRawGeneric(typeof(IEntityMutableTable<>))));
+        _modelBuilderFilters = App.EffectiveTypes.Where(u => u.GetInterfaces()
+                    .Any(i => i.HasImplementedRawGeneric(typeof(IModelBuilderFilter<>))));
 
     }
 
     public static void ConfigureByConvention(this EntityTypeBuilder b)
     {
-        b.TryConfigureConcurrencyStamp();
+        b.TryConfigureTableName();
         b.TryConfigureExtraProperties();
         b.TryConfigureObjectExtensions();
         b.TryConfigureMayHaveCreator();
@@ -47,13 +55,16 @@ public static class StarshineEntityTypeBuilderExtensions
         b.TryConfigureMultiTenant();
     }
 
-    public static void TryConfigureTableName(this EntityTypeBuilder b, DbContext dbContext)
+    /// <summary>
+    /// 配置表名
+    /// </summary>
+    /// <param name="entityBuilder"></param>
+    /// <param name="dbContext"></param>
+    public static void TryConfigureTableName(this EntityTypeBuilder entityBuilder, DbContext dbContext)
     {
-        if (!b.TryConfigureMutableTableName(dbContext))
+        if (!entityBuilder.TryConfigureMutableTableName(dbContext))
         {
-            b.Property(nameof(IMultiTenant.TenantId))
-                .IsRequired(false)
-                .HasColumnName(nameof(IMultiTenant.TenantId));
+            entityBuilder.ConfigureTableName(dbContext);
         }
     }
 
@@ -85,10 +96,9 @@ public static class StarshineEntityTypeBuilderExtensions
     /// <summary>
     /// 配置实体表名
     /// </summary>
-    /// <param name="appDbContextAttribute">数据库上下文特性</param>
     /// <param name="entityBuilder">实体类型构建器</param>
     /// <param name="dbContext">数据库上下文</param>
-    private static void TryConfigureTableName(this EntityTypeBuilder entityBuilder, StarshineDbContextAttribute appDbContextAttribute, DbContext dbContext)
+    private static void ConfigureTableName(this EntityTypeBuilder entityBuilder,  DbContext dbContext)
     {
         var type = entityBuilder.Metadata.ClrType;
         // 获取表是否定义 [Table] 特性
@@ -98,46 +108,79 @@ public static class StarshineEntityTypeBuilderExtensions
 
         // 排除无键实体或已经贴了 [Table] 特性的类型
         if (!string.IsNullOrWhiteSpace(tableAttribute?.Schema)) return;
-
+        
         // 获取真实表名
         var tableName = tableAttribute?.Name ?? type.Name;
 
-        // 判断是否是启用了多租户模式，如果是，则获取 Schema
-        string? dynamicSchema = default;
+        // 判断是否配置了 Schema，如果是直接采用
+        var schema = tableAttribute?.Schema;
 
         // 获取类型前缀 [TablePrefix] 特性
-        var tablePrefixAttribute = !type.IsDefined(typeof(TablePrefixAttribute), true)
-            ? default
-            : type.GetCustomAttribute<TablePrefixAttribute>(true);
+        var tablePrefixAttribute = type.GetCustomAttribute<TablePreSuffixAttribute>(true);
 
         // 判断是否启用全局表前后缀支持或个别表自定义了前缀
-        if (tablePrefixAttribute != null || appDbContextAttribute == null)
+        if (tablePrefixAttribute != null)
         {
-            entityBuilder.ToTable($"{tablePrefixAttribute?.Prefix}{tableName}", dynamicSchema);
+            entityBuilder.ToTable($"{tablePrefixAttribute.Prefix}{tableName}{tablePrefixAttribute.Suffix}", schema);
         }
-        else
+        else 
         {
+            var appDbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContext.GetType());
             // 添加表统一前后缀，排除视图
-            if (!string.IsNullOrWhiteSpace(appDbContextAttribute.TablePrefix) || !string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix))
+            if (appDbContextAttribute != null && (!string.IsNullOrWhiteSpace(appDbContextAttribute.TablePrefix) || !string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix)))
             {
-                var tablePrefix = appDbContextAttribute.TablePrefix;
-                var tableSuffix = appDbContextAttribute.TableSuffix;
-
-                if (!string.IsNullOrWhiteSpace(tablePrefix))
-                {
-                    // 如果前缀中找到 . 字符
-                    if (tablePrefix.IndexOf(".") > 0)
-                    {
-                        var schema = tablePrefix.EndsWith(".") ? tablePrefix[0..^1] : tablePrefix;
-                        entityBuilder.ToTable($"{tableName}{tableSuffix}", schema: schema);
-                    }
-                    else entityBuilder.ToTable($"{tablePrefix}{tableName}{tableSuffix}", dynamicSchema);
-                }
-                else entityBuilder.ToTable($"{tableName}{tableSuffix}", dynamicSchema);
-
+                var tablePrefix = appDbContextAttribute.TablePrefix?.Trim();
+                var tableSuffix = appDbContextAttribute.TableSuffix?.Trim();
+                entityBuilder.ToTable($"{tablePrefix}{tableName}{tableSuffix}", schema);
                 return;
             }
         }
     }
+
+
+
+    /// <summary>
+    /// 配置数据库实体类型构建器
+    /// </summary>
+    /// <param name="entityType">实体类型</param>
+    /// <param name="entityBuilder">实体类型构建器</param>
+    /// <param name="dbContext">数据库上下文</param>
+    /// <param name="dbContextLocator">数据库上下文定位器</param>
+    /// <param name="dbContextCorrelationType">数据库实体关联类型</param>
+    private static void ConfigureEntityTypeBuilder(this EntityTypeBuilder entityBuilder, IMutableEntityType mutableEntityType, DbContext dbContext)
+    {
+
+        if (mutableEntityType.IsOwned())
+        {
+            return;
+        }
+
+        if (!typeof(IEntity).IsAssignableFrom(typeof(TEntity)))
+        {
+            return;
+        }
+
+
+        // 获取该实体类型的配置类型
+        var entityTypeBuilderTypes = dbContextCorrelationType.EntityTypeBuilderTypes
+            .Where(u => u.GetInterfaces()
+                .Any(i => i.HasImplementedRawGeneric(typeof(IPrivateEntityTypeBuilder<>)) && i.GenericTypeArguments.Contains(entityType)));
+
+        if (!entityTypeBuilderTypes.Any()) return;
+
+        // 调用数据库实体自定义配置
+        foreach (var entityTypeBuilderType in entityTypeBuilderTypes)
+        {
+            var instance = Activator.CreateInstance(entityTypeBuilderType);
+            var configureMethod = entityTypeBuilderType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                                                               .Where(u => u.Name == "Configure"
+                                                                    && u.GetParameters().Length > 0
+                                                                    && u.GetParameters().First().ParameterType == typeof(EntityTypeBuilder<>).MakeGenericType(entityType))
+                                                               .FirstOrDefault();
+
+            configureMethod.Invoke(instance, new object[] { entityBuilder, dbContext, dbContextLocator });
+        }
+    }
+
 
 }

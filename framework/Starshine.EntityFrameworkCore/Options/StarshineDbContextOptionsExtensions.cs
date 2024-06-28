@@ -20,7 +20,7 @@ using System.Reflection;
 namespace Starshine.EntityFrameworkCore;
 internal static class StarshineDbContextOptionsExtensions
 {
-    internal static DbContextOptionsBuilder UseDatabase<TContext>(this DbContextOptionsBuilder optionsBuilder, StarshineDbContextOptions contextOptions)
+    internal static DbContextOptionsBuilder UseDatabase<TContext>(this DbContextOptionsBuilder optionsBuilder, IStarshineDbContextOptionsBuilder contextOptions)
         where TContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
@@ -87,7 +87,7 @@ internal static class StarshineDbContextOptionsExtensions
     /// </summary>
     /// <param name="contextOptions"></param>
     /// <returns></returns>
-    private static Action<IRelationalDbContextOptionsBuilderInfrastructure> GetRelationalDbContextOptionsAction(StarshineDbContextOptions contextOptions)
+    private static Action<IRelationalDbContextOptionsBuilderInfrastructure> GetRelationalDbContextOptionsAction(IStarshineDbContextOptionsBuilder contextOptions)
     {
         if (contextOptions.Provider == EfCoreDatabaseProvider.Oracle)
         {

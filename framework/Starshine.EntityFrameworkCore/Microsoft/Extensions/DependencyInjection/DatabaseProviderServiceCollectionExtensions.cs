@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="optionBuilder">自定义配置</param>
         /// <param name="poolSize">设置池保留的最大实例数,默认值为100</param>
         /// <returns>服务集合</returns>
-        public static IStarshineEfCoreBuilder AddStarshineDbContextPool<TDbContext>(this IStarshineEfCoreBuilder builder, Action<StarshineDbContextOptions> optionBuilder, int poolSize = 100)
+        public static IStarshineEfCoreBuilder AddStarshineDbContextPool<TDbContext>(this IStarshineEfCoreBuilder builder, Action<IStarshineDbContextOptionsBuilder>? optionBuilder, int poolSize = 100)
             where TDbContext : StarshineDbContext<TDbContext>
         {
             // 注册数据库上下文
@@ -42,11 +42,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="optionBuilder">自定义配置</param>
         /// <param name="poolSize">设置池保留的最大实例数,默认值为100</param>
         /// <returns>服务集合</returns>
-        public static IStarshineEfCoreBuilder AddStarshineDbContextPool<TDbContext, TDbContextProvider>(this IStarshineEfCoreBuilder builder, Action<StarshineDbContextOptions>? optionBuilder = default,int poolSize = 100)
+        public static IStarshineEfCoreBuilder AddStarshineDbContextPool<TDbContext, TDbContextProvider>(this IStarshineEfCoreBuilder builder, Action<IStarshineDbContextOptionsBuilder>? optionBuilder = default,int poolSize = 100)
             where TDbContext : StarshineDbContext<TDbContext>
             where TDbContextProvider : class, IDbContextTypeProvider
         {
-           
             // 避免重复注册默认数据库上下文
             DbContextHelper.CheckExistDbContextProvider(typeof(TDbContextProvider));
             // 注册数据库上下文
@@ -83,9 +82,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="TDbContext">数据库上下文</typeparam>
         /// <typeparam name="TDbContextProvider">数据库上下文定位器</typeparam>
         /// <param name="builder">StarshineEfCore服务提供器</param>
-        public static IStarshineEfCoreBuilder ReplaceDbContext<TDbContext, TDbContextProvider>(this IStarshineEfCoreBuilder builder)
+        public static IStarshineEfCoreBuilder ReplaceDbContext<TDbContext>(this IStarshineEfCoreBuilder builder)
             where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextTypeProvider
         {
             // 存储数据库上下文和定位器关系
             DbContextHelper.AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>();

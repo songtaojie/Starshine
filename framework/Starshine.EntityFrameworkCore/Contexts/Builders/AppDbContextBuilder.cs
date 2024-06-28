@@ -149,9 +149,9 @@ namespace Starshine.EntityFrameworkCore
             string dynamicSchema = default;
 
             // 获取类型前缀 [TablePrefix] 特性
-            var tablePrefixAttribute = !type.IsDefined(typeof(TablePrefixAttribute), true)
+            var tablePrefixAttribute = !type.IsDefined(typeof(TablePreSuffixAttribute), true)
                 ? default
-                : type.GetCustomAttribute<TablePrefixAttribute>(true);
+                : type.GetCustomAttribute<TablePreSuffixAttribute>(true);
 
             // 判断是否启用全局表前后缀支持或个别表自定义了前缀
             if (tablePrefixAttribute != null || appDbContextAttribute == null)

@@ -1,9 +1,15 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using Starshine.EntityFrameworkCore.Extensions;
+using Starshine.EntityFrameworkCore.Modeling;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,35 +17,16 @@ using System.Reflection;
 namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
-    /// 默认应用数据库上下文
-    /// </summary>
-    /// <typeparam name="TDbContext">数据库上下文</typeparam>
-    public abstract class StarshineDbContext<TDbContext> : StarshineDbContext<TDbContext, DefaultDbContextTypeProvider>
-        where TDbContext : DbContext
-    {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="options"></param>
-        public StarshineDbContext(DbContextOptions<TDbContext> options) : base(options)
-        {
-        }
-    }
-
-    /// <summary>
     /// 应用数据库上下文
     /// </summary>
     /// <typeparam name="TDbContext">数据库上下文</typeparam>
-    /// <typeparam name="TDbContextLocator">数据库上下文定位器</typeparam>
-    public abstract class StarshineDbContext<TDbContext, TDbContextLocator> : DbContext
+    public abstract class StarshineDbContext<TDbContext> : DbContext
         where TDbContext : DbContext
-        where TDbContextLocator : class, IDbContextLocator
     {
 
-        private static readonly MethodInfo ConfigureBasePropertiesMethodInfo
+        private static readonly MethodInfo ConfigureEntityTypeBuilderMethodInfo
           = typeof(StarshineDbContext<TDbContext>)
-              .GetMethod(nameof(ConfigureBaseProperties),BindingFlags.Instance | BindingFlags.NonPublic)!;
-
+              .GetMethod(nameof(ConfigureEntityTypeBuilder),BindingFlags.Instance | BindingFlags.NonPublic)!;
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -69,104 +56,77 @@ namespace Starshine.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            var modelBuilderFilter = this.GetService<IModelBuilderFilter<TDbContext>>();
+            if (modelBuilderFilter != null)
+            {
+                modelBuilderFilter.OnModelCreating(modelBuilder, this);
+            }
             TrySetDatabaseProvider(modelBuilder);
-
-
-            // 获取当前数据库上下文的 [DbContextAttributes] 特性
-            var dbContextType = this.GetType();
-            var appDbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
-
             // 初始化所有类型
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                ConfigureBasePropertiesMethodInfo
-                    .MakeGenericMethod(entityType.ClrType)
-                    .Invoke(this, new object[] { modelBuilder, entityType });
-
-                ConfigureValueConverterMethodInfo
-                    .MakeGenericMethod(entityType.ClrType)
-                    .Invoke(this, new object[] { modelBuilder, entityType });
-
-                ConfigureValueGeneratedMethodInfo
+                ConfigureEntityTypeBuilderMethodInfo
                     .MakeGenericMethod(entityType.ClrType)
                     .Invoke(this, new object[] { modelBuilder, entityType });
             }
-
-            foreach (var entityType in dbContextCorrelationType.EntityTypes)
+            if (modelBuilderFilter != null)
             {
-                // 创建实体类型
-                var entityBuilder = CreateEntityTypeBuilder(entityType, modelBuilder, dbContext, dbContextType, dbContextLocator, dbContextCorrelationType, appDbContextAttribute);
-                if (entityBuilder == null) continue;
-
-                // 实体构建成功注入拦截
-                LoadModelBuilderOnCreating(modelBuilder, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType.ModelBuilderFilterInstances);
-
-                // 配置数据库实体类型构建器
-                ConfigureEntityTypeBuilder(entityType, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType);
-
-                // 配置数据库实体种子数据
-                ConfigureEntitySeedData(entityType, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType);
-
-                // 实体完成配置注入拦截
-                LoadModelBuilderOnCreated(modelBuilder, entityBuilder, dbContext, dbContextLocator, dbContextCorrelationType.ModelBuilderFilterInstances);
+                modelBuilderFilter.OnOnModelCreated(modelBuilder, this);
             }
-
-            // 配置数据库上下文实体
-            AppDbContextBuilder.ConfigureDbContextEntity(modelBuilder, this, typeof(TDbContextLocator));
         }
 
-        /// <summary>
-        /// 获取租户信息
-        /// </summary>
-        public virtual Tenant Tenant
-        {
-            get
-            {
-                // 如果没有实现多租户方式，则无需查询
-                if (Db.CustomizeMultiTenants || !typeof(IPrivateMultiTenant).IsAssignableFrom(GetType())) return default;
+        ///// <summary>
+        ///// 获取租户信息
+        ///// </summary>
+        //public virtual Tenant Tenant
+        //{
+        //    get
+        //    {
+        //        // 如果没有实现多租户方式，则无需查询
+        //        if (Db.CustomizeMultiTenants || !typeof(IPrivateMultiTenant).IsAssignableFrom(GetType())) return default;
 
-                // 判断 HttpContext 是否存在
-                var httpContext = App.HttpContext;
-                if (httpContext == null) return default;
+        //        // 判断 HttpContext 是否存在
+        //        var httpContext = App.HttpContext;
+        //        if (httpContext == null) return default;
 
-                // 获取主机地址
-                var host = httpContext.Request.Host.Value;
+        //        // 获取主机地址
+        //        var host = httpContext.Request.Host.Value;
 
-                // 获取服务提供器
-                var serviceProvider = httpContext.RequestServices;
+        //        // 获取服务提供器
+        //        var serviceProvider = httpContext.RequestServices;
 
-                // 从分布式缓存中读取或查询数据库
-                var tenantCachedKey = $"MULTI_TENANT:{host}";
-                var distributedCache = serviceProvider.GetService<IDistributedCache>();
-                var cachedValue = distributedCache?.GetString(tenantCachedKey);
+        //        // 从分布式缓存中读取或查询数据库
+        //        var tenantCachedKey = $"MULTI_TENANT:{host}";
+        //        var distributedCache = serviceProvider.GetService<IDistributedCache>();
+        //        var cachedValue = distributedCache?.GetString(tenantCachedKey);
 
-                // 当前租户
-                Tenant currentTenant;
+        //        // 当前租户
+        //        Tenant currentTenant;
 
-                // 获取序列化库
-                var jsonSerializerProvider = serviceProvider.GetService<IJsonSerializerProvider>();
+        //        // 获取序列化库
+        //        var jsonSerializerProvider = serviceProvider.GetService<IJsonSerializerProvider>();
 
-                // 如果 Key 不存在
-                if (string.IsNullOrWhiteSpace(cachedValue))
-                {
-                    // 解析租户上下文
-                    var dbContextResolve = serviceProvider.GetService<Func<Type, IScoped, DbContext>>();
-                    if (dbContextResolve == null) return default;
+        //        // 如果 Key 不存在
+        //        if (string.IsNullOrWhiteSpace(cachedValue))
+        //        {
+        //            // 解析租户上下文
+        //            var dbContextResolve = serviceProvider.GetService<Func<Type, IScoped, DbContext>>();
+        //            if (dbContextResolve == null) return default;
 
-                    var tenantDbContext = dbContextResolve(typeof(MultiTenantDbContextLocator), default);
-                    ((dynamic)tenantDbContext).UseUnitOfWork = false;   // 无需载入事务
+        //            var tenantDbContext = dbContextResolve(typeof(MultiTenantDbContextLocator), default);
+        //            ((dynamic)tenantDbContext).UseUnitOfWork = false;   // 无需载入事务
 
-                    currentTenant = tenantDbContext.Set<Tenant>().AsNoTracking().FirstOrDefault(u => u.Host == host);
-                    if (currentTenant != null)
-                    {
-                        distributedCache?.SetString(tenantCachedKey, jsonSerializerProvider.Serialize(currentTenant));
-                    }
-                }
-                else currentTenant = jsonSerializerProvider.Deserialize<Tenant>(cachedValue);
+        //            currentTenant = tenantDbContext.Set<Tenant>().AsNoTracking().FirstOrDefault(u => u.Host == host);
+        //            if (currentTenant != null)
+        //            {
+        //                distributedCache?.SetString(tenantCachedKey, jsonSerializerProvider.Serialize(currentTenant));
+        //            }
+        //        }
+        //        else currentTenant = jsonSerializerProvider.Deserialize<Tenant>(cachedValue);
 
-                return currentTenant;
-            }
-        }
+        //        return currentTenant;
+        //    }
+        //}
 
         /// <summary>
         /// 设置DatabaseProvider
@@ -211,5 +171,104 @@ namespace Starshine.EntityFrameworkCore
                     return null;
             }
         }
+
+
+        /// <summary>
+        /// 配置数据库实体类型构建器
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        /// <param name="mutableEntityType">实体类型</param>
+        protected virtual void ConfigureEntityTypeBuilder<TEntity>(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
+            where TEntity : class
+        {
+            if (mutableEntityType.IsOwned())
+            {
+                return;
+            }
+            var entityType = mutableEntityType.ClrType;
+            if (!typeof(IEntity).IsAssignableFrom(entityType))
+            {
+                return;
+            }
+            modelBuilder.Entity<TEntity>().ConfigureByConvention();
+
+            // 获取泛型服务的类型  
+            Type builderType = typeof(IEntityTypeBuilder<>).MakeGenericType(entityType);
+
+            //配置数据库实体种子数据
+            // 解析服务  
+            var efCoreEntitySeedData = this.GetService<IEfCoreEntitySeedData<TEntity>>();
+            // 检查是否解析到了服务  
+            if (efCoreEntitySeedData != null)
+            {
+                var seedData = efCoreEntitySeedData.HasData(this);
+                if (seedData != null && seedData.Any())
+                {
+                    modelBuilder.Entity<TEntity>().HasData(seedData);
+                }
+            }
+
+            // 解析服务  
+            var entityTypeBuilder = this.GetService<IEntityTypeBuilder<TEntity>>();
+            // 检查是否解析到了服务  
+            if (entityTypeBuilder != null)
+            {
+                entityTypeBuilder.Configure(modelBuilder.Entity<TEntity>(), mutableEntityType);
+            }
+        }
+
+        ///// <summary>
+        ///// 配置全局过滤
+        ///// </summary>
+        ///// <typeparam name="TEntity"></typeparam>
+        ///// <param name="modelBuilder"></param>
+        ///// <param name="mutableEntityType"></param>
+        //protected virtual void ConfigureGlobalFilters<TEntity>(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
+        //    where TEntity : class
+        //{
+        //    if (mutableEntityType.BaseType == null && ShouldFilterEntity<TEntity>(mutableEntityType))
+        //    {
+        //        var filterExpression = CreateFilterExpression<TEntity>();
+        //        if (filterExpression != null)
+        //        {
+        //            modelBuilder.Entity<TEntity>().HasAbpQueryFilter(filterExpression);
+        //        }
+        //    }
+        //}
+
+
+        //protected virtual bool ShouldFilterEntity<TEntity>(IMutableEntityType entityType) where TEntity : class
+        //{
+        //    if (typeof(IMultiTenant).IsAssignableFrom(typeof(TEntity)))
+        //    {
+        //        return true;
+        //    }
+
+        //    if (typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)))
+        //    {
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
+        //protected virtual Expression<Func<TEntity, bool>>? CreateFilterExpression<TEntity>()
+        //where TEntity : class
+        //{
+        //    Expression<Func<TEntity, bool>>? expression = null;
+
+        //    if (typeof(ISoftDelete).IsAssignableFrom(typeof(TEntity)))
+        //    {
+        //        expression = e => !IsSoftDeleteFilterEnabled || !EF.Property<bool>(e, "IsDeleted");
+        //    }
+
+        //    if (typeof(IMultiTenant).IsAssignableFrom(typeof(TEntity)))
+        //    {
+        //        Expression<Func<TEntity, bool>> multiTenantFilter = e => !IsMultiTenantFilterEnabled || EF.Property<Guid>(e, "TenantId") == CurrentTenantId;
+        //        expression = expression == null ? multiTenantFilter : QueryFilterExpressionHelper.CombineExpressions(expression, multiTenantFilter);
+        //    }
+
+        //    return expression;
+        //}
     }
 }

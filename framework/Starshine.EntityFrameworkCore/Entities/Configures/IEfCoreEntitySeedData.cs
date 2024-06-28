@@ -8,7 +8,7 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     public interface IEfCoreEntitySeedData<TEntity> 
-        where TEntity : class, new()
+        where TEntity : class
     {
         /// <summary>
         /// 配置种子数据

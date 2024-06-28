@@ -18,7 +18,7 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 上下文配置
 /// </summary>
-public class StarshineDbContextOptions
+public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
 {
     /// <summary>
     /// 
