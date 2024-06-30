@@ -4,79 +4,326 @@
 //
 // 电话/微信：song977601042
 
-using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Starshine.DependencyInjection;
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// EFCore 工作单元实现
 /// </summary>
-public sealed class EFCoreUnitOfWork : IUnitOfWork
+public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
 {
     /// <summary>
-    /// 数据库上下文池
+    /// ServiceProvider
     /// </summary>
-    private readonly IDbContextPool _dbContextPool;
+    public IServiceProvider ServiceProvider { get; }
 
     /// <summary>
-    /// 构造函数
+    /// 线程安全的DatabaseApi集合
     /// </summary>
-    /// <param name="dbContextPool"></param>
-    public EFCoreUnitOfWork(IDbContextPool dbContextPool)
+    private readonly ConcurrentDictionary<string, IDatabaseApi> _databaseApis;
+
+    /// <summary>
+    /// 线程安全的TransactionApi集合
+    /// </summary>
+    private readonly ConcurrentDictionary<string, ITransactionApi> _transactionApis;
+
+    /// <summary>
+    /// 当前请求id
+    /// </summary>
+    public Guid InstanceId { get; } = Guid.NewGuid();
+
+    /// <summary>
+    /// 资源是否释放
+    /// </summary>
+    public bool IsDisposed { get; private set; }
+
+    /// <summary>
+    /// 是否已经完成
+    /// </summary>
+    public bool IsCompleted { get; private set; }
+
+    /// <summary>
+    /// 是否回滚
+    /// </summary>
+    private bool _isRolledback;
+
+    /// <summary>
+    /// 是否正在完成
+    /// </summary>
+    private bool _isCompleting;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    public EFCoreUnitOfWork(
+       IServiceProvider serviceProvider)
     {
-        _dbContextPool = dbContextPool;
+        ServiceProvider = serviceProvider;
+
+        _databaseApis = new();
+        _transactionApis = new();
     }
 
     /// <summary>
-    /// 开启工作单元处理
+    /// 获取所有活动的DatabaseApi
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="unitOfWork"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public void BeginTransaction(FilterContext context, UnitOfWorkAttribute unitOfWork)
+    /// <returns></returns>
+    public virtual IReadOnlyList<IDatabaseApi> GetAllActiveDatabaseApis()
     {
-        // 开启事务，如果已经开启分布式事务，则无需创建本地事务
-        _dbContextPool.BeginTransaction(unitOfWork.EnsureTransaction);
+        return _databaseApis.Values.ToImmutableList();
     }
 
     /// <summary>
-    /// 提交工作单元处理
+    /// 获取所有活动的TransactionApi
     /// </summary>
-    /// <param name="resultContext"></param>
-    /// <param name="unitOfWork"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public void CommitTransaction(FilterContext resultContext, UnitOfWorkAttribute unitOfWork)
+    /// <returns></returns>
+    public virtual IReadOnlyList<ITransactionApi> GetAllActiveTransactionApis()
     {
-        // 提交事务
-        _dbContextPool.CommitTransaction();
+        return _transactionApis.Values.ToImmutableList();
     }
 
     /// <summary>
-    /// 回滚工作单元处理
+    /// 回滚
     /// </summary>
-    /// <param name="resultContext"></param>
-    /// <param name="unitOfWork"></param>
-    /// <exception cref="NotImplementedException"></exception>
-
-    public void RollbackTransaction(FilterContext resultContext, UnitOfWorkAttribute unitOfWork)
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public virtual async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
-        // 回滚事务
-        _dbContextPool.RollbackTransaction();
+        if (_isRolledback) return;
+
+        _isRolledback = true;
+
+        await RollbackAllAsync(cancellationToken);
     }
 
     /// <summary>
-    /// 执行完毕（无论成功失败）
+    /// 根据键获取DatabaseApi
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="resultContext"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public void OnCompleted(FilterContext context, FilterContext resultContext)
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public virtual IDatabaseApi? FindDatabaseApi([NotNull] string key)
     {
-        // 手动关闭
-        _dbContextPool.CloseAll();
+       return _databaseApis.TryGetValue(key, out IDatabaseApi? api)? api:default;
     }
+
+    /// <summary>
+    /// 添加DatabaseApi
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="api"></param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="Exception"></exception>
+    public virtual void AddDatabaseApi([NotNull] string key, [NotNull] IDatabaseApi api)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException($"key can not be null, empty or white space!", nameof(key));
+        if(api == null)
+            throw new ArgumentNullException(nameof(api));
+        if (_databaseApis.ContainsKey(key))
+        {
+            throw new Exception("This unit of work already contains a database API for the given key.");
+        }
+        _databaseApis.TryAdd(key, api);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="factory"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
+    public virtual IDatabaseApi GetOrAddDatabaseApi([NotNull] string key, [NotNull] Func<IDatabaseApi> factory)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException($"key can not be null, empty or white space!", nameof(key));
+        if (factory == null)
+            throw new ArgumentNullException(nameof(factory));
+
+        return _databaseApis.GetOrAdd(key, key=> factory.Invoke());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public virtual ITransactionApi? FindTransactionApi([NotNull] string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException($"key can not be null, empty or white space!", nameof(key));
+        return _transactionApis.TryGetValue(key, out ITransactionApi? api) ? api : default;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="api"></param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="Exception"></exception>
+    public virtual void AddTransactionApi([NotNull] string key, [NotNull] ITransactionApi api)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException($"key can not be null, empty or white space!", nameof(key));
+        if (api == null)
+            throw new ArgumentNullException(nameof(api));
+        if (_transactionApis.ContainsKey(key))
+        {
+            throw new Exception("This unit of work already contains a transaction API for the given key.");
+        }
+
+        _transactionApis.TryAdd(key, api);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="factory"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
+    public virtual ITransactionApi GetOrAddTransactionApi([NotNull] string key, [NotNull] Func<ITransactionApi> factory)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentException($"key can not be null, empty or white space!", nameof(key));
+        if (factory == null)
+            throw new ArgumentNullException(nameof(factory));
+
+        return _transactionApis.GetOrAdd(key, key => factory.Invoke());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        if (_isRolledback)return;
+
+        foreach (var databaseApi in GetAllActiveDatabaseApis())
+        {
+            if (databaseApi is IDatabaseApi supportsSavingChangesDatabaseApi)
+            {
+                await supportsSavingChangesDatabaseApi.SaveChangesAsync(cancellationToken);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 回滚
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    protected virtual async Task RollbackAllAsync(CancellationToken cancellationToken)
+    {
+        
+        foreach (var transactionApi in GetAllActiveTransactionApis())
+        {
+            if (transactionApi is ITransactionApi supportsRollbackTransactionApi)
+            {
+                try
+                {
+                    await supportsRollbackTransactionApi.RollbackAsync(cancellationToken);
+                }
+                catch { }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 提交事务
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    protected virtual async Task CommitTransactionsAsync(CancellationToken cancellationToken)
+    {
+        foreach (var transaction in GetAllActiveTransactionApis())
+        {
+            await transaction.CommitAsync(cancellationToken);
+        }
+    }
+
+    /// <summary>
+    /// 完成
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public virtual async Task CompleteAsync(CancellationToken cancellationToken = default)
+    {
+        if (_isRolledback) await Task.CompletedTask;
+        PreventMultipleComplete();
+        try
+        {
+            _isCompleting = true;
+            await SaveChangesAsync(cancellationToken);
+
+            await CommitTransactionsAsync(cancellationToken);
+            IsCompleted = true;
+        }
+        catch 
+        {
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// 阻止多次完成
+    /// </summary>
+    /// <exception cref="Exception"></exception>
+    private void PreventMultipleComplete()
+    {
+        if (IsCompleted || _isCompleting)
+        {
+            throw new Exception("Completion has already been requested for this unit of work.");
+        }
+    }
+
+    /// <summary>
+    /// 释放资源
+    /// </summary>
+    public virtual void Dispose()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+        IsDisposed = true;
+        DisposeTransactions();
+    }
+
+    private void DisposeTransactions()
+    {
+        foreach (var transactionApi in GetAllActiveTransactionApis())
+        {
+            try
+            {
+                transactionApi.Dispose();
+            }
+            catch
+            {
+            }
+        }
+    }
+
+    /// <summary>
+    /// 重写
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return $"[UnitOfWork {InstanceId}]";
+    }
+
+    
 }

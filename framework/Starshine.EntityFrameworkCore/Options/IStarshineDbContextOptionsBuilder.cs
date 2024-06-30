@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Starshine.EntityFrameworkCore;
 /// <summary>
@@ -39,21 +40,8 @@ public interface IStarshineDbContextOptionsBuilder
     object? Version { get; set; }
 
     /// <summary>
-    /// db配置
+    /// 
     /// </summary>
-    DbContextOptionsBuilder DbContextOptions { get;}
-
-    /// <summary>
-    /// 添加<see cref="IInterceptor" />实例到那些在上下文中注册的实例。
-    /// </summary>
-    /// <param name="interceptors"></param>
-    /// <returns></returns>
-    DbContextOptionsBuilder AddInterceptors(params IInterceptor[] interceptors);
-
-    /// <summary>
-    /// 添加<see cref="IInterceptor" />实例到那些在上下文中注册的实例。
-    /// </summary>
-    /// <param name="interceptors"></param>
-    /// <returns></returns>
-    DbContextOptionsBuilder AddInterceptors(IEnumerable<IInterceptor> interceptors);
+    /// <param name="dbContextOptions"></param>
+    void Configure([NotNull] Action<DbContextOptionsBuilder> dbContextOptions);
 }

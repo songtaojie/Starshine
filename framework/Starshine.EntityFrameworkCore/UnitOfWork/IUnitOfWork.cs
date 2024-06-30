@@ -15,34 +15,55 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 工作单元依赖接口
 /// </summary>
-public interface IUnitOfWork
+public interface IUnitOfWork: IDatabaseApiContainer,ITransactionApiContainer,IDisposable
 {
+    /// <summary>
+    /// 正在使用的Starshine.EntityFrameworkCore.IUnitOfWork的唯一标识符。
+    /// </summary>
+    Guid InstanceId { get; }
 
     /// <summary>
-    /// 开启工作单元处理
+    /// 是否已经释放
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="options"></param>
-    void BeginTransaction(FilterContext context, UnitOfWorkOptions options);
+    bool IsDisposed { get; }
 
     /// <summary>
-    /// 提交工作单元处理
+    /// 返回已经完成
     /// </summary>
-    /// <param name="resultContext"></param>
-    /// <param name="options"></param>
-    void CommitTransaction(FilterContext resultContext, UnitOfWorkOptions options);
+    bool IsCompleted { get; }
 
     /// <summary>
-    /// 回滚工作单元处理
+    /// 完成
     /// </summary>
-    /// <param name="resultContext"></param>
-    /// <param name="options"></param>
-    void RollbackTransaction(FilterContext resultContext, UnitOfWorkOptions options);
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task CompleteAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// 执行完毕（无论成功失败）
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="resultContext"></param>
-    void OnCompleted(FilterContext context, FilterContext resultContext);
+    ///// <summary>
+    ///// 开启工作单元处理
+    ///// </summary>
+    ///// <param name="context"></param>
+    ///// <param name="options"></param>
+    //void BeginTransaction(FilterContext context, UnitOfWorkOptions options);
+
+    ///// <summary>
+    ///// 提交工作单元处理
+    ///// </summary>
+    ///// <param name="resultContext"></param>
+    ///// <param name="options"></param>
+    //void CommitTransaction(FilterContext resultContext, UnitOfWorkOptions options);
+
+    ///// <summary>
+    ///// 回滚工作单元处理
+    ///// </summary>
+    ///// <param name="resultContext"></param>
+    ///// <param name="options"></param>
+    //void RollbackTransaction(FilterContext resultContext, UnitOfWorkOptions options);
+
+    ///// <summary>
+    ///// 执行完毕（无论成功失败）
+    ///// </summary>
+    ///// <param name="context"></param>
+    ///// <param name="resultContext"></param>
+    //void OnCompleted(FilterContext context, FilterContext resultContext);
 }

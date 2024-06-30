@@ -15,13 +15,7 @@ namespace Starshine.EntityFrameworkCore
         /// 获取所有数据库上下文
         /// </summary>
         /// <returns></returns>
-        ConcurrentBag<DbContext> GetDbContexts();
-
-        /// <summary>
-        /// 保存数据库上下文
-        /// </summary>
-        /// <param name="dbContext"></param>
-        void AddToPool(DbContext dbContext);
+        IReadOnlyList<DbContext> GetAllActiveDbContexts();
 
         /// <summary>
         /// 保存数据库上下文（异步）
@@ -58,6 +52,21 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task ShareTransactionAsync(int skipCount, DbTransaction transaction, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task RollbackAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 关闭所有数据库链接

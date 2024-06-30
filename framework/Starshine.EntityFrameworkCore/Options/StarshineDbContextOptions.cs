@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +23,20 @@ namespace Starshine.EntityFrameworkCore;
 public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
 {
     /// <summary>
+    /// DbContext
+    /// </summary>
+    public Type OriginalDbContextType { get; }
+
+    internal Dictionary<string, Type> DbContextReplacements { get; }
+
+    /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContextOptions"></param>
-    public StarshineDbContextOptions(DbContextOptionsBuilder dbContextOptions)
+    /// <param name="originalDbContextType"></param>
+    public StarshineDbContextOptions(Type originalDbContextType)
     {
-        DbContextOptions = dbContextOptions;
+        OriginalDbContextType = originalDbContextType;
+        DbContextReplacements = new Dictionary<string, Type>();
     }
     /// <summary>
     /// 数据库提供商
@@ -51,23 +61,41 @@ public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
     /// <summary>
     /// db配置
     /// </summary>
-    public DbContextOptionsBuilder DbContextOptions { get; private set; }
+    internal Action<DbContextOptionsBuilder>? DbContextOptions { get; private set; }
 
     /// <summary>
-    /// 添加<see cref="IInterceptor" />实例到那些在上下文中注册的实例。
+    /// 
     /// </summary>
-    /// <param name="interceptors"></param>
-    /// <returns></returns>
-    public virtual DbContextOptionsBuilder AddInterceptors(params IInterceptor[] interceptors)
-           => DbContextOptions.AddInterceptors(interceptors);
+    /// <param name="dbContextOptions"></param>
+    public void Configure([NotNull] Action<DbContextOptionsBuilder> dbContextOptions)
+    {
+        DbContextOptions = dbContextOptions;
+    }
 
-    /// <summary>
-    /// 添加<see cref="IInterceptor" />实例到那些在上下文中注册的实例。
-    /// </summary>
-    /// <param name="interceptors"></param>
-    /// <returns></returns>
-    public virtual DbContextOptionsBuilder AddInterceptors(IEnumerable<IInterceptor> interceptors)
-            => DbContextOptions.AddInterceptors(interceptors);
+
+    internal Type GetReplacedTypeOrSelf(Type dbContextType)
+    {
+        var replacementType = dbContextType;
+        while (true)
+        {
+            var foundType = DbContextReplacements.LastOrDefault(x => x.Key == dbContextType.FullName);
+            if (!foundType.Equals(default(KeyValuePair<string, Type>)))
+            {
+                if (foundType.Value == dbContextType)
+                {
+                    throw new Exception(
+                        "Circular DbContext replacement found for " +
+                        dbContextType.AssemblyQualifiedName
+                    );
+                }
+                replacementType = foundType.Value;
+            }
+            else
+            {
+                return replacementType;
+            }
+        }
+    }
 
     /// <summary>
     /// 获取hashcode
@@ -79,7 +107,7 @@ public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
         if (Provider != null) hashCode.Add(Provider);
         if(!string.IsNullOrEmpty(ConnectionString)) hashCode.Add(ConnectionString);
         if(Version!=null) hashCode.Add(Version);
-        hashCode.Add(this.DbContextOptions.Options.GetHashCode());
+        //hashCode.Add(this.DbContextOptions.Options.GetHashCode());
         return hashCode.ToHashCode();
     }
 }

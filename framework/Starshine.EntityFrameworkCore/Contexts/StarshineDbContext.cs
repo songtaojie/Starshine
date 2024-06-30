@@ -27,6 +27,13 @@ namespace Starshine.EntityFrameworkCore
         private static readonly MethodInfo ConfigureEntityTypeBuilderMethodInfo
           = typeof(StarshineDbContext<TDbContext>)
               .GetMethod(nameof(ConfigureEntityTypeBuilder),BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+        /// <summary>
+        /// 保存失败回滚
+        /// </summary>
+        public virtual bool FailedRollback { get; protected set; } = true;
+
+
         /// <summary>
         /// 构造函数
         /// </summary>
