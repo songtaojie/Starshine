@@ -4,25 +4,28 @@
 //
 // 电话/微信：song977601042
 
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore;
-
 /// <summary>
-/// DbContext提供器
+/// UnitOfWork管理
 /// </summary>
-/// <typeparam name="TDbContext"></typeparam>
-public interface IDbContextProvider<TDbContext>
-    where TDbContext : DbContext
+public interface IUnitOfWorkManager
 {
     /// <summary>
-    /// 获取DbContext
+    /// 当前运行的UnitOfWork
     /// </summary>
+    IUnitOfWork? Current { get; }
+
+    /// <summary>
+    /// 开始工作单元
+    /// </summary>
+    /// <param name="options"></param>
     /// <returns></returns>
-    Task<TDbContext> GetDbContextAsync(CancellationToken cancellationToken = default);
+    IUnitOfWork Begin(UnitOfWorkOptions options);
 }

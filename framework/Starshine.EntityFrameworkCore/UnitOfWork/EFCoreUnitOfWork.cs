@@ -4,9 +4,11 @@
 //
 // 电话/微信：song977601042
 
+using Microsoft.Extensions.Options;
 using Starshine.DependencyInjection;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Starshine.EntityFrameworkCore;
@@ -46,6 +48,21 @@ public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
     public bool IsCompleted { get; private set; }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public UnitOfWorkOptions Options { get; private set; } = default!;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public event EventHandler<UnitOfWorkEventArgs> Disposed = default!;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public IUnitOfWork? Outer { get; private set; }
+
+    /// <summary>
     /// 是否回滚
     /// </summary>
     private bool _isRolledback;
@@ -66,6 +83,28 @@ public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
 
         _databaseApis = new();
         _transactionApis = new();
+    }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="options"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public virtual void Initialize([NotNull] UnitOfWorkOptions options)
+    {
+        if(options == null)
+            throw new ArgumentNullException(nameof(options));
+
+        if (Options != null)
+        {
+            throw new InvalidOperationException("This unit of work has already been initialized.");
+        }
+        Options = options.Clone();
+    }
+
+    public virtual void SetOuter(IUnitOfWork? outer)
+    {
+        Outer = outer;
     }
 
     /// <summary>
@@ -94,9 +133,7 @@ public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
     public virtual async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
         if (_isRolledback) return;
-
         _isRolledback = true;
-
         await RollbackAllAsync(cancellationToken);
     }
 
@@ -300,6 +337,7 @@ public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
         }
         IsDisposed = true;
         DisposeTransactions();
+        Disposed?.Invoke(this, new UnitOfWorkEventArgs(this));
     }
 
     private void DisposeTransactions()

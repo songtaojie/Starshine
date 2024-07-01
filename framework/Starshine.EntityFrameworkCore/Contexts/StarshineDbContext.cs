@@ -224,6 +224,26 @@ namespace Starshine.EntityFrameworkCore
             }
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="options"></param>
+        public virtual void Initialize(UnitOfWorkOptions options)
+        {
+            if (options.Timeout.HasValue &&
+                Database.IsRelational() &&
+                !Database.GetCommandTimeout().HasValue)
+            {
+                Database.SetCommandTimeout(TimeSpan.FromMilliseconds(options.Timeout.Value));
+            }
+
+            ChangeTracker.CascadeDeleteTiming = CascadeTiming.OnSaveChanges;
+
+            //ChangeTracker.Tracked += ChangeTracker_Tracked;
+            //ChangeTracker.StateChanged += ChangeTracker_StateChanged;
+            
+        }
+
         ///// <summary>
         ///// 配置全局过滤
         ///// </summary>

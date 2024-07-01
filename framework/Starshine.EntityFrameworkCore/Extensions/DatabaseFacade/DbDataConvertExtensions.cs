@@ -92,7 +92,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="dataTable">DataTable</param>
         /// <param name="returnType">返回值类型</param>
         /// <returns>object</returns>
-        public static object ToList(this DataTable dataTable, Type returnType)
+        public static object? ToList(this DataTable dataTable, Type returnType)
         {
             var isGenericType = returnType.IsGenericType;
             // 获取类型真实返回类型
@@ -101,7 +101,7 @@ namespace Hx.Sdk.Extensions
             var resultType = typeof(List<>).MakeGenericType(underlyingType);
             var list = Activator.CreateInstance(resultType);
             var addMethod = resultType.GetMethod("Add");
-
+            if(addMethod == null)return null;
             // 将 DataTable 转为行集合
             var dataRows = dataTable.AsEnumerable();
 
@@ -156,7 +156,8 @@ namespace Hx.Sdk.Extensions
                         if (property.IsDefined(typeof(ColumnAttribute), true))
                         {
                             var columnAttribute = property.GetCustomAttribute<ColumnAttribute>(true);
-                            if (!string.IsNullOrWhiteSpace(columnAttribute.Name)) columnName = columnAttribute.Name;
+                            if (columnAttribute != null && !string.IsNullOrWhiteSpace(columnAttribute.Name)) 
+                                columnName = columnAttribute.Name;
                         }
 
                         // 如果 DataTable 不包含该列名，则跳过
@@ -186,7 +187,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="dataTable">DataTable</param>
         /// <param name="returnType">返回值类型</param>
         /// <returns>object</returns>
-        public static Task<object> ToListAsync(this DataTable dataTable, Type returnType)
+        public static Task<object?> ToListAsync(this DataTable dataTable, Type returnType)
         {
             return Task.FromResult(dataTable.ToList(returnType));
         }

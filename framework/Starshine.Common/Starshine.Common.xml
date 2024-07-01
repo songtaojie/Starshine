@@ -156,6 +156,52 @@
             Id
             </summary>
         </member>
+        <member name="M:Starshine.Common.EntityBase`1.Clone">
+            <summary>
+            克隆对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.EntityBase`1.GetPropertyValue(System.String)">
+            <summary>
+            根据属性的名称获取属性的值
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Common.EntityBase`1.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            根据属性的名称设置属性的值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <param name="value"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:Starshine.Common.EntityBase`1.Item(System.String)">
+            <summary>
+            索引器，根据属性的名称获取值
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="E:Starshine.Common.EntityBase`1.PropertyChanged">
+            <summary>
+            属性变化的事件
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.EntityBase`1.OnPropertyChanged(System.String)">
+            <summary>
+            属性发生改变时
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:Starshine.Common.EntityBase`1.GetKeys">
+            <summary>
+            获取所有的主键
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Starshine.Common.EntityBase">
             <summary>
             框架实体基类Id
@@ -215,6 +261,51 @@
         <member name="P:Starshine.Common.IEntity`1.Id">
             <summary>
             主键id
+            </summary>
+        </member>
+        <member name="T:Starshine.Common.IEntity">
+            <summary>
+            实体接口
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.IEntity.GetKeys">
+            <summary>
+            Returns an array of ordered keys for this entity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Common.DisposeAction">
+            <summary>
+             这个类可用于在调用Dispose方法时提供一个操作。
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DisposeAction.#ctor(System.Action)">
+            <summary>
+            创建 <see cref="T:Starshine.Common.DisposeAction"/> 对象.
+            </summary>
+            <param name="action">在此对象被处置时执行的操作。</param>
+        </member>
+        <member name="M:Starshine.Common.DisposeAction.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Starshine.Common.DisposeAction`1">
+            <summary>
+            这个类可用于在调用Dispose方法时提供一个操作。
+            <typeparam name="T">动作参数的类型。</typeparam>
+            </summary>
+        </member>
+        <member name="M:Starshine.Common.DisposeAction`1.#ctor(System.Action{`0},`0)">
+            <summary>
+            创建 <see cref="T:Starshine.Common.DisposeAction"/> 对象.
+            </summary>
+            <param name="action">在此对象被处置时执行的操作</param>
+            <param name="parameter">动作参数的类型</param>
+        </member>
+        <member name="M:Starshine.Common.DisposeAction`1.Dispose">
+            <summary>
+            释放
             </summary>
         </member>
         <member name="T:Starshine.Common.Extensions.DictionaryExtensions">

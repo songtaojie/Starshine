@@ -65,9 +65,5 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         internal List<MethodInfo> DbFunctionMethods { get; set; }
 
-        /// <summary>
-        /// 模型构建器筛选器实例
-        /// </summary>
-        internal List<IPrivateModelBuilderFilter> ModelBuilderFilterInstances { get; set; }
     }
 }

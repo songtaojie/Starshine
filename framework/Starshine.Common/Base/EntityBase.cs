@@ -97,6 +97,15 @@ namespace Starshine.Common
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// 获取所有的主键
+        /// </summary>
+        /// <returns></returns>
+        public object[] GetKeys()
+        {
+            return new object[] { Id };
+        }
     }
 
     /// <summary>

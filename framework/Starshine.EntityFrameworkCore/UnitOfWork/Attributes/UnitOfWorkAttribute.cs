@@ -24,6 +24,10 @@ namespace Starshine.EntityFrameworkCore
         {
             IsolationLevel = isolationLevel;
         }
+        /// <summary>
+        /// 这是UOW事务性的吗?
+        /// </summary>
+        public bool? IsTransactional { get; set; }
 
         /// <summary>
         /// 如果此UOW是事务性的，则此选项指示事务的隔离级别。 如果未提供，则使用默认值。

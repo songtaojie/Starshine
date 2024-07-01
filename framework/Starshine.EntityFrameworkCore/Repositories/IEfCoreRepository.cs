@@ -5,6 +5,7 @@
 // 电话/微信：song977601042
 
 using Microsoft.EntityFrameworkCore;
+using Starshine.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +13,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore;
-
 /// <summary>
-/// DbContext提供器
+/// 
 /// </summary>
-/// <typeparam name="TDbContext"></typeparam>
-public interface IDbContextProvider<TDbContext>
-    where TDbContext : DbContext
+/// <typeparam name="TEntity"></typeparam>
+public interface IEfCoreRepository<TEntity>:IRepository
+     where TEntity : class, IEntity
 {
     /// <summary>
-    /// 获取DbContext
+    /// 获取数据库上下文
     /// </summary>
     /// <returns></returns>
-    Task<TDbContext> GetDbContextAsync(CancellationToken cancellationToken = default);
+    Task<DbContext> GetDbContextAsync();
+
+    /// <summary>
+    /// 获取DbSet
+    /// </summary>
+    /// <returns></returns>
+    Task<DbSet<TEntity>> GetDbSetAsync();
 }

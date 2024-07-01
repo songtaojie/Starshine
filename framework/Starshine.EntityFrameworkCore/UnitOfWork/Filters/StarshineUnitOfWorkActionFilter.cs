@@ -55,117 +55,22 @@ namespace Starshine.EntityFrameworkCore
                 return;
             }
             var options = CreateOptions(context, unitOfWorkAttr);
-            var dbContextPool = context.HttpContext.RequestServices.GetRequiredService<IDbContextPool>();
+            CancellationToken cancellationToken = context.HttpContext.RequestAborted;
+            //var dbContextPool = context.HttpContext.RequestServices.GetRequiredService<IDbContextPool>();
 
             // 解析工作单元服务
-            var unitOfWork = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
-            unitOfWork.BeginTransaction(context, options);
-
-            if (unitOfWorkAttr == null)
+            var unitOfWorkManager = context.HttpContext.RequestServices.GetRequiredService<IUnitOfWorkManager>();
+            using var unitOfWork = unitOfWorkManager.Begin(options);
+            var resultContext = await next();
+            if (Succeed(resultContext))
             {
-                // 调用方法
-                var resultContext = await next();
+                await unitOfWork.CompleteAsync(cancellationToken);
             }
             else
             {
-                
+                await unitOfWork.RollbackAsync(cancellationToken);
             }
-            // 判断是否贴有工作单元特性
-            if (!method.IsDefined(typeof(UnitOfWorkAttribute), true))
-            {
-                // 调用方法
-                var resultContext = await next();
-
-                // 判断是否异常
-                if (resultContext.Exception == null) _dbContextPool.SavePoolNow();
-            }
-            else
-            {
-                // 打印事务开始消息
-                DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Beginning");
-
-                var dbContexts = _dbContextPool.GetDbContexts();
-                IDbContextTransaction dbContextTransaction;
-
-                // 判断 dbContextPool 中是否包含DbContext，如果是，则使用第一个数据库上下文开启事务，并应用于其他数据库上下文
-                if (dbContexts.Any())
-                {
-                    // 先判断是否已经有上下文开启了事务
-                    var transactionDbContext = dbContexts.FirstOrDefault(u => u.Database.CurrentTransaction != null);
-                    if (transactionDbContext != null)
-                    {
-                        dbContextTransaction = transactionDbContext.Database.CurrentTransaction;
-                    }
-                    else
-                    {
-                        // 如果没有任何上下文有事务，则将第一个开启事务
-                        dbContextTransaction = dbContexts.First().Database.BeginTransaction();
-                    }
-
-                    // 共享事务
-                    _dbContextPool.ShareTransaction(1, dbContextTransaction.GetDbTransaction());
-                }
-                // 创建临时数据库上下文
-                else
-                {
-                    var defaultDbContextLocator = DbContextHelper.DbContextDescriptors.LastOrDefault();
-
-                    var newDbContext = Db.GetDbContext(defaultDbContextLocator.Key);
-
-                    // 开启事务
-                    dbContextTransaction = newDbContext.Database.BeginTransaction();
-                    _dbContextPool.ShareTransaction(1, dbContextTransaction.GetDbTransaction());
-                }
-
-                // 调用方法
-                var resultContext = await next();
-
-                // 判断是否异常
-
-                if (resultContext.Exception == null)
-                {
-                    try
-                    {
-                        // 将所有数据库上下文修改 SaveChanges();
-                        var hasChangesCount = _dbContextPool.SavePoolNow();
-
-                        // 提交共享事务
-                        dbContextTransaction?.Commit();
-
-                        // 打印事务提交消息
-                        DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Completed", $"Transaction Completed! Has {hasChangesCount} DbContext Changes.");
-                    }
-                    catch
-                    {
-                        // 回滚事务
-                        if (dbContextTransaction.GetDbTransaction().Connection != null) dbContextTransaction?.Rollback();
-
-                        // 打印事务回滚消息
-                        DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
-
-                        throw;
-                    }
-                    finally
-                    {
-                        if (dbContextTransaction.GetDbTransaction().Connection != null) dbContextTransaction?.Dispose();
-                    }
-                }
-                else
-                {
-                    // 回滚事务
-                    if (dbContextTransaction.GetDbTransaction().Connection != null) dbContextTransaction?.Rollback();
-                    dbContextTransaction?.Dispose();
-
-                    // 打印事务回滚消息
-                    DbContextHelper.PrintToMiniProfiler(MiniProfilerCategory, "Rollback", isError: true);
-                }
-            }
-
-            // 手动关闭
-            _dbContextPool.CloseAll();
         }
-
-
 
         private UnitOfWorkOptions CreateOptions(ActionExecutingContext context, UnitOfWorkAttribute? unitOfWorkAttribute)
         {
@@ -173,13 +78,10 @@ namespace Starshine.EntityFrameworkCore
 
             unitOfWorkAttribute?.SetOptions(options);
 
-            //if (unitOfWorkAttribute?.IsTransactional == null)
-            //{
-            //    var abpUnitOfWorkDefaultOptions = context.GetRequiredService<IOptions<AbpUnitOfWorkDefaultOptions>>().Value;
-            //    options.IsTransactional = abpUnitOfWorkDefaultOptions.CalculateIsTransactional(
-            //        autoValue: !string.Equals(context.HttpContext.Request.Method, HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
-            //    );
-            //}
+            if (unitOfWorkAttribute?.IsTransactional == null)
+            {
+                options.IsTransactional = !string.Equals(context.HttpContext.Request.Method, HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase);
+            }
 
             return options;
         }

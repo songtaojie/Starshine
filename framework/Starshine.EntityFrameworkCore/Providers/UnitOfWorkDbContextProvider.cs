@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Starshine.EntityFrameworkCore;
 /// <summary>
@@ -39,7 +41,7 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
     /// <summary>
     /// DbContext提供者
     /// </summary>
-    protected readonly IUnitOfWork _unitOfWork;
+    protected readonly IUnitOfWorkManager _unitOfWorkManager;
 
     /// <summary>
     /// 
@@ -47,42 +49,43 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
     /// <param name="connectionStringResolver"></param>
     /// <param name="dbContextTypeProvider"></param>
     /// <param name="logger"></param>
+    /// <param name="unitOfWorkManager"></param>
     public UnitOfWorkDbContextProvider(
         IConnectionStringResolver connectionStringResolver,
         IDbContextTypeProvider dbContextTypeProvider,
         ILogger<UnitOfWorkDbContextProvider<TDbContext>> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWorkManager unitOfWorkManager)
     {
         _connectionStringResolver = connectionStringResolver;
         _dbContextTypeProvider = dbContextTypeProvider;
         _logger = logger;
-        _unitOfWork = unitOfWork;
+        _unitOfWorkManager = unitOfWorkManager;
     }
 
     /// <summary>
     /// 获取DbContext
     /// </summary>
     /// <returns></returns>
-    public Task<TDbContext> GetDbContextAsync()
+    public async Task<TDbContext> GetDbContextAsync(CancellationToken cancellationToken = default)
     {
-       
+        var unitOfWork = _unitOfWorkManager.Current;
+        if (unitOfWork == null)
+        {
+            throw new Exception("A DbContext can only be created inside a unit of work!");
+        }
         var targetDbContextType = _dbContextTypeProvider.GetDbContextType(typeof(TDbContext));
-        var connectionString = _connectionStringResolver.ResolveAsync<TDbContext>();
+        var connectionString = await _connectionStringResolver.ResolveAsync<TDbContext>();
 
         var dbContextKey = $"{targetDbContextType.FullName}_{connectionString}";
 
-        var databaseApi = _unitOfWork.FindDatabaseApi(dbContextKey);
+        var databaseApi = unitOfWork.FindDatabaseApi(dbContextKey);
 
         if (databaseApi == null)
         {
-            databaseApi = new EfCoreDatabaseApi(
-                await CreateDbContextAsync(unitOfWork, connectionString)
-            );
-
-            _unitOfWork.AddDatabaseApi(dbContextKey, databaseApi);
+            databaseApi = new EfCoreDatabaseApi(await CreateDbContextAsync(unitOfWork, connectionString));
+            unitOfWork.AddDatabaseApi(dbContextKey, databaseApi);
         }
-
-        return (TDbContext)((EfCoreDatabaseApi)databaseApi).DbContext;
+        return (TDbContext)((EfCoreDatabaseApi)databaseApi).StarterDbContext;
     }
 
     /// <summary>
@@ -90,35 +93,44 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
     /// </summary>
     /// <param name="unitOfWork"></param>
     /// <param name="connectionString"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    protected virtual async Task<TDbContext> CreateDbContextAsync(IUnitOfWork unitOfWork, string connectionString)
+    protected virtual async Task<TDbContext> CreateDbContextAsync(IUnitOfWork unitOfWork, string? connectionString, CancellationToken cancellationToken = default)
     {
         var creationContext = new DbContextCreationContext(connectionString);
         using (DbContextCreationContext.Use(creationContext))
         {
             var dbContext = await CreateDbContextAsync(unitOfWork);
 
-            if (dbContext is IAbpEfCoreDbContext abpEfCoreDbContext)
+            if (dbContext is StarshineDbContext<TDbContext> starshineDbContext)
             {
-                abpEfCoreDbContext.Initialize(
-                    new AbpEfCoreDbContextInitializationContext(
-                        unitOfWork
-                    )
-                );
+                starshineDbContext.Initialize(unitOfWork.Options);
             }
 
             return dbContext;
         }
     }
 
-    protected virtual async Task<TDbContext> CreateDbContextAsync(IUnitOfWork unitOfWork)
+    /// <summary>
+    /// 创建DbContext
+    /// </summary>
+    /// <param name="unitOfWork"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    protected virtual async Task<TDbContext> CreateDbContextAsync(IUnitOfWork unitOfWork, CancellationToken cancellationToken = default)
     {
         return unitOfWork.Options.IsTransactional
-            ? await CreateDbContextWithTransactionAsync(unitOfWork)
+            ? await CreateDbContextWithTransactionAsync(unitOfWork, cancellationToken)
             : unitOfWork.ServiceProvider.GetRequiredService<TDbContext>();
     }
 
-    protected virtual async Task<TDbContext> CreateDbContextWithTransactionAsync(IUnitOfWork unitOfWork)
+    /// <summary>
+    /// 创建带事务的DbContext
+    /// </summary>
+    /// <param name="unitOfWork"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    protected virtual async Task<TDbContext> CreateDbContextWithTransactionAsync(IUnitOfWork unitOfWork, CancellationToken cancellationToken = default)
     {
         var transactionApiKey = $"EntityFrameworkCore_{DbContextCreationContext.Current.ConnectionString}";
         var activeTransaction = unitOfWork.FindTransactionApi(transactionApiKey) as EfCoreTransactionApi;
@@ -130,21 +142,20 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
             try
             {
                 var dbTransaction = unitOfWork.Options.IsolationLevel.HasValue
-                    ? await dbContext.Database.BeginTransactionAsync(unitOfWork.Options.IsolationLevel.Value, GetCancellationToken())
-                    : await dbContext.Database.BeginTransactionAsync(GetCancellationToken());
+                    ? await dbContext.Database.BeginTransactionAsync(unitOfWork.Options.IsolationLevel.Value, cancellationToken)
+                    : await dbContext.Database.BeginTransactionAsync(cancellationToken);
 
                 unitOfWork.AddTransactionApi(
                     transactionApiKey,
                     new EfCoreTransactionApi(
                         dbTransaction,
-                        dbContext,
-                        CancellationTokenProvider
+                        dbContext
                     )
                 );
             }
             catch (Exception e) when (e is InvalidOperationException || e is NotSupportedException)
             {
-                Logger.LogWarning(TransactionsNotSupportedWarningMessage);
+                _logger.LogWarning(TransactionsNotSupportedWarningMessage);
 
                 return dbContext;
             }
@@ -157,37 +168,31 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
 
             var dbContext = unitOfWork.ServiceProvider.GetRequiredService<TDbContext>();
 
-            if (dbContext.As<DbContext>().HasRelationalTransactionManager())
+            if (dbContext.Database.IsRelational())
             {
                 if (dbContext.Database.GetDbConnection() == DbContextCreationContext.Current.ExistingConnection)
                 {
-                    await dbContext.Database.UseTransactionAsync(activeTransaction.DbContextTransaction.GetDbTransaction(), GetCancellationToken());
+                    await dbContext.Database.UseTransactionAsync(activeTransaction.DbContextTransaction.GetDbTransaction(), cancellationToken);
                 }
                 else
                 {
                     try
                     {
-                        /* User did not re-use the ExistingConnection and we are starting a new transaction.
-                            * EfCoreTransactionApi will check the connection string match and separately
-                            * commit/rollback this transaction over the DbContext instance. */
                         if (unitOfWork.Options.IsolationLevel.HasValue)
                         {
                             await dbContext.Database.BeginTransactionAsync(
                                 unitOfWork.Options.IsolationLevel.Value,
-                                GetCancellationToken()
+                               cancellationToken
                             );
                         }
                         else
                         {
-                            await dbContext.Database.BeginTransactionAsync(
-                                GetCancellationToken()
-                            );
+                            await dbContext.Database.BeginTransactionAsync(cancellationToken);
                         }
                     }
                     catch (Exception e) when (e is InvalidOperationException || e is NotSupportedException)
                     {
-                        Logger.LogWarning(TransactionsNotSupportedWarningMessage);
-
+                        _logger.LogWarning(TransactionsNotSupportedWarningMessage);
                         return dbContext;
                     }
                 }
@@ -199,18 +204,15 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
                     /* No need to store the returning IDbContextTransaction for non-relational databases
                         * since EfCoreTransactionApi will handle the commit/rollback over the DbContext instance.
                           */
-                    await dbContext.Database.BeginTransactionAsync(GetCancellationToken());
+                    await dbContext.Database.BeginTransactionAsync(cancellationToken);
                 }
                 catch (Exception e) when (e is InvalidOperationException || e is NotSupportedException)
                 {
-                    Logger.LogWarning(TransactionsNotSupportedWarningMessage);
-
+                    _logger.LogWarning(TransactionsNotSupportedWarningMessage);
                     return dbContext;
                 }
             }
-
             activeTransaction.AttendedDbContexts.Add(dbContext);
-
             return dbContext;
         }
     }

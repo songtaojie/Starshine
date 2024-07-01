@@ -27,7 +27,7 @@ public class DbContextCreationContext
     /// <summary>
     /// 数据库连接字符串
     /// </summary>
-    public string ConnectionString { get; }
+    public string? ConnectionString { get; }
 
     /// <summary>
     /// 存在的连接
@@ -38,7 +38,7 @@ public class DbContextCreationContext
     /// 
     /// </summary>
     /// <param name="connectionString"></param>
-    public DbContextCreationContext(string connectionString)
+    public DbContextCreationContext(string? connectionString)
     {
         ConnectionString = connectionString;
     }
