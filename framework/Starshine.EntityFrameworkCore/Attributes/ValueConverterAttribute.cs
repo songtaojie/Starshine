@@ -1,4 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
+
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -14,7 +20,7 @@ namespace Starshine.EntityFrameworkCore
     {
 
         #region Field
-        private ValueConverter _valueConverter;
+        private ValueConverter? _valueConverter;
         #endregion
 
         #region Construct
@@ -30,7 +36,7 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         /// <param name="type">值转换器的类型</param>
         /// <param name="param">值转换器的参数</param>
-        public ValueConverterAttribute(Type type, object param) : this(type, param, null)
+        public ValueConverterAttribute(Type type, object? param) : this(type, param, null)
         {
         }
         /// <summary>
@@ -39,10 +45,10 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="type">类型</param>
         /// <param name="param1">值转换器参数</param>
         /// <param name="param2">值转换器参数</param>
-        public ValueConverterAttribute(Type type, object param1, object param2)
+        public ValueConverterAttribute(Type type, object? param1, object? param2)
         {
             ConventionType = type;
-            if (param2 != null)
+            if (param2 != null && param1 != null)
             {
                 Params = new object[2] { param1, param2 };
             }
@@ -69,12 +75,12 @@ namespace Starshine.EntityFrameworkCore
         /// 构造函数中的ConverterMappingHints参数为null，不能设置
         /// 如需使用ConverterMappingHints参数，则使用Fluent API，不要使用注解
         /// </summary>
-        public object[] Params { get; set; }
+        public object?[]? Params { get; set; }
 
         /// <summary>
         /// 值转换器
         /// </summary>
-        internal ValueConverter ValueConverter
+        internal ValueConverter? ValueConverter
         {
             get
             {
@@ -95,10 +101,10 @@ namespace Starshine.EntityFrameworkCore
         /// 获取当前指定的值转换器
         /// </summary>
         /// <returns></returns>
-        private ValueConverter GetValueConverter()
+        private ValueConverter? GetValueConverter()
         {
-            ConverterMappingHints mappingHints = null;
-            object[] newParams = null;
+            ConverterMappingHints? mappingHints = null;
+            object?[]? newParams = new object?[] { mappingHints };
             if (Params != null)
             {
                 var list = Params.ToList();
@@ -109,17 +115,18 @@ namespace Starshine.EntityFrameworkCore
             {
                 Type[] types = ConventionType.GetGenericArguments();
                 var genericType = ConventionType.MakeGenericType(types);
-                object toIntInstance = Activator.CreateInstance(genericType, Params == null ? new object[] { mappingHints } : newParams);
+                if (genericType == null) return null;
+                object? toIntInstance = Activator.CreateInstance(genericType, newParams);
                 return toIntInstance as ValueConverter;
             }
             else
             {
-                object toIntInstance = Activator.CreateInstance(ConventionType, Params == null ? new object[] { mappingHints } : newParams);
+                object? toIntInstance = Activator.CreateInstance(ConventionType, newParams);
                 return toIntInstance as ValueConverter;
             }
         }
 
-        private object CreateObject(Type type, params object[] args)
+        private object? CreateObject(Type type, params object[] args)
         {
             try
             {
@@ -130,19 +137,19 @@ namespace Starshine.EntityFrameworkCore
                 }
 
                 Type[] paramTypes = new Type[lenght];
-                for (int i = 0; i < args.Length; i++)
+                for (int i = 0; i < lenght; i++)
                 {
-                    paramTypes[i] = args[i].GetType();
+                    paramTypes[i] = args![i].GetType();
                 }
 
                 object[] param = new object[lenght];
-                for (int i = 0; i < args.Length; i++)
+                for (int i = 0; i < lenght; i++)
                 {
-                    param[i] = args[i];
+                    param[i] = args![i];
                 }
 
-                object obj = null;
-                ConstructorInfo constructorInfoObj = type.GetConstructor(paramTypes);
+                object? obj = null;
+                ConstructorInfo? constructorInfoObj = type.GetConstructor(paramTypes);
                 if (constructorInfoObj != null)
                 {
                     Console.WriteLine("构造函数创建");

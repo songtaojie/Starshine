@@ -1,4 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
+
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Starshine.EntityFrameworkCore
@@ -14,7 +20,7 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         /// <param name="name">函数名</param>
         /// <param name="schema">架构名</param>
-        public QueryableFunctionAttribute(string name, string schema = null) : base(name, schema)
+        public QueryableFunctionAttribute(string name, string? schema = null) : base(name, schema)
         {
             DbContextLocators = Array.Empty<Type>();
         }
@@ -25,7 +31,7 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="name">函数名</param>
         /// <param name="schema">架构名</param>
         /// <param name="dbContextLocators">数据库上下文定位器</param>
-        public QueryableFunctionAttribute(string name, string schema = null, params Type[] dbContextLocators) : base(name, schema)
+        public QueryableFunctionAttribute(string name, string? schema = null, params Type[] dbContextLocators) : base(name, schema)
         {
             DbContextLocators = dbContextLocators ?? Array.Empty<Type>();
         }

@@ -64,27 +64,15 @@ public static class StarshineEfCoreBuilderExtensions
 
     private static IServiceCollection AddStarshineRepositories(IServiceCollection services)
     {
-        // 注册 Sql 仓储
-        services.TryAddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
-
-        // 注册 Sql 非泛型仓储
-        services.TryAddScoped<ISqlRepository, SqlRepository>();
 
         // 注册多数据库上下文仓储
-        services.TryAddScoped(typeof(IRepository<,>), typeof(EFCoreRepository<,>));
+        services.TryAddScoped(typeof(IEfCoreRepository<>), typeof(EFCoreRepository<,>));
 
         // 注册泛型仓储
-        services.TryAddScoped(typeof(IRepository<>), typeof(EFCoreRepository<>));
-
-        // 注册主从库仓储
-        services.TryAddScoped(typeof(IMSRepository<,>), typeof(MSRepository<,>));
-        services.TryAddScoped(typeof(IMSRepository<,,>), typeof(MSRepository<,,>));
-
+        services.TryAddScoped(typeof(IReadOnlyRepository<>), typeof(ReadOnlyRepository<>));
         // 注册非泛型仓储
-        services.TryAddScoped<IRepository, EFCoreRepository>();
-
-        // 注册多数据库仓储
-        services.TryAddScoped(typeof(IDbRepository<>), typeof(DbRepository<>));
+        services.TryAddScoped(typeof(IRepository), typeof(EFCoreRepository<,>));
+      
         return services;
     }
 

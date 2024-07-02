@@ -19,7 +19,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
             if (type.IsValueTuple()) return false;
 
             // 处理数组类型，基元数组类型也可以是基元类型
-            if (type.IsArray) return type.GetElementType().IsRichPrimitive();
+            if (type.IsArray) return type.GetElementType()?.IsRichPrimitive() ?? false;
 
             // 基元类型或值类型或字符串类型
             if (type.IsPrimitive || type.IsValueType || type == typeof(string)) return true;
@@ -36,7 +36,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <returns></returns>
         internal static bool IsValueTuple(this Type type)
         {
-            return type.ToString().StartsWith(typeof(ValueTuple).FullName);
+            return type.ToString().StartsWith(typeof(ValueTuple).FullName!);
         }
 
         /// <summary>
@@ -52,11 +52,12 @@ namespace Starshine.EntityFrameworkCore.Extensions
             if (isTheRawGenericType) return true;
 
             // 检查类型
-            while (type != null && type != typeof(object))
+            var newType = type;
+            while (newType != null && newType != typeof(object))
             {
-                isTheRawGenericType = IsTheRawGenericType(type);
+                isTheRawGenericType = IsTheRawGenericType(newType);
                 if (isTheRawGenericType) return true;
-                type = type.BaseType;
+                newType = type.BaseType;
             }
 
             return false;

@@ -20,7 +20,7 @@ namespace Starshine.EntityFrameworkCore.Extensions.LinqBuilder
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, bool>> expression)
+        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, bool>> expression)
         {
             return condition ? Queryable.Where(sources, expression) : sources;
         }
@@ -33,7 +33,7 @@ namespace Starshine.EntityFrameworkCore.Extensions.LinqBuilder
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, int, bool>> expression)
+        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> sources, bool condition, Expression<Func<TSource, int, bool>> expression)
         {
             return condition ? Queryable.Where(sources, expression) : sources;
         }
@@ -120,7 +120,7 @@ namespace Starshine.EntityFrameworkCore.Extensions.LinqBuilder
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, bool> expression)
+        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, bool> expression)
         {
             return condition ? sources.Where(expression) : sources;
         }
@@ -133,7 +133,7 @@ namespace Starshine.EntityFrameworkCore.Extensions.LinqBuilder
         /// <param name="condition">布尔条件</param>
         /// <param name="expression">表达式</param>
         /// <returns>新的集合对象</returns>
-        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, int, bool> expression)
+        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> sources, bool condition, Func<TSource, int, bool> expression)
         {
             return condition ? sources.Where(expression) : sources;
         }

@@ -30,9 +30,4 @@
     <ProjectReference Include="..\Starshine\Starshine.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modeling\" />
-    <Folder Include="ServiceExtensions\" />
-  </ItemGroup>
-
 </Project>

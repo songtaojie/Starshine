@@ -11,7 +11,10 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 构造函数
         /// </summary>
-        public UnitOfWorkAttribute() { }
+        public UnitOfWorkAttribute() 
+        {
+            IsTransactional = true;
+        }
 
         /// <summary>
         /// 构造函数
@@ -23,6 +26,7 @@ namespace Starshine.EntityFrameworkCore
         public UnitOfWorkAttribute(IsolationLevel isolationLevel)
         {
             IsolationLevel = isolationLevel;
+            IsTransactional = true;
         }
         /// <summary>
         /// 这是UOW事务性的吗?

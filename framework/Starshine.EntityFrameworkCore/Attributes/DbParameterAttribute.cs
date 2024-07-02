@@ -1,4 +1,10 @@
-﻿using System;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
+
+using System;
 using System.Data;
 
 namespace Starshine.EntityFrameworkCore
@@ -34,7 +40,7 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 数据库对应类型
         /// </summary>
-        public object DbType { get; set; }
+        public object? DbType { get; set; }
 
         /// <summary>
         /// 大小

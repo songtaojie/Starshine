@@ -7,6 +7,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Starshine.Common;
 using Starshine.EntityFrameworkCore.Extensions;
 using Starshine.EntityFrameworkCore.Extensions.LinqBuilder;
 using System;
@@ -39,20 +40,14 @@ public static class StarshineEntityTypeBuilderExtensions
 
     }
 
-    public static void ConfigureByConvention(this EntityTypeBuilder b)
+    /// <summary>
+    /// 配置
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="dbContext">数据库上下文</param>
+    public static void ConfigureByConvention(this EntityTypeBuilder b, DbContext dbContext)
     {
-        b.TryConfigureTableName();
-        b.TryConfigureExtraProperties();
-        b.TryConfigureObjectExtensions();
-        b.TryConfigureMayHaveCreator();
-        b.TryConfigureMustHaveCreator();
-        b.TryConfigureSoftDelete();
-        b.TryConfigureDeletionTime();
-        b.TryConfigureDeletionAudited();
-        b.TryConfigureCreationTime();
-        b.TryConfigureLastModificationTime();
-        b.TryConfigureModificationAudited();
-        b.TryConfigureMultiTenant();
+        b.TryConfigureTableName(dbContext);
     }
 
     /// <summary>
@@ -79,6 +74,7 @@ public static class StarshineEntityTypeBuilderExtensions
         // 获取实体动态配置表配置
         var lastEntityMutableTableType = _entityMutableTableTypes.Where(t => t.GenericTypeArguments.Contains(entityBuilder.Metadata.ClrType)).LastOrDefault();
         if (lastEntityMutableTableType == null) return isSet;
+        lastEntityMutableTableType = lastEntityMutableTableType.MakeGenericType(entityBuilder.Metadata.ClrType);
         // 只应用于扫描的最后配置
         var instance = Activator.CreateInstance(lastEntityMutableTableType);
         var getTableNameMethod = lastEntityMutableTableType.GetMethod(nameof(IEntityMutableTable<object>.GetTableName));
@@ -136,51 +132,4 @@ public static class StarshineEntityTypeBuilderExtensions
             }
         }
     }
-
-
-
-    /// <summary>
-    /// 配置数据库实体类型构建器
-    /// </summary>
-    /// <param name="entityType">实体类型</param>
-    /// <param name="entityBuilder">实体类型构建器</param>
-    /// <param name="dbContext">数据库上下文</param>
-    /// <param name="dbContextLocator">数据库上下文定位器</param>
-    /// <param name="dbContextCorrelationType">数据库实体关联类型</param>
-    private static void ConfigureEntityTypeBuilder(this EntityTypeBuilder entityBuilder, IMutableEntityType mutableEntityType, DbContext dbContext)
-    {
-
-        if (mutableEntityType.IsOwned())
-        {
-            return;
-        }
-
-        if (!typeof(IEntity).IsAssignableFrom(typeof(TEntity)))
-        {
-            return;
-        }
-
-
-        // 获取该实体类型的配置类型
-        var entityTypeBuilderTypes = dbContextCorrelationType.EntityTypeBuilderTypes
-            .Where(u => u.GetInterfaces()
-                .Any(i => i.HasImplementedRawGeneric(typeof(IPrivateEntityTypeBuilder<>)) && i.GenericTypeArguments.Contains(entityType)));
-
-        if (!entityTypeBuilderTypes.Any()) return;
-
-        // 调用数据库实体自定义配置
-        foreach (var entityTypeBuilderType in entityTypeBuilderTypes)
-        {
-            var instance = Activator.CreateInstance(entityTypeBuilderType);
-            var configureMethod = entityTypeBuilderType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                                                               .Where(u => u.Name == "Configure"
-                                                                    && u.GetParameters().Length > 0
-                                                                    && u.GetParameters().First().ParameterType == typeof(EntityTypeBuilder<>).MakeGenericType(entityType))
-                                                               .FirstOrDefault();
-
-            configureMethod.Invoke(instance, new object[] { entityBuilder, dbContext, dbContextLocator });
-        }
-    }
-
-
 }

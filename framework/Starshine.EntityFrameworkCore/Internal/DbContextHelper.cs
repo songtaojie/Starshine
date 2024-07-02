@@ -1,20 +1,15 @@
-﻿using Starshine.EntityFrameworkCore.Options;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Profiling;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore.Internal
 {
@@ -35,29 +30,6 @@ namespace Starshine.EntityFrameworkCore.Internal
         static DbContextHelper()
         {
             DbContextProviders = new ConcurrentDictionary<Type, Type>();
-        }
-
-        /// <summary>
-        /// 配置数据库上下文
-        /// </summary>
-        /// <typeparam name="TDbContext"></typeparam>
-        /// <typeparam name="TDbContextProvider"></typeparam>
-        internal static void AddOrUpdateDbContextProvider<TDbContext, TDbContextProvider>( )
-            where TDbContext : StarshineDbContext<TDbContext>
-            where TDbContextProvider : class, IDbContextTypeProvider
-        {
-            DbContextProviders.AddOrUpdate(typeof(TDbContextProvider), typeof(TDbContext), (key, value) => typeof(TDbContext));
-        }
-
-        /// <summary>
-        /// 检查数据库上下文是否绑定
-        /// </summary>
-        /// <param name="dbContextProviderType"></param>
-        /// <exception cref="InvalidOperationException"></exception>
-        internal static void CheckExistDbContextProvider(Type dbContextProviderType)
-        {
-            if (!DbContextProviders.ContainsKey(dbContextProviderType))
-                throw new InvalidOperationException("Prevent duplicate registration of default DbContext.");
         }
 
         /// <summary>

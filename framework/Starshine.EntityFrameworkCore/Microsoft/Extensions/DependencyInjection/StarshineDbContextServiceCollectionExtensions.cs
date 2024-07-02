@@ -38,8 +38,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 starshineOptions.DbContextOptions?.Invoke(options);
                 if (string.IsNullOrWhiteSpace(starshineOptions.ConnectionString))
                 {
-                    var dbContextProvider = provider.GetRequiredService<IDbContextProvider>();
-                    starshineOptions.ConnectionString = dbContextProvider.GetConnectionString<TDbContext>();
+                    var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
+                    starshineOptions.ConnectionString = connectionStringResolver.ResolveAsync<TDbContext>().GetAwaiter().GetResult();
                 }
                 options.UseDatabase<TDbContext>(starshineOptions);
             }), poolSize);
@@ -90,8 +90,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 optionBuilder?.Invoke(starshineOptions);
                 if (string.IsNullOrWhiteSpace(starshineOptions.ConnectionString))
                 {
-                    var dbContextProvider = provider.GetRequiredService<IDbContextProvider>();
-                    starshineOptions.ConnectionString = dbContextProvider.GetConnectionString<TDbContext>();
+                    var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
+                    starshineOptions.ConnectionString = connectionStringResolver.ResolveAsync<TDbContext>().GetAwaiter().GetResult();
                 }
                 options.UseDatabase<TDbContext>(starshineOptions);
             }));

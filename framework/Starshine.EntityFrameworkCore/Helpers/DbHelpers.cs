@@ -18,7 +18,7 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         internal static DbParameter[] ConvertToDbParameters(object model, DbCommand dbCommand)
         {
-            var modelType = model?.GetType();
+            var modelType = model.GetType();
 
             // 处理字典类型参数
             if (modelType == typeof(Dictionary<string, object>)) return ConvertToDbParameters((Dictionary<string, object>)model, dbCommand);
@@ -41,7 +41,7 @@ namespace Starshine.EntityFrameworkCore
                 // 判断属性是否贴有 [DbParameter] 特性
                 if (property.IsDefined(typeof(DbParameterAttribute), true))
                 {
-                    var dbParameterAttribute = property.GetCustomAttribute<DbParameterAttribute>(true);
+                    var dbParameterAttribute = property.GetCustomAttribute<DbParameterAttribute>(true)!;
                     dbParameters.Add(ConfigureDbParameter(property.Name, propertyValue, dbParameterAttribute, dbParameter));
                     continue;
                 }

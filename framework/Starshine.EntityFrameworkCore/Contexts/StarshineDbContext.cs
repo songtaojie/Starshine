@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using Starshine.Common;
 using Starshine.EntityFrameworkCore.Extensions;
 using Starshine.EntityFrameworkCore.Modeling;
 using System.Collections;
@@ -197,7 +198,7 @@ namespace Starshine.EntityFrameworkCore
             {
                 return;
             }
-            modelBuilder.Entity<TEntity>().ConfigureByConvention();
+            modelBuilder.Entity<TEntity>().ConfigureByConvention(this);
 
             // 获取泛型服务的类型  
             Type builderType = typeof(IEntityTypeBuilder<>).MakeGenericType(entityType);

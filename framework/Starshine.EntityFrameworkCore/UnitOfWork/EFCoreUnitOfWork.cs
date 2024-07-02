@@ -102,6 +102,10 @@ public class EFCoreUnitOfWork : IUnitOfWork, ITransientDependency
         Options = options.Clone();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="outer"></param>
     public virtual void SetOuter(IUnitOfWork? outer)
     {
         Outer = outer;

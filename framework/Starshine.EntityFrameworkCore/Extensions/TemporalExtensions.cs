@@ -109,8 +109,8 @@ namespace Starshine.EntityFrameworkCore.Extensions
             where TEntity : class, new()
         {
             var entityType = dbContext.Context.Model.FindEntityType(typeof(TEntity));
-            var schema = entityType.GetSchema().GetSqlSafeName();
-            var table = entityType.GetTableName().GetSqlSafeName();
+            var schema = entityType?.GetSchema()?.GetSqlSafeName();
+            var table = entityType?.GetTableName()?.GetSqlSafeName()!;
 
             return string.IsNullOrWhiteSpace(schema)
                 ? table

@@ -43,6 +43,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
                 if (IsNoObjectBaseType(type))
                 {
                     var baseType = type.BaseType;
+                    if(baseType == null)break;
                     ancestorTypes.Add(baseType);
                     type = baseType;
                 }
@@ -61,9 +62,9 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <param name="obj"></param>
         /// <param name="realType"></param>
         /// <returns></returns>
-        public static object ToTaskResult(this object obj, Type realType)
+        public static object? ToTaskResult(this object obj, Type realType)
         {
-            return typeof(Task).GetMethod(nameof(Task.FromResult)).MakeGenericMethod(realType).Invoke(null, new object[] { obj });
+            return typeof(Task).GetMethod(nameof(Task.FromResult))!.MakeGenericMethod(realType).Invoke(null, new object[] { obj });
         }
 
 
@@ -73,9 +74,9 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static T ChangeType<T>(this object obj)
+        public static T? ChangeType<T>(this object obj)
         {
-            return (T)ChangeType(obj, typeof(T));
+            return (T?)ChangeType(obj, typeof(T));
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <param name="obj">待转换的对象</param>
         /// <param name="type">目标类型</param>
         /// <returns>转换后的对象</returns>
-        public static object ChangeType(this object obj, Type type)
+        public static object? ChangeType(this object? obj, Type type)
         {
             if (type == null) return obj;
             if (obj == null) return type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -94,7 +95,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
             else if ((underlyingType ?? type).IsEnum)
             {
                 if (underlyingType != null && string.IsNullOrWhiteSpace(obj.ToString())) return null;
-                else return Enum.Parse(underlyingType ?? type, obj.ToString());
+                else return Enum.Parse(underlyingType ?? type, obj.ToString()!);
             }
             // 处理DateTime -> DateTimeOffset 类型
             else if (obj.GetType().Equals(typeof(DateTime)) && (underlyingType ?? type).Equals(typeof(DateTimeOffset)))
@@ -149,9 +150,9 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <typeparam name="TValue"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static Dictionary<string, TValue> ToDictionary<TValue>(this object obj)
+        public static Dictionary<string, TValue?> ToDictionary<TValue>(this object obj)
         {
-            var dic = new Dictionary<string, TValue>();
+            var dic = new Dictionary<string, TValue?>();
 
             // 如果对象为空，则返回空字典
             if (obj == null) return dic;
@@ -170,6 +171,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
             foreach (var property in properties)
             {
                 var value = property.GetValue(obj);
+                if(value == null)continue;
                 dic.Add(property.Name, value.ChangeType<TValue>());
             }
 
@@ -183,7 +185,7 @@ namespace Starshine.EntityFrameworkCore.Extensions
         /// <returns></returns>
         public static string ObjToString(this object value)
         {
-            if (value != null) return value.ToString().Trim();
+            if (value != null) return value.ToString()!.Trim();
             return string.Empty;
         }
 

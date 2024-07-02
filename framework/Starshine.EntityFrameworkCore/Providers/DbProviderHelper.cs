@@ -74,7 +74,8 @@ internal class DbProviderHelper
     /// </summary>
     static DbProviderHelper()
     {
-        StarshineDbContextAttributes = new ConcurrentDictionary<Type, StarshineDbContextAttribute?>();
+        StarshineDbContextAttributes = new();
+        DatabaseProviderUseMethods = new();
     }
     /// <summary>
     /// 数据库上下文 [StarshineDbContextAttribute] 特性缓存

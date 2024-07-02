@@ -20,7 +20,7 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="T">返回值类型</typeparam>
         /// <param name="dataTable">DataTable</param>
         /// <returns>List{T}</returns>
-        public static List<T> ToList<T>(this DataTable dataTable)
+        public static List<T>? ToList<T>(this DataTable dataTable)
         {
             return dataTable.ToList(typeof(List<T>)) as List<T>;
         }
@@ -31,7 +31,7 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="T">返回值类型</typeparam>
         /// <param name="dataTable">DataTable</param>
         /// <returns>List{T}</returns>
-        public static async Task<List<T>> ToListAsync<T>(this DataTable dataTable)
+        public static async Task<List<T>?> ToListAsync<T>(this DataTable dataTable)
         {
             var list = await dataTable.ToListAsync(typeof(List<T>));
             return list as List<T>;
@@ -43,9 +43,10 @@ namespace Hx.Sdk.Extensions
         /// <typeparam name="T1">元组元素类型</typeparam>
         /// <param name="dataSet">DataSet</param>
         /// <returns>元组类型</returns>
-        public static List<T1> ToList<T1>(this DataSet dataSet)
+        public static List<T1>? ToList<T1>(this DataSet dataSet)
         {
             var tuple = dataSet.ToList(typeof(List<T1>));
+            if(tuple == null || !tuple.Any()) return null;
             return tuple[0] as List<T1>;
         }
 
@@ -55,23 +56,22 @@ namespace Hx.Sdk.Extensions
         /// <param name="dataSet">DataSet</param>
         /// <param name="returnType">特定类型集合</param>
         /// <returns>List{object}</returns>
-        public static List<object> ToList(this DataSet dataSet, Type returnType)
+        public static List<object>? ToList(this DataSet dataSet, Type? returnType)
         {
             if (returnType == null) return default;
-
             // 处理元组类型
-
             if (returnType.IsValueType)
             {
                 returnType = returnType.GenericTypeArguments.FirstOrDefault();
             }
-
             // 获取所有的 DataTable
             var dataTables = dataSet.Tables;
-
+            if(dataTables == null || dataTables.Count <= 0)return null;
+            var result = dataTables[0].ToList(returnType!);
+            if(result == null)return null;  
             return new List<object>
             {
-                dataTables[0].ToList(returnType)
+                result
             };
         }
 
@@ -81,7 +81,7 @@ namespace Hx.Sdk.Extensions
         /// <param name="dataSet">DataSet</param>
         /// <param name="returnType">特定类型集合</param>
         /// <returns>object</returns>
-        public static Task<List<object>> ToListAsync(this DataSet dataSet, Type returnType)
+        public static Task<List<object>?> ToListAsync(this DataSet dataSet, Type returnType)
         {
             return Task.FromResult(dataSet.ToList(returnType));
         }

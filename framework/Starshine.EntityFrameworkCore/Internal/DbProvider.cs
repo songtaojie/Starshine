@@ -121,7 +121,7 @@ namespace Starshine.EntityFrameworkCore
                 InMemoryDatabase
             };
 
-            DbContextAppDbContextAttributes = new ConcurrentDictionary<Type, StarshineDbContextAttribute>();
+            DbContextAppDbContextAttributes = new ConcurrentDictionary<Type, StarshineDbContextAttribute?>();
         }
 
         /// <summary>

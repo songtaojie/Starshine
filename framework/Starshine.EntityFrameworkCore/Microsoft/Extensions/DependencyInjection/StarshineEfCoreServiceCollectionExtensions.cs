@@ -22,17 +22,16 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IStarshineEfCoreBuilder AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = default)
         {
             ConfigureDbSettingsOptions(services, optionsBuilder);
-            // 注册数据库上下文池
-            services.TryAddScoped<IDbContextPool, DbContextPool>();
-            // 解析数据库上下文
-            services.AddScoped(provider =>
-            {
-                DbContext dbContextResolve(Type locator)
-                {
-                    return ResolveDbContext(provider, locator);
-                }
-                return (Func<Type, DbContext>)dbContextResolve;
-            });
+            
+            //// 解析数据库上下文
+            //services.AddScoped(provider =>
+            //{
+            //    DbContext dbContextResolve(Type locator)
+            //    {
+            //        return ResolveDbContext(provider, locator);
+            //    }
+            //    return (Func<Type, DbContext>)dbContextResolve;
+            //});
 
             // 注册全局工作单元过滤器
             services.Configure<AspNetCore.Mvc.MvcOptions>(options =>
@@ -43,33 +42,33 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddStarshineRepositories();
         }
 
-        /// <summary>
-        /// 通过定位器解析上下文
-        /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="dbContextLocator"></param>
-        /// <returns></returns>
-        private static DbContext ResolveDbContext(IServiceProvider provider, Type dbContextLocator)
-        {
-            // 判断定位器是否绑定了数据库上下文
-            DbContextHelper.CheckDbContextLocator(dbContextLocator, out Type dbContextType);
+        ///// <summary>
+        ///// 通过定位器解析上下文
+        ///// </summary>
+        ///// <param name="provider"></param>
+        ///// <param name="dbContextLocator"></param>
+        ///// <returns></returns>
+        //private static DbContext ResolveDbContext(IServiceProvider provider, Type dbContextLocator)
+        //{
+        //    // 判断定位器是否绑定了数据库上下文
+        //    DbContextHelper.CheckDbContextLocator(dbContextLocator, out Type dbContextType);
 
-            // 动态解析数据库上下文
-            var dbContext = provider.GetService(dbContextType) as DbContext;
+        //    // 动态解析数据库上下文
+        //    var dbContext = provider.GetService(dbContextType) as DbContext;
 
-            // 实现动态数据库上下文功能，刷新 OnModelCreating
-            var dbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
-            if (dbContextAttribute?.Mode == DbContextMode.Dynamic)
-            {
-                DynamicModelCacheKeyFactory.RebuildModels();
-            }
+        //    // 实现动态数据库上下文功能，刷新 OnModelCreating
+        //    var dbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContextType);
+        //    if (dbContextAttribute?.Mode == DbContextMode.Dynamic)
+        //    {
+        //        DynamicModelCacheKeyFactory.RebuildModels();
+        //    }
 
-            // 添加数据库上下文到池中
-            var dbContextPool = provider.GetService<IDbContextPool>();
-            dbContextPool?.AddToPool(dbContext!);
+        //    // 添加数据库上下文到池中
+        //    var dbContextPool = provider.GetService<IDbContextPool>();
+        //    dbContextPool?.AddToPool(dbContext!);
 
-            return dbContext!;
-        }
+        //    return dbContext!;
+        //}
 
        
 
