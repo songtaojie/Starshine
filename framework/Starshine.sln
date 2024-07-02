@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starshine", "Starshine\Starshine.csproj", "{7E514609-D7D5-412C-ADBD-9CCB09A903C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{ADA96028-0B0B-4CE5-8D41-D4B08D0FB17D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starshine.TestProject", "..\test\Starshine.TestProject\Starshine.TestProject.csproj", "{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +66,16 @@ Global
 		{7E514609-D7D5-412C-ADBD-9CCB09A903C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E514609-D7D5-412C-ADBD-9CCB09A903C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E514609-D7D5-412C-ADBD-9CCB09A903C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9385D6FF-3609-4B9C-8ABE-77DF7E0AC9C1} = {ADA96028-0B0B-4CE5-8D41-D4B08D0FB17D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3A06E77-0544-416C-8374-B89A2A7AE3DA}

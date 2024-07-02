@@ -13,7 +13,7 @@ namespace Starshine
     /// <remarks>
     /// </remarks>
     [SkipScan]
-    public class HxAppStartupFilter : IStartupFilter
+    public class StarshineAppStartupFilter : IStartupFilter
     {
         /// <summary>
         /// 配置中间件
@@ -38,7 +38,7 @@ namespace Starshine
                     await next.Invoke();
                 });
                 // 调用默认中间件
-                app.UseHxApp();
+                app.UseStarshineApp();
                 next(app);
             };
         }

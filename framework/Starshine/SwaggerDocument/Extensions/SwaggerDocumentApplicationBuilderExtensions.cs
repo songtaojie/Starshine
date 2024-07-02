@@ -20,8 +20,8 @@ namespace Microsoft.AspNetCore.Builder
         internal static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
         {
             // 判断是否安装了 DependencyInjection 程序集
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
-            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
+            var diAssembly = StarshineApp.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
@@ -42,9 +42,9 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         internal static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app)
         {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
             // 判断是否安装了 DependencyInjection 程序集
-            var diAssembly = App.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
+            var diAssembly = StarshineApp.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");

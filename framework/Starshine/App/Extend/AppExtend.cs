@@ -7,11 +7,6 @@
     internal static class AppExtend
     {
         /// <summary>
-        /// Hx.DependencyInjection依赖注入包
-        /// </summary>
-        internal const string DependencyInjection = "Hx.DependencyInjection";
-
-        /// <summary>
         /// Starshine.DatabaseAccessor数据访问注入包
         /// </summary>
         internal const string DatabaseAccessor = "Starshine.DatabaseAccessor";

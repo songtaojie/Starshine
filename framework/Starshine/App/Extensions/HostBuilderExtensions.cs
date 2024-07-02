@@ -27,12 +27,12 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <param name="configure">配置回调</param>
         /// <returns>IHostBuilder</returns>
-        public static IHostBuilder ConfigureHxWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder>? configure = default)
+        public static IHostBuilder ConfigureStarshineWebHostDefaults(this IHostBuilder hostBuilder, Action<IWebHostBuilder>? configure = default)
         {
             // 获取命令行参数
             hostBuilder.ConfigureWebHostDefaults(webHostBuilder =>
             {
-                webHostBuilder.ConfigureHxWebApp();
+                webHostBuilder.ConfigureStarshineWebApp();
                 configure?.Invoke(webHostBuilder);
             });
             return hostBuilder;
@@ -43,9 +43,9 @@ namespace Microsoft.Extensions.Hosting
         /// </summary>
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <returns>IHostBuilder</returns>
-        public static IHostBuilder ConfigureHxApp(this IHostBuilder hostBuilder)
+        public static IHostBuilder ConfigureStarshineApp(this IHostBuilder hostBuilder)
         {
-            hostBuilder.ConfigureHxAppConfiguration();
+            hostBuilder.ConfigureStarshineAppConfiguration();
             return hostBuilder;
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="hostBuilder">泛型主机注入构建器</param>
         /// <param name="configureDelegate">配置对象</param>
         /// <returns>IHostBuilder</returns>
-        public static IHostBuilder ConfigureHxAppConfiguration(this IHostBuilder hostBuilder, Action<HostBuilderContext, IConfigurationBuilder>? configureDelegate = default)
+        public static IHostBuilder ConfigureStarshineAppConfiguration(this IHostBuilder hostBuilder, Action<HostBuilderContext, IConfigurationBuilder>? configureDelegate = default)
         {
             hostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
             {

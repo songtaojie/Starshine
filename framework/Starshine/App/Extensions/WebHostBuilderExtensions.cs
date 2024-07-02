@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="webHostBuilder">Web主机构建器</param>
         /// <returns>IWebHostBuilder</returns>
-        internal static IWebHostBuilder ConfigureHxWebApp(this IWebHostBuilder webHostBuilder)
+        internal static IWebHostBuilder ConfigureStarshineWebApp(this IWebHostBuilder webHostBuilder)
         {
             // 获取默认程序集名称
             var defaultAssemblyName = typeof(HostBuilderExtensions).GetAssemblyName();
@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="webHostBuilder">泛型主机注入构建器</param>
         /// <param name="configureDelegate">配置对象</param>
         /// <returns>IHostBuilder</returns>
-        public static IWebHostBuilder ConfigureHxWebAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder>? configureDelegate = default)
+        public static IWebHostBuilder ConfigureStarshineWebAppConfiguration(this IWebHostBuilder webHostBuilder, Action<WebHostBuilderContext, IConfigurationBuilder>? configureDelegate = default)
         {
             // 自动装载配置
             webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
@@ -65,7 +65,7 @@ namespace Microsoft.AspNetCore.Builder
                 // 存储服务提供器
                 services.AddHostedService<GenericHostLifetimeEventsHostedService>();
                 // 注册 Startup 过滤器
-                services.AddTransient<IStartupFilter, HxAppStartupFilter>();
+                services.AddTransient<IStartupFilter, StarshineAppStartupFilter>();
                 // 初始化应用服务
                 services.AddWebHostApp(config);
             });

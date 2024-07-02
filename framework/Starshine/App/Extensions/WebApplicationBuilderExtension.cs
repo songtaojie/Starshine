@@ -19,11 +19,11 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="webApplicationBuilder">Web应用构建器</param>
         /// <returns>WebApplicationBuilder</returns>
-        public static WebApplicationBuilder ConfigureHxWebApp(this WebApplicationBuilder webApplicationBuilder)
+        public static WebApplicationBuilder ConfigureStarshineWebApp(this WebApplicationBuilder webApplicationBuilder)
         {
             //InternalApp.WebHostEnvironment = webApplicationBuilder.Environment;
             // 初始化配置
-            webApplicationBuilder.WebHost.ConfigureHxWebAppConfiguration();
+            webApplicationBuilder.WebHost.ConfigureStarshineWebAppConfiguration();
             return webApplicationBuilder;
         }
     }

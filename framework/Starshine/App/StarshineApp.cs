@@ -19,7 +19,7 @@ namespace Starshine
     /// 全局应用类
     /// </summary>
     [SkipScan]
-    public static partial class App
+    public static partial class StarshineApp
     {
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Starshine
         /// <summary>
         /// 构造函数
         /// </summary>
-        static App()
+        static StarshineApp()
         {
             Assemblies = GetAssemblies();
             EffectiveTypes = Assemblies.SelectMany(u => u.GetTypes()

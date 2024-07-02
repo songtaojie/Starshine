@@ -35,12 +35,12 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext((provider, options) =>
             {
                 optionBuilder?.Invoke(starshineOptions);
-                starshineOptions.DbContextOptions?.Invoke(options);
                 if (string.IsNullOrWhiteSpace(starshineOptions.ConnectionString))
                 {
                     var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
                     starshineOptions.ConnectionString = connectionStringResolver.ResolveAsync<TDbContext>().GetAwaiter().GetResult();
                 }
+                starshineOptions.DbContextOptions?.Invoke(options);
                 options.UseDatabase<TDbContext>(starshineOptions);
             }), poolSize);
             return builder;
@@ -93,6 +93,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
                     starshineOptions.ConnectionString = connectionStringResolver.ResolveAsync<TDbContext>().GetAwaiter().GetResult();
                 }
+                starshineOptions.DbContextOptions?.Invoke(options);
                 options.UseDatabase<TDbContext>(starshineOptions);
             }));
 

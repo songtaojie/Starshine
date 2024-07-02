@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <returns></returns>
         public static IApplicationBuilder UseUnifyResultStatusCodes(this IApplicationBuilder app)
         {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<HxCoreApp>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<UnifyResultStatusCodesMiddleware>>();
             // 提供配置
             app.UseMiddleware<UnifyResultStatusCodesMiddleware>();
             logger.LogDebug("Use the UnifyResultStatusCodes ApplicationBuilder");

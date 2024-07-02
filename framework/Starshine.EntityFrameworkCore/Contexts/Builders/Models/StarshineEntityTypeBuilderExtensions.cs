@@ -33,9 +33,9 @@ public static class StarshineEntityTypeBuilderExtensions
 
     static StarshineEntityTypeBuilderExtensions()
     {
-        _entityMutableTableTypes = App.EffectiveTypes.Where(u => u.GetInterfaces()
+        _entityMutableTableTypes = StarshineApp.EffectiveTypes.Where(u => u.GetInterfaces()
                     .Any(i => i.HasImplementedRawGeneric(typeof(IEntityMutableTable<>))));
-        _modelBuilderFilters = App.EffectiveTypes.Where(u => u.GetInterfaces()
+        _modelBuilderFilters = StarshineApp.EffectiveTypes.Where(u => u.GetInterfaces()
                     .Any(i => i.HasImplementedRawGeneric(typeof(IModelBuilderFilter<>))));
 
     }

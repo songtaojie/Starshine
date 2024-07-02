@@ -24,16 +24,16 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 // 注册swagger
                 // 判断是否启用规范化文档
-                if (App.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
+                if (StarshineApp.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
 
                 // 判断是否启用规范化文档
-                if (App.Settings.EnabledUnifyResult == true) services.AddUnifyResult();
+                if (StarshineApp.Settings.EnabledUnifyResult == true) services.AddUnifyResult();
 
                 //判断是否启用全局异常处理
-                if (App.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
+                if (StarshineApp.Settings.EnabledExceptionFilter == true) services.AddFriendlyException();
 
                 //判断是否启用全局异常处理
-                if (App.Settings.EnabledCors == true) services.AddCorsAccessor();
+                if (StarshineApp.Settings.EnabledCors == true) services.AddCorsAccessor();
             });
             return services;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddConfigureOptions<AppSettingsOptions>();
 
             // 注册全局依赖注入
-            services.AddNativeDependencyInjection(App.EffectiveTypes);
+            services.AddNativeDependencyInjection(StarshineApp.EffectiveTypes);
 
             // 自定义服务
             configure?.Invoke(services);

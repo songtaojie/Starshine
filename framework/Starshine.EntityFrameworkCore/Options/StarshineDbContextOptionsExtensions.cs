@@ -103,7 +103,7 @@ internal static class StarshineDbContextOptionsExtensions
                 // 处理迁移程序集
                 if (!string.IsNullOrEmpty(contextOptions.MigrationAssemblyName))
                 {
-                    options.GetType().GetMethod("MigrationsAssembly")?.Invoke(options, new[] { contextOptions.MigrationAssemblyName });
+                    optionsType.GetMethod("MigrationsAssembly")?.Invoke(options, new[] { contextOptions.MigrationAssemblyName });
                 }
             });
         }

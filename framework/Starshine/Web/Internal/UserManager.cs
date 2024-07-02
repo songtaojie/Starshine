@@ -40,7 +40,7 @@ namespace Starshine
         public UserManager(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
-            _isUseIds4 = App.Settings.UseIdentityServer4 == true;
+            _isUseIds4 = StarshineApp.Settings.UseIdentityServer4 == true;
         }
         /// <summary>
         /// 用户的名字
