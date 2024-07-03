@@ -1,11 +1,11 @@
-﻿using Starshine.Common.Extensions.LinqBuilder;
+﻿using Starshine.Extensions.LinqBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Starshine.Common;
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// IEnumerable 拓展

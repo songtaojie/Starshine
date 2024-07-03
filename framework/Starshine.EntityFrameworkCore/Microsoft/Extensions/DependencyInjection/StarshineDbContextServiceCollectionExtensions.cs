@@ -29,12 +29,12 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IStarshineEfCoreBuilder AddStarshineDbContextPool<TDbContext>(this IStarshineEfCoreBuilder builder, Action<IStarshineDbContextOptionsBuilder>? optionBuilder = default,int poolSize = 100)
             where TDbContext : StarshineDbContext<TDbContext>
         {
-            var starshineOptions = new StarshineDbContextOptions(typeof(TDbContext));
+            var starshineOptions = new StarshineDbContextOptions(typeof(TDbContext),builder.Services);
+            optionBuilder?.Invoke(starshineOptions);
             // 注册数据库上下文
             builder.ReplaceDbContext<TDbContext>();
             builder.Services.AddDbContextPool<TDbContext>(DbContextHelper.ConfigureDbContext((provider, options) =>
             {
-                optionBuilder?.Invoke(starshineOptions);
                 if (string.IsNullOrWhiteSpace(starshineOptions.ConnectionString))
                 {
                     var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
@@ -43,6 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 starshineOptions.DbContextOptions?.Invoke(options);
                 options.UseDatabase<TDbContext>(starshineOptions);
             }), poolSize);
+            starshineOptions.AddDefaultRepositories();
             return builder;
         }
 
@@ -78,16 +79,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="builder">服务</param>
         /// <param name="optionBuilder"></param>
         /// <returns>服务集合</returns>
-        public static IStarshineEfCoreBuilder AddStarshineDbContext<TDbContext>(this IStarshineEfCoreBuilder builder, Action<StarshineDbContextOptions>? optionBuilder = default)
+        public static IStarshineEfCoreBuilder AddStarshineDbContext<TDbContext>(this IStarshineEfCoreBuilder builder, Action<IStarshineDbContextOptionsBuilder>? optionBuilder = default)
             where TDbContext : StarshineDbContext<TDbContext>
         {
-            var starshineOptions = new StarshineDbContextOptions(typeof(TDbContext));
+            var starshineOptions = new StarshineDbContextOptions(typeof(TDbContext), builder.Services);
+            optionBuilder?.Invoke(starshineOptions);
             // 注册数据库上下文
             builder.ReplaceDbContext<TDbContext>();
             // 配置数据库上下文
             builder.Services.AddDbContext<TDbContext>(DbContextHelper.ConfigureDbContext((provider, options) =>
             {
-                optionBuilder?.Invoke(starshineOptions);
                 if (string.IsNullOrWhiteSpace(starshineOptions.ConnectionString))
                 {
                     var connectionStringResolver = provider.GetRequiredService<IConnectionStringResolver>();
@@ -96,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 starshineOptions.DbContextOptions?.Invoke(options);
                 options.UseDatabase<TDbContext>(starshineOptions);
             }));
-
+            starshineOptions.AddDefaultRepositories();
             return builder;
         }
     }

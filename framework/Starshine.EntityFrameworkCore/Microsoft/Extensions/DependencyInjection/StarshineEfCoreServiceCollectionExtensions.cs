@@ -38,8 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.Filters.Add<StarshineUnitOfWorkActionFilter>();
             });
-            return new StarshineEfCoreBuilder(services)
-                .AddStarshineRepositories();
+            return new StarshineEfCoreBuilder(services);
         }
 
         ///// <summary>

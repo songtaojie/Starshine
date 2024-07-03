@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Starshine.Common;
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// lambda扩展

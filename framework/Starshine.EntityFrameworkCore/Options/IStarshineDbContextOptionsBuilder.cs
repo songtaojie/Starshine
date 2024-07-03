@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Starshine.EntityFrameworkCore;
 /// <summary>
@@ -19,6 +20,11 @@ namespace Starshine.EntityFrameworkCore;
 /// </summary>
 public interface IStarshineDbContextOptionsBuilder
 {
+    /// <summary>
+    /// 服务
+    /// </summary>
+    IServiceCollection Services { get; }
+
     /// <summary>
     /// 数据库提供商
     /// </summary>
@@ -44,4 +50,10 @@ public interface IStarshineDbContextOptionsBuilder
     /// </summary>
     /// <param name="dbContextOptions"></param>
     void Configure([NotNull] Action<DbContextOptionsBuilder> dbContextOptions);
+
+    /// <summary>
+    /// 为这个DbContext中的所有实体注册默认存储库。
+    /// </summary>
+    /// <returns></returns>
+    IStarshineDbContextOptionsBuilder AddDefaultRepositories();
 }

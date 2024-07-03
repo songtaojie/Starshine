@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Starshine.Common;
-namespace Starshine.Common.Extensions.LinqBuilder
+namespace Starshine.Extensions.LinqBuilder
 {
     /// <summary>
     /// 表达式拓展类

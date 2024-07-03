@@ -29,19 +29,6 @@ public static class StarshineEfCoreBuilderExtensions
     private const string MiniProfilerRouteBasePath = "/index-mini-profiler";
 
     /// <summary>
-    /// 添加数据库上下文
-    /// </summary>
-    /// <param name="builder">StarshineEfCore构建器</param>
-    /// <returns>服务集合</returns>
-    public static IStarshineEfCoreBuilder AddStarshineRepositories(this IStarshineEfCoreBuilder builder)
-    {
-        // 注册数据库上下文池
-        AddStarshineRepositories(builder.Services);
-        return builder;
-    }
-
-
-    /// <summary>
     /// 添加MiniProfiler服务,实现 EF Core 进程监听拓展
     /// </summary>
     /// <param name="builder"></param>
@@ -61,20 +48,4 @@ public static class StarshineEfCoreBuilderExtensions
         builder.Services.AddSingleton<IMiniProfilerDiagnosticListener, RelationalDiagnosticListener>();
         return builder;
     }
-
-    private static IServiceCollection AddStarshineRepositories(IServiceCollection services)
-    {
-
-        // 注册多数据库上下文仓储
-        services.TryAddScoped(typeof(IEfCoreRepository<>), typeof(EFCoreRepository<,>));
-
-        // 注册泛型仓储
-        services.TryAddScoped(typeof(IReadOnlyRepository<>), typeof(ReadOnlyRepository<>));
-        // 注册非泛型仓储
-        services.TryAddScoped(typeof(IRepository), typeof(EFCoreRepository<,>));
-      
-        return services;
-    }
-
-
 }

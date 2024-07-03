@@ -308,849 +308,6 @@
             释放
             </summary>
         </member>
-        <member name="T:Starshine.Common.Extensions.DictionaryExtensions">
-            <summary>
-            字典类型扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.DictionaryExtensions.AddOrUpdate``1(System.Collections.Generic.Dictionary{System.String,``0},System.Collections.Generic.Dictionary{System.String,``0})">
-            <summary>
-            合并两个字典
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="dic">字典</param>
-            <param name="newDic">新字典</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.DictionaryExtensions.ToQueryString(System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
-            <summary>
-            将字典转化为QueryString格式
-            </summary>
-            <param name="dict"></param>
-            <param name="urlEncode"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.EnumExtension">
-            <summary>
-            枚举扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetEnumDictionary(System.Type)">
-            <summary>
-            获取枚举对象Key与名称的字典（缓存）
-            </summary>
-            <param name="enumType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetEnumDictionaryItems(System.Type)">
-            <summary>
-            获取枚举对象Key与名称的字典
-            </summary>
-            <param name="enumType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetEnumDescDictionary(System.Type)">
-            <summary>
-            获取枚举类型key与描述的字典（缓存）
-            </summary>
-            <param name="enumType"></param>
-            <returns></returns>
-            <exception cref="T:System.Exception"></exception>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetEnumDescDictionaryItems(System.Type)">
-            <summary>
-            获取枚举类型key与描述的字典（没有描述则获取name）
-            </summary>
-            <param name="enumType"></param>
-            <returns></returns>
-            <exception cref="T:System.Exception"></exception>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.TryToGetEnumType(System.Reflection.Assembly,System.String)">
-            <summary>
-            从程序集中查找指定枚举类型
-            </summary>
-            <param name="assembly"></param>
-            <param name="typeName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.LoadEnumTypeDict(System.Reflection.Assembly)">
-            <summary>
-            从程序集中加载所有枚举类型
-            </summary>
-            <param name="assembly"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetDescription(System.Enum)">
-            <summary>
-            获取枚举的Description
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.GetDescription(System.Object)">
-            <summary>
-            获取枚举的Description
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.EnumToList(System.Type)">
-            <summary>
-            将枚举转成枚举信息集合
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.EnumExtension.EnumToList``1(System.Type)">
-            <summary>
-            枚举ToList
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.EnumEntity">
-            <summary>
-            枚举实体
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.Extensions.EnumEntity.Describe">
-            <summary>
-            枚举的描述
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.Extensions.EnumEntity.Name">
-            <summary>
-            枚举名称
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.Extensions.EnumEntity.Value">
-            <summary>
-            枚举对象的值
-            </summary>
-        </member>
-        <member name="T:Starshine.Common.Extensions.ExpressionExtension">
-            <summary>
-            lambda扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ExpressionExtension.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
-            <summary>
-            重新组合两个lambda，并把两个lambda参数合并到一个中
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="first"></param>
-            <param name="second"></param>
-            <param name="merge"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            且操作
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="first"></param>
-            <param name="second"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            或操作
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="first"></param>
-            <param name="second"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.IEnumerableExtensions">
-            <summary>
-            IEnumerable 拓展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            [EF Core] 根据条件成立再构建 Where 查询
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="condition">布尔条件</param>
-            <param name="expression">表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            [EF Core] 根据条件成立再构建 Where 查询，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="condition">布尔条件</param>
-            <param name="expression">表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}[])">
-            <summary>
-            [EF Core] 与操作合并多个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="expressions">表达式数组</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}[])">
-            <summary>
-            [EF Core] 与操作合并多个表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="expressions">表达式数组</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
-            <summary>
-            [EF Core] 根据条件成立再构建 WhereOr 查询
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="conditionExpressions">条件表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
-            <summary>
-            [EF Core] 根据条件成立再构建 WhereOr 查询，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="conditionExpressions">条件表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
-            <summary>
-            根据条件成立再构建 Where 查询
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="condition">布尔条件</param>
-            <param name="expression">表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
-            <summary>
-            根据条件成立再构建 Where 查询，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <param name="condition">布尔条件</param>
-            <param name="expression">表达式</param>
-            <returns>新的集合对象</returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions">
-            <summary>
-            表达式拓展类
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
-            <summary>
-            组合两个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="extendExpression">表达式2</param>
-            <param name="mergeWay">组合方式</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            与操作合并两个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            与操作合并两个表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            根据条件成立再与操作合并两个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="condition">布尔条件</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            根据条件成立再与操作合并两个表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="condition">布尔条件</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            或操作合并两个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            或操作合并两个表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            根据条件成立再或操作合并两个表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="condition">布尔条件</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            根据条件成立再或操作合并两个表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式1</param>
-            <param name="condition">布尔条件</param>
-            <param name="extendExpression">表达式2</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.GetExpressionPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
-            <summary>
-            获取Lambda表达式属性名，只限 u=>u.Property 表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式</param>
-            <returns>属性名</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ExpressionExtensions.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            是否是空集合
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="sources">集合对象</param>
-            <returns>是否为空集合</returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.LinqBuilder.LinqExpression">
-            <summary>
-            EF Core Linq 拓展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
-            <summary>
-            [EF Core] 创建 Linq/Lambda 表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
-            <summary>
-            [EF Core] 创建 Linq/Lambda 表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <param name="expression">表达式</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.And``1">
-            <summary>
-            [EF Core] 创建 And 表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.IndexAnd``1">
-            <summary>
-            [EF Core] 创建 And 表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.Or``1">
-            <summary>
-            [EF Core] 创建 Or 表达式
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.LinqExpression.IndexOr``1">
-            <summary>
-            [EF Core] 创建 Or 表达式，支持索引器
-            </summary>
-            <typeparam name="TSource">泛型类型</typeparam>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor">
-            <summary>
-            处理 Lambda 参数不一致问题
-            </summary>
-        </member>
-        <member name="F:Starshine.Common.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.parameterExpressionSetter">
-            <summary>
-            参数表达式映射集合
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.#ctor(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression})">
-            <summary>
-            构造函数
-            </summary>
-            <param name="parameterExpressionSetter">参数表达式映射集合</param>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.ReplaceParameters(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression},System.Linq.Expressions.Expression)">
-            <summary>
-            替换表达式参数
-            </summary>
-            <param name="parameterExpressionSetter">参数表达式映射集合</param>
-            <param name="expression">表达式</param>
-            <returns>新的表达式</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)">
-            <summary>
-            重写基类参数访问器
-            </summary>
-            <param name="parameterExpression"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.ListExtensions">
-            <summary>
-            List扩展类
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.List{``0},System.Func{``0,System.Threading.Tasks.Task})">
-            <summary>
-            list异步便利
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="list"></param>
-            <param name="func"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ListExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
-            <summary>
-            IEnumerable便利
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task})">
-            <summary>
-            IEnumerable异步便利
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="action"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.MethodInfoExtensions">
-            <summary>
-            MethodInfo扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.MethodInfoExtensions.GetRealReturnType(System.Reflection.MethodInfo)">
-            <summary>
-            获取方法真实返回类型
-            </summary>
-            <param name="method"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.MethodInfoExtensions.IsAsync(System.Reflection.MethodInfo)">
-            <summary>
-            判断方法是否是异步
-            </summary>
-            <param name="method">方法</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.MethodInfoExtensions.GetDescriptionValue``1(System.Reflection.FieldInfo)">
-            <summary>
-            获取字段特性
-            </summary>
-            <param name="field"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.ObjectExtensions">
-            <summary>
-            Object扩展类
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.IsAnonymous(System.Object)">
-            <summary>
-            判断是否是匿名类型
-            </summary>
-            <param name="obj">对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.GetAncestorTypes(System.Type)">
-            <summary>
-            获取所有祖先类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.ToTaskResult(System.Object,System.Type)">
-            <summary>
-            返回异步类型
-            </summary>
-            <param name="obj"></param>
-            <param name="realType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.ChangeType``1(System.Object)">
-            <summary>
-            将一个对象转换为指定类型
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.ChangeType(System.Object,System.Type)">
-            <summary>
-            将一个对象转换为指定类型
-            </summary>
-            <param name="obj">待转换的对象</param>
-            <param name="type">目标类型</param>
-            <returns>转换后的对象</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.ToDictionary``1(System.Object)">
-            <summary>
-            将对象转字典集合
-            </summary>
-            <typeparam name="TValue"></typeparam>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.ObjectExtensions.ObjToString(System.Object)">
-            <summary>
-            对象tostring方法，对象为空返回空字符串
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.PagedQueryableExtensions">
-            <summary>
-            IQueryable扩展类
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToOrderAndPageList``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
-            <summary>
-            排序并分页
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToOrderAndPageListAsync``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
-            <summary>
-            排序并分页
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ApplyOrder``1(System.Linq.IQueryable{``0},System.String,System.Nullable{Starshine.Common.OrderTypeEnum})">
-            <summary>
-            排序
-            </summary>
-            <typeparam name="T">源数据</typeparam>
-            <param name="source"></param>
-            <param name="fieldName">排序的字段名称</param>
-            <param name="orderType">排序的类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToPageList``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
-            <summary>
-            分页查询
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="param">分页的参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToPageListAsync``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
-            <summary>
-            异步分页查询
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="param">分页参数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToPageList``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
-            <summary>
-            分页查询
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="pageIndex">当前页码</param>
-            <param name="pageSize">每页显示的数据条数</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.PagedQueryableExtensions.ToPageListAsync``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
-            <summary>
-            异步分页查询
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="source"></param>
-            <param name="pageIndex"></param>
-            <param name="pageSize"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.StringExtensions">
-            <summary>
-            string类型扩展
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.StringExtensions.ToTitleCase(System.String)">
-            <summary>
-            首字母大写
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.StringExtensions.ToTitlePascal(System.String)">
-            <summary>
-            首字母小写
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.StringExtensions.ToBool(System.String)">
-            <summary>
-            字符串转为bool值
-            </summary>
-            <param name="value">要转换的值</param>
-            <returns>如果转换成功，返回转换后的值，否则返回null</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.StringExtensions.UrlEncode(System.String)">
-            <summary>
-            将字符串URL编码
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Starshine.Common.Extensions.TypeExtensions">
-            <summary>
-            类型扩展类
-            </summary>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.HasAttribute``1(System.Type)">
-            <summary>
-            判断该类型上是否有指定的属性
-            </summary>
-            <typeparam name="T">属性的类型</typeparam>
-            <param name="type">当前类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
-            <summary>
-            根据键得到值，如果没有返回默认值
-            </summary>
-            <typeparam name="TKey"></typeparam>
-            <typeparam name="TValue"></typeparam>
-            <param name="dictionary"></param>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetInheritedMethod(System.Type,System.String)">
-            <summary>
-            根据名字获取方法的元数据
-            </summary>
-            <param name="type"></param>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetFieldOrProperty(System.Type,System.String)">
-            <summary>
-            得到指定名字的字段或者属性
-            </summary>
-            <param name="type"></param>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetMember(System.Type,System.String)">
-            <summary>
-            得到类型中指定名称的成员
-            </summary>
-            <param name="type"></param>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsNullableType(System.Type)">
-            <summary>
-            是否是Nullable类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetTypeOfNullable(System.Type)">
-            <summary>
-            获取Nullable类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsCollectionType(System.Type)">
-            <summary>
-            是否是集合类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsEnumerableType(System.Type)">
-            <summary>
-            是否是枚举类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsQueryableType(System.Type)">
-            <summary>
-            是否是IQueryable类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsListType(System.Type)">
-            <summary>
-            是否是List类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsListOrDictionaryType(System.Type)">
-            <summary>
-            是否是List或者Dictionary类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsDictionaryType(System.Type)">
-            <summary>
-            是否是Dictionary类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.ImplementsGenericInterface(System.Type,System.Type)">
-            <summary>
-            判断当前类是否实现了泛型接口
-            </summary>
-            <param name="type"></param>
-            <param name="interfaceType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsGenericType(System.Type,System.Type)">
-            <summary>
-            是否是某个泛型类型
-            </summary>
-            <param name="type"></param>
-            <param name="genericType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetIEnumerableType(System.Type)">
-            <summary>
-            获取IEnumerable的类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetDictionaryType(System.Type)">
-            <summary>
-            获取Dictionary的类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetGenericInterface(System.Type,System.Type)">
-            <summary>
-            获取泛型接口
-            </summary>
-            <param name="type"></param>
-            <param name="genericInterface"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetGenericInterfaces(System.Type,System.Type)">
-            <summary>
-            得到所有的泛型接口类型
-            </summary>
-            <param name="type"></param>
-            <param name="genericInterface"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetGenericElementType(System.Type)">
-            <summary>
-            获取ElementType
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsAssignableFromGenericType(System.Type,System.Type)">
-            <summary>
-            确定是否可以将指定类型的实例分配给当前泛型类型的变量。
-            </summary>
-            <param name="genericType">当前泛型类型</param>
-            <param name="givenType">指定类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsRichPrimitive(System.Type)">
-            <summary>
-            判断是否是富基元类型
-            </summary>
-            <param name="type">类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsValueTuple(System.Type)">
-            <summary>
-            判断是否是元组类型
-            </summary>
-            <param name="type">类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.IsAsync(System.Type)">
-            <summary>
-            判断类型是否是异步类型
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.HasImplementedRawGeneric(System.Type,System.Type)">
-            <summary>
-            判断类型是否实现某个泛型
-            </summary>
-            <param name="type">类型</param>
-            <param name="generic">泛型类型</param>
-            <returns>bool</returns>
-        </member>
-        <member name="M:Starshine.Common.Extensions.TypeExtensions.GetAssemblyName(System.Type)">
-            <summary>
-            获取程序集名称
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
         <member name="T:Starshine.Common.ArrayHelper">
             <summary>
             数组帮助类
@@ -2484,6 +1641,849 @@
             序列化
             </summary>
             <param name="obj">对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.DictionaryExtensions">
+            <summary>
+            字典类型扩展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.DictionaryExtensions.AddOrUpdate``1(System.Collections.Generic.Dictionary{System.String,``0},System.Collections.Generic.Dictionary{System.String,``0})">
+            <summary>
+            合并两个字典
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dic">字典</param>
+            <param name="newDic">新字典</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.DictionaryExtensions.ToQueryString(System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
+            <summary>
+            将字典转化为QueryString格式
+            </summary>
+            <param name="dict"></param>
+            <param name="urlEncode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.EnumExtension">
+            <summary>
+            枚举扩展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetEnumDictionary(System.Type)">
+            <summary>
+            获取枚举对象Key与名称的字典（缓存）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetEnumDictionaryItems(System.Type)">
+            <summary>
+            获取枚举对象Key与名称的字典
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetEnumDescDictionary(System.Type)">
+            <summary>
+            获取枚举类型key与描述的字典（缓存）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetEnumDescDictionaryItems(System.Type)">
+            <summary>
+            获取枚举类型key与描述的字典（没有描述则获取name）
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.TryToGetEnumType(System.Reflection.Assembly,System.String)">
+            <summary>
+            从程序集中查找指定枚举类型
+            </summary>
+            <param name="assembly"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.LoadEnumTypeDict(System.Reflection.Assembly)">
+            <summary>
+            从程序集中加载所有枚举类型
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetDescription(System.Enum)">
+            <summary>
+            获取枚举的Description
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.GetDescription(System.Object)">
+            <summary>
+            获取枚举的Description
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.EnumToList(System.Type)">
+            <summary>
+            将枚举转成枚举信息集合
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.EnumExtension.EnumToList``1(System.Type)">
+            <summary>
+            枚举ToList
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.EnumEntity">
+            <summary>
+            枚举实体
+            </summary>
+        </member>
+        <member name="P:Starshine.Extensions.EnumEntity.Describe">
+            <summary>
+            枚举的描述
+            </summary>
+        </member>
+        <member name="P:Starshine.Extensions.EnumEntity.Name">
+            <summary>
+            枚举名称
+            </summary>
+        </member>
+        <member name="P:Starshine.Extensions.EnumEntity.Value">
+            <summary>
+            枚举对象的值
+            </summary>
+        </member>
+        <member name="T:Starshine.Extensions.ExpressionExtension">
+            <summary>
+            lambda扩展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.ExpressionExtension.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
+            <summary>
+            重新组合两个lambda，并把两个lambda参数合并到一个中
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="first"></param>
+            <param name="second"></param>
+            <param name="merge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ExpressionExtension.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            且操作
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ExpressionExtension.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            或操作
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.IEnumerableExtensions">
+            <summary>
+            IEnumerable 拓展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            [EF Core] 根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            [EF Core] 根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}[])">
+            <summary>
+            [EF Core] 与操作合并多个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.Where``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}[])">
+            <summary>
+            [EF Core] 与操作合并多个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="expressions">表达式数组</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}}[])">
+            <summary>
+            [EF Core] 根据条件成立再构建 WhereOr 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Linq.IQueryable{``0},System.ValueTuple{System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}}}[])">
+            <summary>
+            [EF Core] 根据条件成立再构建 WhereOr 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="conditionExpressions">条件表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.IEnumerableExtensions.WhereIF``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            根据条件成立再构建 Where 查询，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <param name="condition">布尔条件</param>
+            <param name="expression">表达式</param>
+            <returns>新的集合对象</returns>
+        </member>
+        <member name="T:Starshine.Extensions.LinqBuilder.ExpressionExtensions">
+            <summary>
+            表达式拓展类
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.Compose``1(System.Linq.Expressions.Expression{``0},System.Linq.Expressions.Expression{``0},System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
+            <summary>
+            组合两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <param name="mergeWay">组合方式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.And``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.AndIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再与操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.Or``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.OrIf``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            根据条件成立再或操作合并两个表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式1</param>
+            <param name="condition">布尔条件</param>
+            <param name="extendExpression">表达式2</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.GetExpressionPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            获取Lambda表达式属性名，只限 u=>u.Property 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>属性名</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ExpressionExtensions.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            是否是空集合
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="sources">集合对象</param>
+            <returns>是否为空集合</returns>
+        </member>
+        <member name="T:Starshine.Extensions.LinqBuilder.LinqExpression">
+            <summary>
+            EF Core Linq 拓展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            [EF Core] 创建 Linq/Lambda 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.Create``1(System.Linq.Expressions.Expression{System.Func{``0,System.Int32,System.Boolean}})">
+            <summary>
+            [EF Core] 创建 Linq/Lambda 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.And``1">
+            <summary>
+            [EF Core] 创建 And 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.IndexAnd``1">
+            <summary>
+            [EF Core] 创建 And 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.Or``1">
+            <summary>
+            [EF Core] 创建 Or 表达式
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.LinqExpression.IndexOr``1">
+            <summary>
+            [EF Core] 创建 Or 表达式，支持索引器
+            </summary>
+            <typeparam name="TSource">泛型类型</typeparam>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="T:Starshine.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor">
+            <summary>
+            处理 Lambda 参数不一致问题
+            </summary>
+        </member>
+        <member name="F:Starshine.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.parameterExpressionSetter">
+            <summary>
+            参数表达式映射集合
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.#ctor(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.ReplaceParameters(System.Collections.Generic.Dictionary{System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression},System.Linq.Expressions.Expression)">
+            <summary>
+            替换表达式参数
+            </summary>
+            <param name="parameterExpressionSetter">参数表达式映射集合</param>
+            <param name="expression">表达式</param>
+            <returns>新的表达式</returns>
+        </member>
+        <member name="M:Starshine.Extensions.LinqBuilder.ParameterReplaceExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            重写基类参数访问器
+            </summary>
+            <param name="parameterExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.ListExtensions">
+            <summary>
+            List扩展类
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.List{``0},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            list异步便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ListExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            IEnumerable便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ListExtensions.ForEachAsync``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            IEnumerable异步便利
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.MethodInfoExtensions">
+            <summary>
+            MethodInfo扩展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.MethodInfoExtensions.GetRealReturnType(System.Reflection.MethodInfo)">
+            <summary>
+            获取方法真实返回类型
+            </summary>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.MethodInfoExtensions.IsAsync(System.Reflection.MethodInfo)">
+            <summary>
+            判断方法是否是异步
+            </summary>
+            <param name="method">方法</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.MethodInfoExtensions.GetDescriptionValue``1(System.Reflection.FieldInfo)">
+            <summary>
+            获取字段特性
+            </summary>
+            <param name="field"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.ObjectExtensions">
+            <summary>
+            Object扩展类
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.IsAnonymous(System.Object)">
+            <summary>
+            判断是否是匿名类型
+            </summary>
+            <param name="obj">对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.GetAncestorTypes(System.Type)">
+            <summary>
+            获取所有祖先类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.ToTaskResult(System.Object,System.Type)">
+            <summary>
+            返回异步类型
+            </summary>
+            <param name="obj"></param>
+            <param name="realType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.ChangeType``1(System.Object)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.ChangeType(System.Object,System.Type)">
+            <summary>
+            将一个对象转换为指定类型
+            </summary>
+            <param name="obj">待转换的对象</param>
+            <param name="type">目标类型</param>
+            <returns>转换后的对象</returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.ToDictionary``1(System.Object)">
+            <summary>
+            将对象转字典集合
+            </summary>
+            <typeparam name="TValue"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.ObjectExtensions.ObjToString(System.Object)">
+            <summary>
+            对象tostring方法，对象为空返回空字符串
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.PagedQueryableExtensions">
+            <summary>
+            IQueryable扩展类
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToOrderAndPageList``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
+            <summary>
+            排序并分页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToOrderAndPageListAsync``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
+            <summary>
+            排序并分页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ApplyOrder``1(System.Linq.IQueryable{``0},System.String,System.Nullable{Starshine.Common.OrderTypeEnum})">
+            <summary>
+            排序
+            </summary>
+            <typeparam name="T">源数据</typeparam>
+            <param name="source"></param>
+            <param name="fieldName">排序的字段名称</param>
+            <param name="orderType">排序的类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToPageList``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
+            <summary>
+            分页查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="param">分页的参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToPageListAsync``1(System.Linq.IQueryable{``0},Starshine.Common.BasePageParam)">
+            <summary>
+            异步分页查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="param">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToPageList``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="pageIndex">当前页码</param>
+            <param name="pageSize">每页显示的数据条数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.PagedQueryableExtensions.ToPageListAsync``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            异步分页查询
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.StringExtensions">
+            <summary>
+            string类型扩展
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.StringExtensions.ToTitleCase(System.String)">
+            <summary>
+            首字母大写
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.StringExtensions.ToTitlePascal(System.String)">
+            <summary>
+            首字母小写
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.StringExtensions.ToBool(System.String)">
+            <summary>
+            字符串转为bool值
+            </summary>
+            <param name="value">要转换的值</param>
+            <returns>如果转换成功，返回转换后的值，否则返回null</returns>
+        </member>
+        <member name="M:Starshine.Extensions.StringExtensions.UrlEncode(System.String)">
+            <summary>
+            将字符串URL编码
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Starshine.Extensions.TypeExtensions">
+            <summary>
+            类型扩展类
+            </summary>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.HasAttribute``1(System.Type)">
+            <summary>
+            判断该类型上是否有指定的属性
+            </summary>
+            <typeparam name="T">属性的类型</typeparam>
+            <param name="type">当前类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
+            <summary>
+            根据键得到值，如果没有返回默认值
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="dictionary"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetInheritedMethod(System.Type,System.String)">
+            <summary>
+            根据名字获取方法的元数据
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetFieldOrProperty(System.Type,System.String)">
+            <summary>
+            得到指定名字的字段或者属性
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetMember(System.Type,System.String)">
+            <summary>
+            得到类型中指定名称的成员
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsNullableType(System.Type)">
+            <summary>
+            是否是Nullable类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetTypeOfNullable(System.Type)">
+            <summary>
+            获取Nullable类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsCollectionType(System.Type)">
+            <summary>
+            是否是集合类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsEnumerableType(System.Type)">
+            <summary>
+            是否是枚举类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsQueryableType(System.Type)">
+            <summary>
+            是否是IQueryable类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsListType(System.Type)">
+            <summary>
+            是否是List类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsListOrDictionaryType(System.Type)">
+            <summary>
+            是否是List或者Dictionary类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsDictionaryType(System.Type)">
+            <summary>
+            是否是Dictionary类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.ImplementsGenericInterface(System.Type,System.Type)">
+            <summary>
+            判断当前类是否实现了泛型接口
+            </summary>
+            <param name="type"></param>
+            <param name="interfaceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsGenericType(System.Type,System.Type)">
+            <summary>
+            是否是某个泛型类型
+            </summary>
+            <param name="type"></param>
+            <param name="genericType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetIEnumerableType(System.Type)">
+            <summary>
+            获取IEnumerable的类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetDictionaryType(System.Type)">
+            <summary>
+            获取Dictionary的类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetGenericInterface(System.Type,System.Type)">
+            <summary>
+            获取泛型接口
+            </summary>
+            <param name="type"></param>
+            <param name="genericInterface"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetGenericInterfaces(System.Type,System.Type)">
+            <summary>
+            得到所有的泛型接口类型
+            </summary>
+            <param name="type"></param>
+            <param name="genericInterface"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetGenericElementType(System.Type)">
+            <summary>
+            获取ElementType
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsAssignableFromGenericType(System.Type,System.Type)">
+            <summary>
+            确定是否可以将指定类型的实例分配给当前泛型类型的变量。
+            </summary>
+            <param name="genericType">当前泛型类型</param>
+            <param name="givenType">指定类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsRichPrimitive(System.Type)">
+            <summary>
+            判断是否是富基元类型
+            </summary>
+            <param name="type">类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsValueTuple(System.Type)">
+            <summary>
+            判断是否是元组类型
+            </summary>
+            <param name="type">类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsAsync(System.Type)">
+            <summary>
+            判断类型是否是异步类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.HasImplementedRawGeneric(System.Type,System.Type)">
+            <summary>
+            判断类型是否实现某个泛型
+            </summary>
+            <param name="type">类型</param>
+            <param name="generic">泛型类型</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.GetAssemblyName(System.Type)">
+            <summary>
+            获取程序集名称
+            </summary>
+            <param name="type"></param>
             <returns></returns>
         </member>
     </members>

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// List扩展类

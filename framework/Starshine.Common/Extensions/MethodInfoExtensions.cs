@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Starshine.Common;
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// MethodInfo扩展

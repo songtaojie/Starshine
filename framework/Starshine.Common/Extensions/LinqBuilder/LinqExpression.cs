@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Starshine.Common;
-namespace Starshine.Common.Extensions.LinqBuilder
+namespace Starshine.Extensions.LinqBuilder
 {
     /// <summary>
     /// EF Core Linq 拓展

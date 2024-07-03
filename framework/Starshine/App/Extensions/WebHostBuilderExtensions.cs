@@ -1,5 +1,5 @@
 ﻿using Starshine.Common;
-using Starshine.Common.Extensions;
+using Starshine.Extensions;
 using Starshine.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

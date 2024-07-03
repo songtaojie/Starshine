@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
 using Starshine.Common;
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// string类型扩展

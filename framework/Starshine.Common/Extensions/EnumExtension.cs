@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Starshine.Common;
 
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// 枚举扩展

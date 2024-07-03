@@ -7,6 +7,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,12 +18,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Starshine.Extensions;
 
 namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 上下文配置
 /// </summary>
-public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
+public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
 {
     /// <summary>
     /// DbContext
@@ -33,15 +37,22 @@ public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
     /// 
     /// </summary>
     /// <param name="originalDbContextType"></param>
-    public StarshineDbContextOptions(Type originalDbContextType)
+    /// <param name="services"></param>
+    public StarshineDbContextOptions(Type originalDbContextType, IServiceCollection services)
     {
         OriginalDbContextType = originalDbContextType;
+        Services = services;
         DbContextReplacements = new Dictionary<string, Type>();
     }
     /// <summary>
     /// 数据库提供商
     /// </summary>
     public EfCoreDatabaseProvider?  Provider { get; set; }
+
+    /// <summary>
+    /// 注册默认的仓储
+    /// </summary>
+    public bool RegisterDefaultRepositories { get; private set; }
 
     /// <summary>
     /// 数据库连接字符串
@@ -62,6 +73,11 @@ public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
     /// db配置
     /// </summary>
     internal Action<DbContextOptionsBuilder>? DbContextOptions { get; private set; }
+
+    /// <summary>
+    /// 服务
+    /// </summary>
+    public IServiceCollection Services { get; }
 
     /// <summary>
     /// 
@@ -109,5 +125,37 @@ public class StarshineDbContextOptions: IStarshineDbContextOptionsBuilder
         if(Version!=null) hashCode.Add(Version);
         //hashCode.Add(this.DbContextOptions.Options.GetHashCode());
         return hashCode.ToHashCode();
+    }
+
+    /// <summary>
+    /// 添加默认的
+    /// </summary>
+    /// <returns></returns>
+    public IStarshineDbContextOptionsBuilder AddDefaultRepositories()
+    {
+        var repositoryType = typeof(IRepository);
+        var effectiveTypes = StarshineApp.EffectiveTypes.Where(t => t.IsPublic && !t.IsAbstract && (repositoryType.IsAssignableFrom(t)));
+        var eFCoreRepositoryType = typeof(EFCoreRepository<,>);
+        var readOnlyRepositoryType = typeof(ReadOnlyRepository<>);
+        foreach (var type in effectiveTypes)
+        {
+            eFCoreRepositoryType.IsAssignableFromGenericType(type);
+            Type? entityType = null;
+            if (eFCoreRepositoryType.IsAssignableFromGenericType(type))
+            {
+                var s = type.GetGenericParameterConstraints();
+                //entityType = type.GetGenericTypeDefinition()[1];
+                //var efCoreRepositoryInterface = typeof(IEFCoreRepository<,>).MakeGenericType(OriginalDbContextType, entityType);
+                //Services.TryAddScoped(efCoreRepositoryInterface, type);
+            }
+            if (readOnlyRepositoryType.IsAssignableFromGenericType(type))
+            {
+                entityType ??= type.GenericTypeArguments.First();
+                var readOnlyRepositoryInterface = typeof(IReadOnlyRepository<>).MakeGenericType(entityType);
+                Services.TryAddScoped(readOnlyRepositoryInterface, type);
+            }
+
+        }
+        return this;
     }
 }

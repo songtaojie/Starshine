@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Starshine.Common.Extensions
+namespace Starshine.Extensions
 {
 	/// <summary>
 	/// IQueryable扩展类

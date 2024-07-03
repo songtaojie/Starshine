@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Starshine.Common.Extensions;
+using Starshine.Extensions;
 
 namespace Microsoft.AspNetCore.Mvc
 {
