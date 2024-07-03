@@ -139,8 +139,16 @@ public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
         var readOnlyRepositoryType = typeof(ReadOnlyRepository<>);
         foreach (var type in effectiveTypes)
         {
-            eFCoreRepositoryType.IsAssignableFromGenericType(type);
             Type? entityType = null;
+            if (eFCoreRepositoryType.IsAssignableFromGenericType(type, out Type selectType))
+            {
+                var s1 = selectType.GenericTypeArguments;
+                var s2 = selectType.GetGenericArguments();
+                entityType = selectType.GetGenericTypeDefinition();
+                var efCoreRepositoryInterface = typeof(IEFCoreRepository<,>).MakeGenericType(OriginalDbContextType, entityType);
+                //Services.TryAddScoped(efCoreRepositoryInterface, type);
+            }
+
             if (eFCoreRepositoryType.IsAssignableFromGenericType(type))
             {
                 var s = type.GetGenericParameterConstraints();

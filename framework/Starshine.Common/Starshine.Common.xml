@@ -2450,6 +2450,15 @@
             <param name="givenType">指定类型</param>
             <returns></returns>
         </member>
+        <member name="M:Starshine.Extensions.TypeExtensions.IsAssignableFromGenericType(System.Type,System.Type,System.Type@)">
+            <summary>
+            确定是否可以将指定类型的实例分配给当前泛型类型的变量。
+            </summary>
+            <param name="genericType">当前泛型类型</param>
+            <param name="givenType">指定类型</param>
+            <param name="selectType"></param>
+            <returns></returns>
+        </member>
         <member name="M:Starshine.Extensions.TypeExtensions.IsRichPrimitive(System.Type)">
             <summary>
             判断是否是富基元类型

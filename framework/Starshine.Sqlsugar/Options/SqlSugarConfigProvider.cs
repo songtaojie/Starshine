@@ -1,17 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using SqlSugar;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Starshine.Common;
-using Starshine.Common.Extensions;
 using System.Runtime.Loader;
 using System.Text.Json;
-using System.Threading.Tasks;
-
+using Starshine.Extensions;
 namespace Starshine.Sqlsugar
 {
     /// <summary>

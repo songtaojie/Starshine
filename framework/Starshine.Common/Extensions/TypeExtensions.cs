@@ -267,7 +267,36 @@ namespace Starshine.Extensions
             return genericType.IsAssignableFromGenericType(baseType);
         }
 
+        /// <summary>
+        /// 确定是否可以将指定类型的实例分配给当前泛型类型的变量。
+        /// </summary>
+        /// <param name="genericType">当前泛型类型</param>
+        /// <param name="givenType">指定类型</param>
+        /// <param name="selectType"></param>
+        /// <returns></returns>
+        public static bool IsAssignableFromGenericType(this Type genericType, Type givenType,out Type selectType)
+        {
+            selectType = null;
+            if (givenType.IsGenericType(genericType))
+            {
+                selectType = givenType;
+                return true;
+            }
+            
+            var interfaceTypes = givenType.GetInterfaces();
+            foreach (var it in interfaceTypes)
+            {
 
+                if (it.IsGenericType(genericType))
+                {
+                    selectType = it;
+                    return true;
+                }
+            }
+            Type baseType = givenType.BaseType;
+            if (baseType == null) return false;
+            return genericType.IsAssignableFromGenericType(baseType, out selectType);
+        }
         /// <summary>
         /// 判断是否是富基元类型
         /// </summary>
