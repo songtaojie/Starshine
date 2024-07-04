@@ -8,9 +8,9 @@ namespace Starshine.TestProject.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        private readonly TestEfCoreRepository _testEfCoreRepository;
+        private readonly ITestEfCoreRepository _testEfCoreRepository;
 
-        public IndexModel(ILogger<IndexModel> logger, TestEfCoreRepository testEfCoreRepository)
+        public IndexModel(ILogger<IndexModel> logger, ITestEfCoreRepository testEfCoreRepository)
         {
             _logger = logger;
             _testEfCoreRepository = testEfCoreRepository;

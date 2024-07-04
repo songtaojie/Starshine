@@ -69,19 +69,19 @@ public class ExposeServicesAttribute:Attribute, IExposedServiceTypesProvider
             foreach (var type in canInjectInterfaces)
             {
                 if (type == null) continue;
-                var erviceIdentifier = new ServiceIdentifier(ServiceKey, type);
-                if (!serviceList.Contains(erviceIdentifier))
+                var serviceIdentifier = new ServiceIdentifier(ServiceKey, type);
+                if (!serviceList.Contains(serviceIdentifier))
                 {
-                    serviceList.Add(erviceIdentifier);
+                    serviceList.Add(serviceIdentifier);
                 }
             }
         }
         if ((Pattern & DependencyInjectionPattern.Self) == DependencyInjectionPattern.Self)
         {
-            var erviceIdentifier = new ServiceIdentifier(ServiceKey, targetType);
-            if (!serviceList.Contains(erviceIdentifier))
+            var serviceIdentifier = new ServiceIdentifier(ServiceKey, targetType);
+            if (!serviceList.Contains(serviceIdentifier))
             {
-                serviceList.Add(erviceIdentifier);
+                serviceList.Add(serviceIdentifier);
             }
         }
         if ((Pattern & DependencyInjectionPattern.FirstInterface) == DependencyInjectionPattern.FirstInterface)
@@ -89,10 +89,10 @@ public class ExposeServicesAttribute:Attribute, IExposedServiceTypesProvider
             var firstInterfaces = canInjectInterfaces.FirstOrDefault(r=>r.Name.Contains(targetType.Name)) ?? canInjectInterfaces.FirstOrDefault();
             if (firstInterfaces != null)
             {
-                var erviceIdentifier = new ServiceIdentifier(ServiceKey, targetType);
-                if (!serviceList.Contains(erviceIdentifier))
+                var serviceIdentifier = new ServiceIdentifier(ServiceKey, firstInterfaces);
+                if (!serviceList.Contains(serviceIdentifier))
                 {
-                    serviceList.Add(erviceIdentifier);
+                    serviceList.Add(serviceIdentifier);
                 }
             }
         }

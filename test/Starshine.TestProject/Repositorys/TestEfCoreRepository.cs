@@ -4,7 +4,7 @@ using Starshine.TestProject.Entities;
 
 namespace Starshine.TestProject.Repositorys
 {
-    public class TestEfCoreRepository : EFCoreRepository<TestDbContext, TestEntity>,ITransientDependency
+    public class TestEfCoreRepository : EFCoreRepository<TestDbContext, TestEntity>, ITestEfCoreRepository,ITransientDependency
     {
         public TestEfCoreRepository(IServiceProvider scoped) : base(scoped)
         {

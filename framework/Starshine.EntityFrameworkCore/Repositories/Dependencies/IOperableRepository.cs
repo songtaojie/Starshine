@@ -15,7 +15,7 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     public interface IOperableRepository<TEntity>:IReadOnlyRepository<TEntity>
-        where TEntity : class, IEntity, new()
+        where TEntity : class, IEntity
     {
         /// <summary>
         /// 插入一个新实体.

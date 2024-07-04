@@ -23,7 +23,7 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TDbContext"></typeparam>
-    public abstract class EFCoreRepository<TDbContext, TEntity> : OperableRepository<TEntity>, IEFCoreRepository<TDbContext,TEntity>
+    public abstract class EFCoreRepository<TDbContext, TEntity> : OperableRepository<TEntity>, IEFCoreRepository<TEntity>
         where TDbContext : DbContext
         where TEntity : class, IEntity, new()
     {
@@ -131,6 +131,10 @@ namespace Starshine.EntityFrameworkCore
             if(ignoreQueryFilters) query = query.IgnoreQueryFilters();
             return query;
         }
-        
+
+        async Task<DbContext> IEFCoreRepository<TEntity>.GetDbContextAsync()
+        {
+            return await GetDbContextAsync();
+        }
     }
 }

@@ -16,17 +16,15 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 
 /// </summary>
-/// <typeparam name="TDbContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
-public interface IEFCoreRepository<TDbContext, TEntity>:IRepository
-    where TDbContext : DbContext
+public interface IEFCoreRepository<TEntity>: IOperableRepository<TEntity>,IRepository
     where TEntity : class, IEntity
 {
     /// <summary>
     /// 获取数据库上下文
     /// </summary>
     /// <returns></returns>
-    Task<TDbContext> GetDbContextAsync();
+    Task<DbContext> GetDbContextAsync();
 
     /// <summary>
     /// 获取DbSet

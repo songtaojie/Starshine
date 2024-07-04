@@ -136,29 +136,29 @@ public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
         var repositoryType = typeof(IRepository);
         var effectiveTypes = StarshineApp.EffectiveTypes.Where(t => t.IsPublic && !t.IsAbstract && (repositoryType.IsAssignableFrom(t)));
         var eFCoreRepositoryType = typeof(EFCoreRepository<,>);
+        var operableRepositoryType = typeof(OperableRepository<>);
         var readOnlyRepositoryType = typeof(ReadOnlyRepository<>);
         foreach (var type in effectiveTypes)
         {
             Type? entityType = null;
             if (eFCoreRepositoryType.IsAssignableFromGenericType(type, out Type selectType))
             {
-                var s1 = selectType.GenericTypeArguments;
-                var s2 = selectType.GetGenericArguments();
-                entityType = selectType.GetGenericTypeDefinition();
-                var efCoreRepositoryInterface = typeof(IEFCoreRepository<,>).MakeGenericType(OriginalDbContextType, entityType);
-                //Services.TryAddScoped(efCoreRepositoryInterface, type);
+                var genericArguments = selectType.GetGenericArguments();
+                entityType = genericArguments[1];
+                var efCoreRepositoryInterface = typeof(IEFCoreRepository<>).MakeGenericType(entityType);
+                Services.TryAddScoped(efCoreRepositoryInterface, type);
             }
 
-            if (eFCoreRepositoryType.IsAssignableFromGenericType(type))
+            if (operableRepositoryType.IsAssignableFromGenericType(type, out selectType))
             {
-                var s = type.GetGenericParameterConstraints();
-                //entityType = type.GetGenericTypeDefinition()[1];
-                //var efCoreRepositoryInterface = typeof(IEFCoreRepository<,>).MakeGenericType(OriginalDbContextType, entityType);
-                //Services.TryAddScoped(efCoreRepositoryInterface, type);
+                entityType ??= selectType.GetGenericArguments().First();
+                var readOnlyRepositoryInterface = typeof(IOperableRepository<>).MakeGenericType(entityType);
+                Services.TryAddScoped(readOnlyRepositoryInterface, type);
             }
-            if (readOnlyRepositoryType.IsAssignableFromGenericType(type))
+
+            if (readOnlyRepositoryType.IsAssignableFromGenericType(type, out selectType))
             {
-                entityType ??= type.GenericTypeArguments.First();
+                entityType ??= selectType.GetGenericArguments().First();
                 var readOnlyRepositoryInterface = typeof(IReadOnlyRepository<>).MakeGenericType(entityType);
                 Services.TryAddScoped(readOnlyRepositoryInterface, type);
             }

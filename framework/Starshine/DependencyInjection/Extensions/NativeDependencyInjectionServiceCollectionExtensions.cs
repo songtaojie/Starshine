@@ -54,7 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 foreach (var exposedServiceType in exposedServiceTypes)
                 {
                     var allExposingServiceTypes = exposedServiceType.ServiceKey == null
-                        ? exposedServiceTypes.Where(x => x.ServiceKey == null).ToList()
+                        ? nullableServiceKeyList
                         : exposedServiceTypes.Where(x => x.ServiceKey?.ToString() == exposedServiceType.ServiceKey?.ToString()).ToList();
 
                     var serviceDescriptor = CreateServiceDescriptor(targetType, exposedServiceType.ServiceKey, exposedServiceType.ServiceType, allExposingServiceTypes, lifeTime.Value);

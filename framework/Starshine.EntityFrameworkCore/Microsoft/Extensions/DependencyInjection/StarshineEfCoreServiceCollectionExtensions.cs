@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IStarshineEfCoreBuilder AddStarshineEfCore(this IServiceCollection services, Action<DbSettingsOptions>? optionsBuilder = default)
         {
             ConfigureDbSettingsOptions(services, optionsBuilder);
-            
+
             //// 解析数据库上下文
             //services.AddScoped(provider =>
             //{
@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //    }
             //    return (Func<Type, DbContext>)dbContextResolve;
             //});
-
+            services.TryAddTransient(typeof(IDbContextProvider<>), typeof(UnitOfWorkDbContextProvider<>));
             // 注册全局工作单元过滤器
             services.Configure<AspNetCore.Mvc.MvcOptions>(options =>
             {
