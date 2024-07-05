@@ -38,7 +38,7 @@ public abstract class AuditedEntityBaseTypeConfiguration<T, TKey> : CreationEnti
 /// 带更新时间的配置
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
-public abstract class AuditedEntityBaseTypeConfiguration<T> : CreationEntityBaseTypeConfiguration<T>
+public abstract class AuditedEntityBaseTypeConfiguration<T> : AuditedEntityBaseTypeConfiguration<T,long>
      where T : AuditedEntityBase
 {
     /// <summary>
@@ -48,7 +48,5 @@ public abstract class AuditedEntityBaseTypeConfiguration<T> : CreationEntityBase
     public override void Configure(EntityTypeBuilder<T> builder)
     {
         base.Configure(builder);
-        builder.Property(x => x.UpdateTime).HasComment("最后修改时间");
-        builder.Property(x => x.UpdaterId).HasComment("最后修改人id");
     }
 }

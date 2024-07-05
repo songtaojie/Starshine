@@ -28,7 +28,7 @@ namespace Starshine.EntityFrameworkCore
     /// 带创建时间的配置
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public abstract class CreationEntityBaseTypeConfiguration<T> : EntityBaseTypeConfiguration<T>
+    public abstract class CreationEntityBaseTypeConfiguration<T> : CreationEntityBaseTypeConfiguration<T,long>
          where T : CreationEntityBase
     {
         /// <summary>
@@ -38,8 +38,6 @@ namespace Starshine.EntityFrameworkCore
         public override void Configure(EntityTypeBuilder<T> builder)
         {
             base.Configure(builder);
-            builder.Property(x => x.CreateTime).HasComment("创建时间");
-            builder.Property(x => x.CreatorId).HasComment("创建者id");
         }
     }
 }

@@ -18,10 +18,15 @@ using System.Threading.Tasks;
 namespace Starshine.EntityFrameworkCore;
 internal static class StarshineDbContextBuilder
 {
+    ///// <summary>
+    ///// 数据库实体相关类型
+    ///// </summary>
+    //private static readonly List<Type> EntityTypes;
+    private static readonly string DefaultDbContextId = Guid.NewGuid().ToString();
     /// <summary>
-    /// 数据库实体相关类型
+    /// ModelBuilder实现类
     /// </summary>
-    private static readonly List<Type> EntityTypes;
+    private static readonly ConcurrentDictionary<string, List<Type>> EntityTypes;
 
     /// <summary>
     /// ModelBuilder实现类
@@ -31,22 +36,22 @@ internal static class StarshineDbContextBuilder
     /// <summary>
     /// EntityTypeBuilder实现类
     /// </summary>
-    private static readonly ConcurrentDictionary<string, Type> EntityTypeBuilders;
-
-    /// <summary>
-    /// EntityTypeBuilder实现类
-    /// </summary>
     private static readonly ConcurrentDictionary<string, Type> EFCoreEntitySeedDatas;
 
+    /// <summary>
+    /// EntityTypeConfiguration实现类
+    /// </summary>
+    private static readonly ConcurrentDictionary<string, Type> EntityTypeConfigurations;
+    
     /// <summary>
     /// 构造函数
     /// </summary>
     static StarshineDbContextBuilder()
     {
-        EntityTypes = new List<Type>();
-        ModelBuilderFilters = new ConcurrentDictionary<string, Type>();
-        EntityTypeBuilders = new ConcurrentDictionary<string, Type>();
-        EFCoreEntitySeedDatas = new ConcurrentDictionary<string, Type>();
+        EntityTypes = new();
+        ModelBuilderFilters = new();
+        EFCoreEntitySeedDatas = new();
+        EntityTypeConfigurations = new();
         Init();
     }
 
@@ -61,9 +66,9 @@ internal static class StarshineDbContextBuilder
 
     internal static Type? GetEntityTypeBuilderType(Type entityType)
     {
-        if (EntityTypeBuilders.Any())
+        if (EntityTypeConfigurations.Any())
         {
-            return EntityTypeBuilders.GetValueOrDefault(entityType.FullName ?? entityType.Name);
+            return EntityTypeConfigurations.GetValueOrDefault(entityType.FullName ?? entityType.Name);
         }
         return null;
     }
@@ -77,30 +82,58 @@ internal static class StarshineDbContextBuilder
         return null;
     }
 
+    internal static Type? GetEntityTypeConfiguration(Type entityType)
+    {
+        if (EFCoreEntitySeedDatas.Any())
+        {
+            return EFCoreEntitySeedDatas.GetValueOrDefault(entityType.FullName ?? entityType.Name);
+        }
+        return null;
+    }
+
     private static void Init()
     {
         var iModelBuilderFilterType = typeof(IModelBuilderFilter<>);
-        var iEntityTypeBuilderType = typeof(IEntityTypeBuilder<>);
         var iEFCoreEntitySeedDataType = typeof(IEFCoreEntitySeedData<>);
         var iEntityType = typeof(IEntity);
+        var iEntityTypeConfigurationType = typeof(IEntityTypeConfiguration<>);
+        var iEntityContextMarkerType = typeof(IEntityContextMarker<>);
         foreach (var type in StarshineApp.EffectiveTypes)
         {
             if (type.IsAbstract || type.IsInterface) continue;
             if (iEntityType.IsAssignableFrom(type))
             {
-                EntityTypes.Add(type);
+                string key = DefaultDbContextId;
+                if (iEntityContextMarkerType.IsAssignableFromGenericType(type, out Type dbContextType))
+                {
+                    key = GetGenericTypeName(dbContextType);
+                }
+                if (EntityTypes.ContainsKey(key))
+                {
+                    var entityList = EntityTypes.GetValueOrDefault(key);
+                    if (entityList != null && !entityList.Contains(type))
+                    {
+                        entityList.Add(type);
+                        EntityTypes[key] = entityList;
+                    }
+                }
+                else
+                {
+                    EntityTypes.TryAdd(key, new List<Type> { type });
+                }
             }
             if (iModelBuilderFilterType.IsAssignableFromGenericType(type,out Type genericType))
             {
                 ModelBuilderFilters.TryAdd(GetGenericTypeName(genericType), type);
             }
-            if (iEntityTypeBuilderType.IsAssignableFromGenericType(type, out Type genericType1))
-            {
-                EntityTypeBuilders.TryAdd(GetGenericTypeName(genericType1), type);
-            }
+           
             if (iEFCoreEntitySeedDataType.IsAssignableFromGenericType(type, out Type genericType2))
             {
                 EFCoreEntitySeedDatas.TryAdd(GetGenericTypeName(genericType2), type);
+            }
+            if (iEntityTypeConfigurationType.IsAssignableFromGenericType(type, out Type genericType3))
+            {
+                EntityTypeConfigurations.TryAdd(GetGenericTypeName(genericType3), type);
             }
         }
     }

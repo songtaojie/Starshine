@@ -13,7 +13,7 @@ namespace Starshine.Common
         /// <summary>
         /// 创建时间
         /// </summary>
-        public virtual DateTime? CreateTime { get; set; }
+        public virtual DateTime CreateTime { get; set; }
 
         /// <summary>
         /// 创建者Id
@@ -25,16 +25,7 @@ namespace Starshine.Common
     /// 带有创建信息的实体(非泛型，默认主键为雪花Id)
     /// </summary>
     [SkipScan]
-    public abstract class CreationEntityBase : EntityBase
+    public abstract class CreationEntityBase : CreationEntityBase<long>
     {
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public virtual DateTime? CreateTime { get; set; }
-
-        /// <summary>
-        /// 创建者Id
-        /// </summary>
-        public virtual long? CreatorId { get; set; }
     }
 }

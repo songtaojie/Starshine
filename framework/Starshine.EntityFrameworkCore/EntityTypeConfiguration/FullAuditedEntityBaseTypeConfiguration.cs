@@ -39,7 +39,7 @@ public abstract class FullAuditedEntityBaseTypeConfiguration<T, TKey> : AuditedE
 /// 带删除信息的配置
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
-public abstract class FullAuditedEntityBaseTypeConfiguration<T> : AuditedEntityBaseTypeConfiguration<T>
+public abstract class FullAuditedEntityBaseTypeConfiguration<T> : FullAuditedEntityBaseTypeConfiguration<T, long>
      where T : FullAuditedEntityBase
 {
     /// <summary>
@@ -49,8 +49,5 @@ public abstract class FullAuditedEntityBaseTypeConfiguration<T> : AuditedEntityB
     public override void Configure(EntityTypeBuilder<T> builder)
     {
         base.Configure(builder);
-        builder.Property(x => x.IsDeleted).HasComment("是否删除");
-        builder.Property(x => x.DeleterId).HasComment("删除人id");
-        builder.Property(x => x.DeleteTime).HasComment("删除时间");
     }
 }

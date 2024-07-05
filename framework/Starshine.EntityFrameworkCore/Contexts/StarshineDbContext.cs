@@ -64,7 +64,8 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);this.ContextId
+            modelBuilder.ApplyConfiguration()
             var modelBuilderFilter = StarshineDbContextBuilder.GetModelBuilderFilterType(typeof(TDbContext));
             object? instance = null;
             if (modelBuilderFilter != null)
@@ -74,6 +75,7 @@ namespace Starshine.EntityFrameworkCore
                 onModelCreatingMethod?.Invoke(instance, new object[] { modelBuilder, this });
             }
             TrySetDatabaseProvider(modelBuilder);
+            modelBuilder.Model.
             // 初始化所有类型
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
