@@ -11,13 +11,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\framework\Starshine.Caching\Starshine.Caching.csproj" />
-    <ProjectReference Include="..\..\framework\Starshine.EntityFrameworkCore\Starshine.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\framework\Starshine.Swagger\Starshine.Swagger.csproj" />
+    <ProjectReference Include="..\Starshine.EntityFrameworkCore.Test\Starshine.EntityFrameworkCore.Test.csproj" />
   </ItemGroup>
 
 </Project>

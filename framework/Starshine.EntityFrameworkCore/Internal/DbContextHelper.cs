@@ -42,8 +42,8 @@ namespace Starshine.EntityFrameworkCore.Internal
         {
             return (provider, options) =>
             {
-                var dbSettingsOptions = provider.GetRequiredService<IOptionsSnapshot<DbSettingsOptions>>();
-                if (dbSettingsOptions.Value.EnabledSqlLog == true)
+                var dbSettingsOptions = provider.GetRequiredService<IOptionsMonitor<DbSettingsOptions>>();
+                if (dbSettingsOptions.CurrentValue.EnabledSqlLog == true)
                 {
                     options.EnableDetailedErrors()
                                 .EnableSensitiveDataLogging();
@@ -53,7 +53,7 @@ namespace Starshine.EntityFrameworkCore.Internal
                 // 添加拦截器
                 AddInterceptors(interceptors, options, dbSettingsOptions);
                 options.UseApplicationServiceProvider(provider);
-                //options.UseInternalServiceProvider(scoped);
+                //options.UseInternalServiceProvider(provider);
             };
         }
 
@@ -63,12 +63,12 @@ namespace Starshine.EntityFrameworkCore.Internal
         /// <param name="interceptors">拦截器</param>
         /// <param name="options"></param>
         /// <param name="dbSettingsOptions">db配置</param>
-        private static void AddInterceptors(IInterceptor[] interceptors, DbContextOptionsBuilder options, IOptionsSnapshot<DbSettingsOptions> dbSettingsOptions)
+        private static void AddInterceptors(IInterceptor[] interceptors, DbContextOptionsBuilder options, IOptionsMonitor<DbSettingsOptions> dbSettingsOptions)
         {
             // 添加拦截器
             var interceptorList = DbProvider.GetDefaultInterceptors();
 
-            if (dbSettingsOptions.Value.EnabledMiniProfiler == true)
+            if (dbSettingsOptions.CurrentValue.EnabledMiniProfiler == true)
             {
                 interceptorList.Add(new SqlConnectionProfilerInterceptor(dbSettingsOptions));
             }

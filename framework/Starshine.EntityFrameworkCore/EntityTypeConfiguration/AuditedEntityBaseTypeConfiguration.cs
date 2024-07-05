@@ -19,7 +19,7 @@ namespace Starshine.EntityFrameworkCore;
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
 /// <typeparam name="TKey">主键类型</typeparam>
-public class AuditedEntityBaseTypeConfiguration<T, TKey> : CreationEntityBaseTypeConfiguration<T, TKey>
+public abstract class AuditedEntityBaseTypeConfiguration<T, TKey> : CreationEntityBaseTypeConfiguration<T, TKey>
      where T : AuditedEntityBase<TKey>
 {
     /// <summary>
@@ -38,7 +38,7 @@ public class AuditedEntityBaseTypeConfiguration<T, TKey> : CreationEntityBaseTyp
 /// 带更新时间的配置
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
-public class AuditedEntityBaseTypeConfiguration<T> : CreationEntityBaseTypeConfiguration<T>
+public abstract class AuditedEntityBaseTypeConfiguration<T> : CreationEntityBaseTypeConfiguration<T>
      where T : AuditedEntityBase
 {
     /// <summary>

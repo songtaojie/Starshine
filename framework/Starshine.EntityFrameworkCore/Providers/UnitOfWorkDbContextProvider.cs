@@ -36,28 +36,20 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
     /// <summary>
     /// DbContext提供者
     /// </summary>
-    protected readonly IDbContextTypeProvider _dbContextTypeProvider;
-
-    /// <summary>
-    /// DbContext提供者
-    /// </summary>
     protected readonly IUnitOfWorkManager _unitOfWorkManager;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="connectionStringResolver"></param>
-    /// <param name="dbContextTypeProvider"></param>
     /// <param name="logger"></param>
     /// <param name="unitOfWorkManager"></param>
     public UnitOfWorkDbContextProvider(
         IConnectionStringResolver connectionStringResolver,
-        IDbContextTypeProvider dbContextTypeProvider,
         ILogger<UnitOfWorkDbContextProvider<TDbContext>> logger,
         IUnitOfWorkManager unitOfWorkManager)
     {
         _connectionStringResolver = connectionStringResolver;
-        _dbContextTypeProvider = dbContextTypeProvider;
         _logger = logger;
         _unitOfWorkManager = unitOfWorkManager;
     }
@@ -73,10 +65,9 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
         {
             throw new Exception("A DbContext can only be created inside a unit of work!");
         }
-        var targetDbContextType = _dbContextTypeProvider.GetDbContextType(typeof(TDbContext));
         var connectionString = await _connectionStringResolver.ResolveAsync<TDbContext>();
 
-        var dbContextKey = $"{targetDbContextType.FullName}_{connectionString}";
+        var dbContextKey = $"{typeof(TDbContext).FullName}_{connectionString}";
 
         var databaseApi = unitOfWork.FindDatabaseApi(dbContextKey);
 

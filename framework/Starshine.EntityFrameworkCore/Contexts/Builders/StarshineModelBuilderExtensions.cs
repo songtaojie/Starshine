@@ -24,7 +24,7 @@ public static class StarshineModelBuilderExtensions
     /// </summary>
     /// <param name="modelBuilder"></param>
     /// <param name="databaseProvider"></param>
-    public static void SetDatabaseProvider(this ModelBuilder modelBuilder,EfCoreDatabaseProvider databaseProvider)
+    public static void SetDatabaseProvider(this ModelBuilder modelBuilder,EFCoreDatabaseProvider databaseProvider)
     {
         modelBuilder.Model.SetAnnotation(ModelDatabaseProviderAnnotationKey, databaseProvider);
     }
@@ -42,8 +42,8 @@ public static class StarshineModelBuilderExtensions
     /// </summary>
     /// <param name="modelBuilder"></param>
     /// <returns></returns>
-    public static EfCoreDatabaseProvider? GetDatabaseProvider(this ModelBuilder modelBuilder)
+    public static EFCoreDatabaseProvider? GetDatabaseProvider(this ModelBuilder modelBuilder)
     {
-        return modelBuilder.Model[ModelDatabaseProviderAnnotationKey] as EfCoreDatabaseProvider?;
+        return modelBuilder.Model[ModelDatabaseProviderAnnotationKey] as EFCoreDatabaseProvider?;
     }
 }

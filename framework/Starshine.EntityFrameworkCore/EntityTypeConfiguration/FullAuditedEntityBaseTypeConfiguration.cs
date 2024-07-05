@@ -14,15 +14,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore;
-internal class FullAuditedEntityBaseTypeConfiguration
-{
-}
 /// <summary>
 /// 带删除信息的配置
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
 /// <typeparam name="TKey">主键类型</typeparam>
-public class FullAuditedEntityBaseTypeConfiguration<T, TKey> : AuditedEntityBaseTypeConfiguration<T, TKey>
+public abstract class FullAuditedEntityBaseTypeConfiguration<T, TKey> : AuditedEntityBaseTypeConfiguration<T, TKey>
      where T : FullAuditedEntityBase<TKey>
 {
     /// <summary>
@@ -42,7 +39,7 @@ public class FullAuditedEntityBaseTypeConfiguration<T, TKey> : AuditedEntityBase
 /// 带删除信息的配置
 /// </summary>
 /// <typeparam name="T">实体类型</typeparam>
-public class FullAuditedEntityBaseTypeConfiguration<T> : AuditedEntityBaseTypeConfiguration<T>
+public abstract class FullAuditedEntityBaseTypeConfiguration<T> : AuditedEntityBaseTypeConfiguration<T>
      where T : FullAuditedEntityBase
 {
     /// <summary>

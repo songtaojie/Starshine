@@ -9,7 +9,7 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
     /// <typeparam name="TKey">主键类型</typeparam>
-    public class CreationEntityBaseTypeConfiguration<T, TKey> : EntityBaseTypeConfiguration<T, TKey>
+    public abstract class CreationEntityBaseTypeConfiguration<T, TKey> : EntityBaseTypeConfiguration<T, TKey>
          where T : CreationEntityBase<TKey>
     {
         /// <summary>
@@ -28,7 +28,7 @@ namespace Starshine.EntityFrameworkCore
     /// 带创建时间的配置
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public class CreationEntityBaseTypeConfiguration<T> : EntityBaseTypeConfiguration<T>
+    public abstract class CreationEntityBaseTypeConfiguration<T> : EntityBaseTypeConfiguration<T>
          where T : CreationEntityBase
     {
         /// <summary>

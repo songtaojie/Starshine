@@ -31,7 +31,6 @@ public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
     /// </summary>
     public Type OriginalDbContextType { get; }
 
-    internal Dictionary<string, Type> DbContextReplacements { get; }
 
     /// <summary>
     /// 
@@ -42,12 +41,11 @@ public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
     {
         OriginalDbContextType = originalDbContextType;
         Services = services;
-        DbContextReplacements = new Dictionary<string, Type>();
     }
     /// <summary>
     /// 数据库提供商
     /// </summary>
-    public EfCoreDatabaseProvider?  Provider { get; set; }
+    public EFCoreDatabaseProvider?  Provider { get; set; }
 
     /// <summary>
     /// 注册默认的仓储
@@ -86,31 +84,6 @@ public class StarshineDbContextOptions : IStarshineDbContextOptionsBuilder
     public void Configure([NotNull] Action<DbContextOptionsBuilder> dbContextOptions)
     {
         DbContextOptions = dbContextOptions;
-    }
-
-
-    internal Type GetReplacedTypeOrSelf(Type dbContextType)
-    {
-        var replacementType = dbContextType;
-        while (true)
-        {
-            var foundType = DbContextReplacements.LastOrDefault(x => x.Key == dbContextType.FullName);
-            if (!foundType.Equals(default(KeyValuePair<string, Type>)))
-            {
-                if (foundType.Value == dbContextType)
-                {
-                    throw new Exception(
-                        "Circular DbContext replacement found for " +
-                        dbContextType.AssemblyQualifiedName
-                    );
-                }
-                replacementType = foundType.Value;
-            }
-            else
-            {
-                return replacementType;
-            }
-        }
     }
 
     /// <summary>

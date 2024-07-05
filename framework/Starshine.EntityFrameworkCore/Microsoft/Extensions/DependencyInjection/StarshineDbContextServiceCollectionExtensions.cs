@@ -56,12 +56,12 @@ namespace Microsoft.Extensions.DependencyInjection
             where TDbContext : StarshineDbContext<TDbContext>
         {
             var targetDbContextType = typeof(TDbContext);
-            builder.Services.Replace(ServiceDescriptor.Scoped(targetDbContextType, sp =>
-            {
-                var dbContextType = sp.GetRequiredService<IDbContextTypeProvider>().GetDbContextType(targetDbContextType);
-                return sp.GetRequiredService(dbContextType);
-            }));
-            builder.Services.Configure<StarshineDbContextOptions>(opts =>
+            //builder.Services.Replace(ServiceDescriptor.Scoped(targetDbContextType, sp =>
+            //{
+            //    var dbContextType = sp.GetRequiredService<IDbContextTypeProvider>().GetDbContextType(targetDbContextType);
+            //    return sp.GetRequiredService(dbContextType);
+            //}));
+            builder.Services.Configure<StarshineDbContextTypeOptions>(opts =>
             {
                 var dbContextKey = $"{targetDbContextType.FullName}";
                 opts.DbContextReplacements[dbContextKey] = targetDbContextType;

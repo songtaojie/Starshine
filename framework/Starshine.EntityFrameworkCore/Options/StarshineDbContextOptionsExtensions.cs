@@ -28,24 +28,23 @@ internal static class StarshineDbContextOptionsExtensions
             var dbContextOptionsBuilder = optionsBuilder;
 
             // 获取数据库上下文特性
-            var dbContextAttribute = DbProvider.GetAppDbContextAttribute(typeof(TContext));
+            var dbContextAttribute = DbProviderHelper.GetStarshineDbContextAttribute(typeof(TContext));
+            contextOptions.Provider ??= dbContextAttribute?.Provider;
             if (!string.IsNullOrWhiteSpace(contextOptions.ConnectionString) && contextOptions.Provider != null)
             {
-                contextOptions.Provider ??= dbContextAttribute?.Provider;
-                if(contextOptions.Provider == null)return optionsBuilder;
                 var useMethod = DbProviderHelper.GetDatabaseProviderUseMethod(contextOptions.Provider.Value);// 调用对应数据库程序集
                 if (useMethod != null)
                 {
                     var optionsAction = GetRelationalDbContextOptionsAction(contextOptions);
                     // 处理最新第三方 MySql 包兼容问题
-                    if (contextOptions.Provider == EfCoreDatabaseProvider.MySql)
+                    if (contextOptions.Provider == EFCoreDatabaseProvider.MySql)
                     {
                         var mySqlVersion = contextOptions.Version ?? DbProviderHelper.GetMySqlVersion(contextOptions.ConnectionString);
                         dbContextOptionsBuilder = useMethod
                             .Invoke(null, new object?[] { optionsBuilder, contextOptions.ConnectionString, mySqlVersion, optionsAction }) as DbContextOptionsBuilder;
                     }
                     // 处理 Oracle 11 兼容问题
-                    else if (contextOptions.Provider == EfCoreDatabaseProvider.Oracle)
+                    else if (contextOptions.Provider == EFCoreDatabaseProvider.Oracle)
                     {
                         dbContextOptionsBuilder = useMethod
                             .Invoke(null, new object[] { optionsBuilder, contextOptions.ConnectionString, optionsAction }) as DbContextOptionsBuilder;
@@ -89,7 +88,7 @@ internal static class StarshineDbContextOptionsExtensions
     /// <returns></returns>
     private static Action<IRelationalDbContextOptionsBuilderInfrastructure> GetRelationalDbContextOptionsAction(IStarshineDbContextOptionsBuilder contextOptions)
     {
-        if (contextOptions.Provider == EfCoreDatabaseProvider.Oracle)
+        if (contextOptions.Provider == EFCoreDatabaseProvider.Oracle)
         {
             return RelationalDbContextOptionsActions.GetOrAdd(contextOptions.GetHashCode(), options =>
             {

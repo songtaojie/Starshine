@@ -102,7 +102,7 @@ internal class DbProviderHelper
     /// <summary>
     /// 数据库提供器 UseXXX 方法缓存集合
     /// </summary>
-    private static readonly ConcurrentDictionary<EfCoreDatabaseProvider, MethodInfo?> DatabaseProviderUseMethods;
+    private static readonly ConcurrentDictionary<EFCoreDatabaseProvider, MethodInfo?> DatabaseProviderUseMethods;
 
 
     /// <summary>
@@ -110,11 +110,11 @@ internal class DbProviderHelper
     /// </summary>
     /// <param name="databaseProvider">数据库提供器</param>
     /// <returns></returns>
-    internal static MethodInfo? GetDatabaseProviderUseMethod(EfCoreDatabaseProvider databaseProvider)
+    internal static MethodInfo? GetDatabaseProviderUseMethod(EFCoreDatabaseProvider databaseProvider)
     {
         return DatabaseProviderUseMethods.GetOrAdd(databaseProvider, GetOrAddFunction(databaseProvider));
 
-        static MethodInfo? GetOrAddFunction(EfCoreDatabaseProvider databaseProvider)
+        static MethodInfo? GetOrAddFunction(EFCoreDatabaseProvider databaseProvider)
         {
             // 加载对应的数据库提供器程序集
             var databaseProviderAssembly = GetDatabaseProviderAssembly(databaseProvider);
@@ -136,7 +136,7 @@ internal class DbProviderHelper
             MethodInfo? useMethod;
 
             // 处理最新 MySql 第三方包兼容问题
-            if (databaseProvider == EfCoreDatabaseProvider.MySql)
+            if (databaseProvider == EFCoreDatabaseProvider.MySql)
             {
                 useMethod = databaseProviderServiceExtensionType
                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -160,7 +160,7 @@ internal class DbProviderHelper
     internal static object? GetMySqlVersion(string connectionString)
     {
         // 加载对应的数据库提供器程序集
-        var databaseProviderAssembly = GetDatabaseProviderAssembly(EfCoreDatabaseProvider.MySql);
+        var databaseProviderAssembly = GetDatabaseProviderAssembly(EFCoreDatabaseProvider.MySql);
 
         if (databaseProviderAssembly == null) return null;
         try
@@ -168,9 +168,9 @@ internal class DbProviderHelper
             // 解析mysql版本类型
             var serverVersion = databaseProviderAssembly.GetType("Microsoft.EntityFrameworkCore.ServerVersion");
             if (serverVersion == null) return null;
-           
+
             // 获取静态方法的信息
-            var autoDetect = serverVersion.GetMethod("AutoDetect");
+            var autoDetect = serverVersion.GetMethod("AutoDetect", BindingFlags.Static | BindingFlags.Public,new Type[] {typeof(string) });
             if(autoDetect == null) return null;
             // 调用静态方法
             return autoDetect.Invoke(null, new object[] { connectionString });
@@ -186,20 +186,20 @@ internal class DbProviderHelper
     /// </summary>
     /// <param name="databaseProvider"></param>
     /// <returns></returns>
-    private static Assembly? GetDatabaseProviderAssembly(EfCoreDatabaseProvider databaseProvider)
+    private static Assembly? GetDatabaseProviderAssembly(EFCoreDatabaseProvider databaseProvider)
     {
         var providerName = databaseProvider switch
         {
-            EfCoreDatabaseProvider.InMemory => InMemoryDatabase,
-            EfCoreDatabaseProvider.MySql => MySql,
-            EfCoreDatabaseProvider.Sqlite => Sqlite,
-            EfCoreDatabaseProvider.SqlServer => SqlServer,
-            EfCoreDatabaseProvider.PostgreSQL => PostgreSQL,
-            EfCoreDatabaseProvider.MySqlOfficial => MySqlOfficial,
-            EfCoreDatabaseProvider.Oracle => Oracle,
-            EfCoreDatabaseProvider.Cosmos => Cosmos,
-            EfCoreDatabaseProvider.Firebird => Firebird,
-            EfCoreDatabaseProvider.Dm => Dm,
+            EFCoreDatabaseProvider.InMemory => InMemoryDatabase,
+            EFCoreDatabaseProvider.MySql => MySql,
+            EFCoreDatabaseProvider.Sqlite => Sqlite,
+            EFCoreDatabaseProvider.SqlServer => SqlServer,
+            EFCoreDatabaseProvider.PostgreSQL => PostgreSQL,
+            EFCoreDatabaseProvider.MySqlOfficial => MySqlOfficial,
+            EFCoreDatabaseProvider.Oracle => Oracle,
+            EFCoreDatabaseProvider.Cosmos => Cosmos,
+            EFCoreDatabaseProvider.Firebird => Firebird,
+            EFCoreDatabaseProvider.Dm => Dm,
             _ => string.Empty
         };
         if (string.IsNullOrEmpty(providerName)) return null;
@@ -212,20 +212,20 @@ internal class DbProviderHelper
     /// </summary>
     /// <param name="databaseProvider"></param>
     /// <returns></returns>
-    private static string? GetDatabaseProviderServiceExtensionTypeName(EfCoreDatabaseProvider databaseProvider)
+    private static string? GetDatabaseProviderServiceExtensionTypeName(EFCoreDatabaseProvider databaseProvider)
     {
         var className = databaseProvider switch
         {
-            EfCoreDatabaseProvider.SqlServer => "SqlServerDbContextOptionsExtensions",
-            EfCoreDatabaseProvider.Sqlite => "SqliteDbContextOptionsBuilderExtensions",
-            EfCoreDatabaseProvider.Cosmos => "CosmosDbContextOptionsExtensions",
-            EfCoreDatabaseProvider.InMemory => "InMemoryDbContextOptionsExtensions",
-            EfCoreDatabaseProvider.MySql => "MySqlDbContextOptionsBuilderExtensions",
-            EfCoreDatabaseProvider.MySqlOfficial => "MySQLDbContextOptionsExtensions",
-            EfCoreDatabaseProvider.PostgreSQL => "NpgsqlDbContextOptionsBuilderExtensions",
-            EfCoreDatabaseProvider.Oracle => "OracleDbContextOptionsExtensions",
-            EfCoreDatabaseProvider.Firebird => "FbDbContextOptionsBuilderExtensions",
-            EfCoreDatabaseProvider.Dm => "DmDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.SqlServer => "SqlServerDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.Sqlite => "SqliteDbContextOptionsBuilderExtensions",
+            EFCoreDatabaseProvider.Cosmos => "CosmosDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.InMemory => "InMemoryDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.MySql => "MySqlDbContextOptionsBuilderExtensions",
+            EFCoreDatabaseProvider.MySqlOfficial => "MySQLDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.PostgreSQL => "NpgsqlDbContextOptionsBuilderExtensions",
+            EFCoreDatabaseProvider.Oracle => "OracleDbContextOptionsExtensions",
+            EFCoreDatabaseProvider.Firebird => "FbDbContextOptionsBuilderExtensions",
+            EFCoreDatabaseProvider.Dm => "DmDbContextOptionsExtensions",
             _ => null
         };
         return $"Microsoft.EntityFrameworkCore.{className}";
@@ -236,20 +236,20 @@ internal class DbProviderHelper
     /// </summary>
     /// <param name="databaseProvider"></param>
     /// <returns></returns>
-    private static string? GetDatabaseProviderServiceExtensionUseMethodName(EfCoreDatabaseProvider databaseProvider)
+    private static string? GetDatabaseProviderServiceExtensionUseMethodName(EFCoreDatabaseProvider databaseProvider)
     {
         var useMethodName = databaseProvider switch
         {
-            EfCoreDatabaseProvider.SqlServer => $"Use{nameof(EfCoreDatabaseProvider.SqlServer)}",
-            EfCoreDatabaseProvider.Sqlite => $"Use{nameof(EfCoreDatabaseProvider.Sqlite)}",
-            EfCoreDatabaseProvider.Cosmos => $"Use{nameof(EfCoreDatabaseProvider.Cosmos)}",
-            EfCoreDatabaseProvider.InMemory => $"UseInMemoryDatabase",
-            EfCoreDatabaseProvider.MySql => $"Use{nameof(EfCoreDatabaseProvider.MySql)}",
-            EfCoreDatabaseProvider.MySqlOfficial => $"UseMySQL",
-            EfCoreDatabaseProvider.PostgreSQL => $"UseNpgsql",
-            EfCoreDatabaseProvider.Oracle => $"Use{nameof(EfCoreDatabaseProvider.Oracle)}",
-            EfCoreDatabaseProvider.Firebird => $"Use{nameof(EfCoreDatabaseProvider.Firebird)}",
-            EfCoreDatabaseProvider.Dm => $"Use{nameof(EfCoreDatabaseProvider.Dm)}",
+            EFCoreDatabaseProvider.SqlServer => $"Use{nameof(EFCoreDatabaseProvider.SqlServer)}",
+            EFCoreDatabaseProvider.Sqlite => $"Use{nameof(EFCoreDatabaseProvider.Sqlite)}",
+            EFCoreDatabaseProvider.Cosmos => $"Use{nameof(EFCoreDatabaseProvider.Cosmos)}",
+            EFCoreDatabaseProvider.InMemory => $"UseInMemoryDatabase",
+            EFCoreDatabaseProvider.MySql => $"Use{nameof(EFCoreDatabaseProvider.MySql)}",
+            EFCoreDatabaseProvider.MySqlOfficial => $"UseMySQL",
+            EFCoreDatabaseProvider.PostgreSQL => $"UseNpgsql",
+            EFCoreDatabaseProvider.Oracle => $"Use{nameof(EFCoreDatabaseProvider.Oracle)}",
+            EFCoreDatabaseProvider.Firebird => $"Use{nameof(EFCoreDatabaseProvider.Firebird)}",
+            EFCoreDatabaseProvider.Dm => $"Use{nameof(EFCoreDatabaseProvider.Dm)}",
             _ => null
         };
         return useMethodName;

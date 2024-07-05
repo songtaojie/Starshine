@@ -9,7 +9,7 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
     /// <typeparam name="TKey">主键类型</typeparam>
-    public class EntityTypeConfiguration<T,TKey> : IEntityTypeConfiguration<T>
+    public abstract class EntityTypeConfiguration<T,TKey> : IEntityTypeConfiguration<T>
         where T : class, IEntity<TKey>
     {
         /// <summary>

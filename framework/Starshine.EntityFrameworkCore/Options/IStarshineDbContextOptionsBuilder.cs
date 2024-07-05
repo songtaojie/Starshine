@@ -28,7 +28,7 @@ public interface IStarshineDbContextOptionsBuilder
     /// <summary>
     /// 数据库提供商
     /// </summary>
-    EfCoreDatabaseProvider? Provider { get; set; }
+    EFCoreDatabaseProvider? Provider { get; set; }
 
     /// <summary>
     /// 数据库连接字符串

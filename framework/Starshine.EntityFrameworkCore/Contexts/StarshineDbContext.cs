@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Starshine.Common;
 using Starshine.EntityFrameworkCore.Extensions;
@@ -64,10 +65,13 @@ namespace Starshine.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            var modelBuilderFilter = this.GetService<IModelBuilderFilter<TDbContext>>();
+            var modelBuilderFilter = StarshineDbContextBuilder.GetModelBuilderFilterType(typeof(TDbContext));
+            object? instance = null;
             if (modelBuilderFilter != null)
             {
-                modelBuilderFilter.OnModelCreating(modelBuilder, this);
+                instance = Activator.CreateInstance(modelBuilderFilter);
+                var onModelCreatingMethod = modelBuilderFilter.GetMethod(nameof(IModelBuilderFilter<TDbContext>.OnModelCreating),new Type[] { modelBuilder.GetType(),typeof(DbContext) });
+                onModelCreatingMethod?.Invoke(instance, new object[] { modelBuilder, this });
             }
             TrySetDatabaseProvider(modelBuilder);
             // 初始化所有类型
@@ -79,7 +83,8 @@ namespace Starshine.EntityFrameworkCore
             }
             if (modelBuilderFilter != null)
             {
-                modelBuilderFilter.OnOnModelCreated(modelBuilder, this);
+                var onOnModelCreatedMethod = modelBuilderFilter.GetMethod(nameof(IModelBuilderFilter<TDbContext>.OnOnModelCreated), new Type[] { modelBuilder.GetType(), typeof(DbContext) });
+                onOnModelCreatedMethod?.Invoke(instance, new object[] { modelBuilder, this });
             }
         }
 
@@ -154,27 +159,27 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         /// <param name="modelBuilder"></param>
         /// <returns></returns>
-        protected virtual EfCoreDatabaseProvider? GetDatabaseProvider(ModelBuilder modelBuilder)
+        protected virtual EFCoreDatabaseProvider? GetDatabaseProvider(ModelBuilder modelBuilder)
         {
             switch (Database.ProviderName)
             {
                 case "Microsoft.EntityFrameworkCore.SqlServer":
-                    return EfCoreDatabaseProvider.SqlServer;
+                    return EFCoreDatabaseProvider.SqlServer;
                 case "Npgsql.EntityFrameworkCore.PostgreSQL":
-                    return EfCoreDatabaseProvider.PostgreSQL;
+                    return EFCoreDatabaseProvider.PostgreSQL;
                 case "Pomelo.EntityFrameworkCore.MySql":
-                    return EfCoreDatabaseProvider.MySql;
+                    return EFCoreDatabaseProvider.MySql;
                 case "Oracle.EntityFrameworkCore":
                 case "Devart.Data.Oracle.Entity.EFCore":
-                    return EfCoreDatabaseProvider.Oracle;
+                    return EFCoreDatabaseProvider.Oracle;
                 case "Microsoft.EntityFrameworkCore.Sqlite":
-                    return EfCoreDatabaseProvider.Sqlite;
+                    return EFCoreDatabaseProvider.Sqlite;
                 case "Microsoft.EntityFrameworkCore.InMemory":
-                    return EfCoreDatabaseProvider.InMemory;
+                    return EFCoreDatabaseProvider.InMemory;
                 case "FirebirdSql.EntityFrameworkCore.Firebird":
-                    return EfCoreDatabaseProvider.Firebird;
+                    return EFCoreDatabaseProvider.Firebird;
                 case "Microsoft.EntityFrameworkCore.Cosmos":
-                    return EfCoreDatabaseProvider.Cosmos;
+                    return EFCoreDatabaseProvider.Cosmos;
                 default:
                     return null;
             }
@@ -193,35 +198,33 @@ namespace Starshine.EntityFrameworkCore
             {
                 return;
             }
-            var entityType = mutableEntityType.ClrType;
+            var entityType = typeof(TEntity);
             if (!typeof(IEntity).IsAssignableFrom(entityType))
             {
                 return;
             }
-            modelBuilder.Entity<TEntity>().ConfigureByConvention(this);
+            var entityTypeBuilder = modelBuilder.Entity<TEntity>();
+            entityTypeBuilder.ConfigureByConvention(this);
 
             // 获取泛型服务的类型  
-            Type builderType = typeof(IEntityTypeBuilder<>).MakeGenericType(entityType);
-
-            //配置数据库实体种子数据
-            // 解析服务  
-            var efCoreEntitySeedData = this.GetService<IEfCoreEntitySeedData<TEntity>>();
-            // 检查是否解析到了服务  
-            if (efCoreEntitySeedData != null)
+            var entityTypeBuilderType = StarshineDbContextBuilder.GetEntityTypeBuilderType(entityType);
+            if (entityTypeBuilderType != null)
             {
-                var seedData = efCoreEntitySeedData.HasData(this);
-                if (seedData != null && seedData.Any())
-                {
-                    modelBuilder.Entity<TEntity>().HasData(seedData);
-                }
+                var instance = Activator.CreateInstance(entityTypeBuilderType);
+                var configureMethod = entityTypeBuilderType.GetMethod(nameof(IEntityTypeBuilder<TEntity>.Configure),new Type[] { typeof(EntityTypeBuilder<>).MakeGenericType(entityType), mutableEntityType.GetType() });
+                configureMethod?.Invoke(instance, new object[] { entityTypeBuilder, mutableEntityType });
             }
-
-            // 解析服务  
-            var entityTypeBuilder = this.GetService<IEntityTypeBuilder<TEntity>>();
-            // 检查是否解析到了服务  
-            if (entityTypeBuilder != null)
+            //配置数据库实体种子数据
+            var efCoreEntitySeedDataType = StarshineDbContextBuilder.GetEFCoreEntitySeedDataType(entityType);
+            if (efCoreEntitySeedDataType != null)
             {
-                entityTypeBuilder.Configure(modelBuilder.Entity<TEntity>(), mutableEntityType);
+                var instance = Activator.CreateInstance(efCoreEntitySeedDataType);
+                var hasDataMethod = efCoreEntitySeedDataType.GetMethod(nameof(IEFCoreEntitySeedData<TEntity>.HasData), Type.EmptyTypes);
+                var seedData = hasDataMethod?.Invoke(instance, null) as IList;
+                if (seedData != null && seedData.Count > 0)
+                {
+                    entityTypeBuilder.HasData(seedData);
+                }
             }
         }
 

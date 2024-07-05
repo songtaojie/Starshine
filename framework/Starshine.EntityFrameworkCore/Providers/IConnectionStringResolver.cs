@@ -19,7 +19,7 @@ namespace Starshine.EntityFrameworkCore;
 public interface IConnectionStringResolver
 {
     /// <summary>
-    /// 解析
+    /// 解析数据库连接字符串
     /// </summary>
     /// <returns></returns>
     Task<string?> ResolveAsync<TDbContext>() where TDbContext : DbContext;

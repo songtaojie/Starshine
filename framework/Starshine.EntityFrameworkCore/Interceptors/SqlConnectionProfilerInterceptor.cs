@@ -24,9 +24,9 @@ namespace Starshine.EntityFrameworkCore
         /// <summary>
         /// 构造函数
         /// </summary>
-        public SqlConnectionProfilerInterceptor(IOptionsSnapshot<DbSettingsOptions> options)
+        public SqlConnectionProfilerInterceptor(IOptionsMonitor<DbSettingsOptions> options)
         {
-            _dbSettings = options.Value;
+            _dbSettings = options.CurrentValue;
         }
 
         /// <summary>

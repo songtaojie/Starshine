@@ -8,13 +8,13 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     public class DefaultDbContextTypeProvider : IDbContextTypeProvider, IScopedDependency
     {
-        private readonly StarshineDbContextOptions _options;
+        private readonly StarshineDbContextTypeOptions _options;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="options"></param>
-        public DefaultDbContextTypeProvider(IOptions<StarshineDbContextOptions> options)
+        public DefaultDbContextTypeProvider(IOptions<StarshineDbContextTypeOptions> options)
         {
             _options = options.Value;
         }
