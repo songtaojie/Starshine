@@ -55,6 +55,31 @@ internal static class StarshineDbContextBuilder
         Init();
     }
 
+    internal static IEnumerable<Type>? GetEntityTypes(Type dbContextType)
+    {
+        var key = dbContextType.FullName ?? dbContextType.Name;
+        if (EntityTypes.ContainsKey(key))
+        {
+            return EntityTypes.GetValueOrDefault(key);
+        }
+        return EntityTypes.GetValueOrDefault(DefaultDbContextId);
+    }
+
+    internal static IEntityTypeConfiguration<TEntity>? GetEntityType<TEntity>()
+        where TEntity : class
+    {
+        if (EntityTypeConfigurations.Any())
+        {
+            var entityTypeConfiguration = EntityTypeConfigurations.GetValueOrDefault(typeof(TEntity).FullName ?? typeof(TEntity).Name);
+            if (entityTypeConfiguration != null)
+            { 
+                return Activator.CreateInstance(entityTypeConfiguration) as IEntityTypeConfiguration<TEntity>;
+            }
+        }
+
+        return null;
+    }
+
     internal static Type? GetModelBuilderFilterType(Type dbContextType)
     {
         if (ModelBuilderFilters.Any())
@@ -104,9 +129,10 @@ internal static class StarshineDbContextBuilder
             if (iEntityType.IsAssignableFrom(type))
             {
                 string key = DefaultDbContextId;
-                if (iEntityContextMarkerType.IsAssignableFromGenericType(type, out Type dbContextType))
+                var entityContextMarkerAttribute = type.GetCustomAttribute<EntityContextMarkerAttribute>(true);
+                if (entityContextMarkerAttribute != null)
                 {
-                    key = GetGenericTypeName(dbContextType);
+                    key = GetGenericTypeName(entityContextMarkerAttribute.DbContextType);
                 }
                 if (EntityTypes.ContainsKey(key))
                 {

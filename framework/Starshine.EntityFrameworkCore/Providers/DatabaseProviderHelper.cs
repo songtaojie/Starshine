@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore;
-internal class DbProviderHelper
+internal class DatabaseProviderHelper
 {
 
     /// <summary>
@@ -45,7 +46,7 @@ internal class DbProviderHelper
     public const string MySql = "Pomelo.EntityFrameworkCore.MySql";
 
     /// <summary>
-    /// MySql 官方包（更新不及时，只支持 8.0.23+ 版本， 所以单独弄一个分类）
+    /// MySql 官方包
     /// </summary>
     public const string MySqlOfficial = "MySql.EntityFrameworkCore";
 
@@ -70,9 +71,13 @@ internal class DbProviderHelper
     public const string Dm = "Microsoft.EntityFrameworkCore.Dm";
 
     /// <summary>
+    /// 是否开启
+    /// </summary>
+    public static bool EnabledMiniProfiler {  get; set; }
+    /// <summary>
     /// 构造函数
     /// </summary>
-    static DbProviderHelper()
+    static DatabaseProviderHelper()
     {
         StarshineDbContextAttributes = new();
         DatabaseProviderUseMethods = new();
@@ -200,7 +205,7 @@ internal class DbProviderHelper
             EFCoreDatabaseProvider.Cosmos => Cosmos,
             EFCoreDatabaseProvider.Firebird => Firebird,
             EFCoreDatabaseProvider.Dm => Dm,
-            _ => string.Empty
+            _ => throw new NotSupportedException($"The database provider {databaseProvider} does not support.")
         };
         if (string.IsNullOrEmpty(providerName)) return null;
         
@@ -226,7 +231,7 @@ internal class DbProviderHelper
             EFCoreDatabaseProvider.Oracle => "OracleDbContextOptionsExtensions",
             EFCoreDatabaseProvider.Firebird => "FbDbContextOptionsBuilderExtensions",
             EFCoreDatabaseProvider.Dm => "DmDbContextOptionsExtensions",
-            _ => null
+            _ => throw new NotSupportedException($"The database provider {databaseProvider} does not support.")
         };
         return $"Microsoft.EntityFrameworkCore.{className}";
     }
@@ -250,8 +255,31 @@ internal class DbProviderHelper
             EFCoreDatabaseProvider.Oracle => $"Use{nameof(EFCoreDatabaseProvider.Oracle)}",
             EFCoreDatabaseProvider.Firebird => $"Use{nameof(EFCoreDatabaseProvider.Firebird)}",
             EFCoreDatabaseProvider.Dm => $"Use{nameof(EFCoreDatabaseProvider.Dm)}",
-            _ => null
+            _ => throw new NotSupportedException($"The database provider {databaseProvider} does not support.")
         };
         return useMethodName;
+    }
+    /// <summary>
+    /// 检查是否支持存储过程
+    /// </summary>
+    /// <param name="providerName">数据库提供器名词</param>
+    /// <param name="commandType">命令类型</param>
+    internal static void CheckIsSupportedStoredProcedure(string? providerName, CommandType commandType)
+    {
+        if (commandType == CommandType.StoredProcedure && new string[] {Sqlite,InMemoryDatabase }.Contains(providerName))
+        {
+            throw new NotSupportedException("The database provider does not support stored procedure operations.");
+        }
+    }
+
+    /// <summary>
+    /// 判断是否是特定数据库
+    /// </summary>
+    /// <param name="providerName"></param>
+    /// <param name="dbAssemblyName"></param>
+    /// <returns>bool</returns>
+    public static bool IsDatabaseFor(string? providerName, string dbAssemblyName)
+    {
+        return dbAssemblyName.Equals(providerName, StringComparison.Ordinal);
     }
 }

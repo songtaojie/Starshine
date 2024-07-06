@@ -128,7 +128,7 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="parameterName"></param>
         /// <param name="isFixed"></param>
         /// <returns></returns>
-        internal static string FixSqlParameterPlaceholder(string providerName, string parameterName, bool isFixed = true)
+        internal static string FixSqlParameterPlaceholder(string? providerName, string parameterName, bool isFixed = true)
         {
             var placeholder = !DbProvider.IsDatabaseFor(providerName, DbProvider.Oracle) ? "@" : ":";
             if (parameterName.StartsWith("@") || parameterName.StartsWith(":"))

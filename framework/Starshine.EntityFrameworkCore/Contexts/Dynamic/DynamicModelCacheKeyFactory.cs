@@ -33,7 +33,7 @@ namespace Starshine.EntityFrameworkCore
         public object Create(DbContext context, bool designTime)
         {
 
-            var dbContextAttribute = DbProviderHelper.GetStarshineDbContextAttribute(context.GetType());
+            var dbContextAttribute = DatabaseProviderHelper.GetStarshineDbContextAttribute(context.GetType());
 
             return dbContextAttribute?.Mode == DbContextMode.Dynamic
                 ? (context.GetType(), cacheKey, designTime)

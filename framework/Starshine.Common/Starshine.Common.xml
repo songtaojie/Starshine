@@ -65,16 +65,6 @@
             带有更新信息的实体(非泛型，默认主键为雪花id)
             </summary>
         </member>
-        <member name="P:Starshine.Common.AuditedEntityBase.UpdateTime">
-            <summary>
-            更新时间
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.AuditedEntityBase.UpdaterId">
-            <summary>
-            更新者id
-            </summary>
-        </member>
         <member name="T:Starshine.Common.BasePageParam">
             <summary>
             分页参数
@@ -134,16 +124,6 @@
         <member name="T:Starshine.Common.CreationEntityBase">
             <summary>
             带有创建信息的实体(非泛型，默认主键为雪花Id)
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.CreationEntityBase.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.CreationEntityBase.CreatorId">
-            <summary>
-            创建者Id
             </summary>
         </member>
         <member name="T:Starshine.Common.EntityBase`1">
@@ -235,21 +215,6 @@
         <member name="T:Starshine.Common.FullAuditedEntityBase">
             <summary>
             带有状态数据的实体（非泛型）
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.FullAuditedEntityBase.IsDeleted">
-            <summary>
-            是否删除
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.FullAuditedEntityBase.DeleterId">
-            <summary>
-            删除人id
-            </summary>
-        </member>
-        <member name="P:Starshine.Common.FullAuditedEntityBase.DeleteTime">
-            <summary>
-            删除时间
             </summary>
         </member>
         <member name="T:Starshine.Common.IEntity`1">

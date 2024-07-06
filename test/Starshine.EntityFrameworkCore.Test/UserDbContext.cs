@@ -14,6 +14,6 @@ namespace Starshine.EntityFrameworkCore.Test
         {
         }
 
-        public DbSet<SysUser> SysUsers { get; set; }
+        //public DbSet<SysUser> SysUsers { get; set; }
     }
 }

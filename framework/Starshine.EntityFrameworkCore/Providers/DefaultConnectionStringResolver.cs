@@ -47,7 +47,7 @@ public class DefaultConnectionStringResolver : IConnectionStringResolver,ITransi
     private string? ResolveInternal(Type dbContextType)
     {
         // 查找特性
-        var dbContextAttribute = DbProviderHelper.GetStarshineDbContextAttribute(dbContextType);
+        var dbContextAttribute = DatabaseProviderHelper.GetStarshineDbContextAttribute(dbContextType);
         if (dbContextAttribute == null) return default;
 
         // 获取特性连接字符串

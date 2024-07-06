@@ -28,18 +28,18 @@ internal static class StarshineDbContextOptionsExtensions
             var dbContextOptionsBuilder = optionsBuilder;
 
             // 获取数据库上下文特性
-            var dbContextAttribute = DbProviderHelper.GetStarshineDbContextAttribute(typeof(TContext));
+            var dbContextAttribute = DatabaseProviderHelper.GetStarshineDbContextAttribute(typeof(TContext));
             contextOptions.Provider ??= dbContextAttribute?.Provider;
             if (!string.IsNullOrWhiteSpace(contextOptions.ConnectionString) && contextOptions.Provider != null)
             {
-                var useMethod = DbProviderHelper.GetDatabaseProviderUseMethod(contextOptions.Provider.Value);// 调用对应数据库程序集
+                var useMethod = DatabaseProviderHelper.GetDatabaseProviderUseMethod(contextOptions.Provider.Value);// 调用对应数据库程序集
                 if (useMethod != null)
                 {
                     var optionsAction = GetRelationalDbContextOptionsAction(contextOptions);
                     // 处理最新第三方 MySql 包兼容问题
                     if (contextOptions.Provider == EFCoreDatabaseProvider.MySql)
                     {
-                        var mySqlVersion = contextOptions.Version ?? DbProviderHelper.GetMySqlVersion(contextOptions.ConnectionString);
+                        var mySqlVersion = contextOptions.Version ?? DatabaseProviderHelper.GetMySqlVersion(contextOptions.ConnectionString);
                         dbContextOptionsBuilder = useMethod
                             .Invoke(null, new object?[] { optionsBuilder, contextOptions.ConnectionString, mySqlVersion, optionsAction }) as DbContextOptionsBuilder;
                     }

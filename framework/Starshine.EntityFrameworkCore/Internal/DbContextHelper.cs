@@ -20,19 +20,6 @@ namespace Starshine.EntityFrameworkCore.Internal
     {
 
         /// <summary>
-        /// 数据库上下文描述器
-        /// </summary>
-        private static readonly ConcurrentDictionary<Type, Type> DbContextProviders;
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        static DbContextHelper()
-        {
-            DbContextProviders = new ConcurrentDictionary<Type, Type>();
-        }
-
-        /// <summary>
         /// 配置 SqlServer 数据库上下文
         /// </summary>
         /// <param name="optionBuilder">数据库上下文选项构建器</param>
@@ -46,7 +33,7 @@ namespace Starshine.EntityFrameworkCore.Internal
                 if (dbSettingsOptions.CurrentValue.EnabledSqlLog == true)
                 {
                     options.EnableDetailedErrors()
-                                .EnableSensitiveDataLogging();
+                            .EnableSensitiveDataLogging();
                 }
 
                 optionBuilder.Invoke(provider,options);
@@ -66,7 +53,10 @@ namespace Starshine.EntityFrameworkCore.Internal
         private static void AddInterceptors(IInterceptor[] interceptors, DbContextOptionsBuilder options, IOptionsMonitor<DbSettingsOptions> dbSettingsOptions)
         {
             // 添加拦截器
-            var interceptorList = DbProvider.GetDefaultInterceptors();
+            var interceptorList = new List<IInterceptor>
+            {
+                new SqlCommandProfilerInterceptor(),
+            };
 
             if (dbSettingsOptions.CurrentValue.EnabledMiniProfiler == true)
             {
@@ -78,20 +68,6 @@ namespace Starshine.EntityFrameworkCore.Internal
             }
             options.AddInterceptors(interceptorList.ToArray());
         }
-
-        /// <summary>
-        /// 检查数据库上下文是否绑定
-        /// </summary>
-        /// <param name="dbContextLocatorType"></param>
-        /// <param name="dbContextType"></param>
-        /// <returns></returns>
-        internal static void CheckDbContextLocator(Type dbContextLocatorType, out Type dbContextType)
-        {
-            if (!DbContextProviders.TryGetValue(dbContextLocatorType, out Type? cacheDbContextType)) 
-                throw new InvalidCastException($" The dbcontext locator `{dbContextLocatorType.Name}` is not bind.");
-            dbContextType = cacheDbContextType;
-        }
-
 
         /// <summary>
         /// 打印验证信息到 MiniProfiler

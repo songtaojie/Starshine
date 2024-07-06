@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -64,8 +65,8 @@ namespace Starshine.EntityFrameworkCore
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);this.ContextId
-            modelBuilder.ApplyConfiguration()
+            base.OnModelCreating(modelBuilder);
+            
             var modelBuilderFilter = StarshineDbContextBuilder.GetModelBuilderFilterType(typeof(TDbContext));
             object? instance = null;
             if (modelBuilderFilter != null)
@@ -75,13 +76,13 @@ namespace Starshine.EntityFrameworkCore
                 onModelCreatingMethod?.Invoke(instance, new object[] { modelBuilder, this });
             }
             TrySetDatabaseProvider(modelBuilder);
-            modelBuilder.Model.
             // 初始化所有类型
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            var entityTypes = GetEntityTypes(modelBuilder);
+            foreach (var entityType in entityTypes)
             {
                 ConfigureEntityTypeBuilderMethodInfo
-                    .MakeGenericMethod(entityType.ClrType)
-                    .Invoke(this, new object[] { modelBuilder, entityType });
+                    .MakeGenericMethod(entityType)
+                    .Invoke(this, new object[] { modelBuilder});
             }
             if (modelBuilderFilter != null)
             {
@@ -90,6 +91,16 @@ namespace Starshine.EntityFrameworkCore
             }
         }
 
+
+        private IEnumerable<Type> GetEntityTypes(ModelBuilder modelBuilder)
+        {
+            var entityTypes = modelBuilder.Model.GetEntityTypes();
+            if (entityTypes.Any())
+            {
+                return entityTypes.Select(r => r.ClrType);
+            }
+            return StarshineDbContextBuilder.GetEntityTypes(typeof(TDbContext)) ?? Enumerable.Empty<Type>();
+        }
         ///// <summary>
         ///// 获取租户信息
         ///// </summary>
@@ -192,30 +203,25 @@ namespace Starshine.EntityFrameworkCore
         /// 配置数据库实体类型构建器
         /// </summary>
         /// <param name="modelBuilder"></param>
-        /// <param name="mutableEntityType">实体类型</param>
-        protected virtual void ConfigureEntityTypeBuilder<TEntity>(ModelBuilder modelBuilder, IMutableEntityType mutableEntityType)
+        protected virtual void ConfigureEntityTypeBuilder<TEntity>(ModelBuilder modelBuilder)
             where TEntity : class
         {
-            if (mutableEntityType.IsOwned())
-            {
-                return;
-            }
             var entityType = typeof(TEntity);
             if (!typeof(IEntity).IsAssignableFrom(entityType))
             {
                 return;
             }
             var entityTypeBuilder = modelBuilder.Entity<TEntity>();
-            entityTypeBuilder.ConfigureByConvention(this);
-
-            // 获取泛型服务的类型  
-            var entityTypeBuilderType = StarshineDbContextBuilder.GetEntityTypeBuilderType(entityType);
-            if (entityTypeBuilderType != null)
+            var entityTypeConfiguration = StarshineDbContextBuilder.GetEntityType<TEntity>();
+            if (entityTypeConfiguration != null)
             {
-                var instance = Activator.CreateInstance(entityTypeBuilderType);
-                var configureMethod = entityTypeBuilderType.GetMethod(nameof(IEntityTypeBuilder<TEntity>.Configure),new Type[] { typeof(EntityTypeBuilder<>).MakeGenericType(entityType), mutableEntityType.GetType() });
-                configureMethod?.Invoke(instance, new object[] { entityTypeBuilder, mutableEntityType });
+                modelBuilder.ApplyConfiguration(entityTypeConfiguration);
             }
+            else
+            {
+                entityTypeBuilder.ConfigureByConvention(this);
+            }
+
             //配置数据库实体种子数据
             var efCoreEntitySeedDataType = StarshineDbContextBuilder.GetEFCoreEntitySeedDataType(entityType);
             if (efCoreEntitySeedDataType != null)

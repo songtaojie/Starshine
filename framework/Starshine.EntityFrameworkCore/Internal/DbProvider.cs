@@ -152,38 +152,10 @@ namespace Starshine.EntityFrameworkCore
         private static readonly ConcurrentDictionary<Type, StarshineDbContextAttribute?> DbContextAppDbContextAttributes;
 
         /// <summary>
-        /// 获取数据库上下文 [AppDbContext] 特性
-        /// </summary>
-        /// <param name="dbContexType"></param>
-        /// <returns></returns>
-        internal static StarshineDbContextAttribute? GetAppDbContextAttribute(Type dbContexType)
-        {
-            return DbContextAppDbContextAttributes.GetOrAdd(dbContexType, GetOrAddFunction);
-
-            // 本地静态函数
-            static StarshineDbContextAttribute? GetOrAddFunction(Type dbContextType)
-            {
-                return dbContextType.GetCustomAttribute<StarshineDbContextAttribute>(true);
-            }
-        }
-
-        /// <summary>
         /// 不支持操作类型
         /// </summary>
         private const string NotSupportException = "The database provider does not support {0} operations.";
 
-        /// <summary>
-        /// 检查是否支持存储过程
-        /// </summary>
-        /// <param name="providerName">数据库提供器名词</param>
-        /// <param name="commandType">命令类型</param>
-        internal static void CheckStoredProcedureSupported(string providerName, CommandType commandType)
-        {
-            if (commandType == CommandType.StoredProcedure && NotSupportStoredProcedureDatabases.Contains(providerName))
-            {
-                throw new NotSupportedException(string.Format(NotSupportException, "stored procedure"));
-            }
-        }
-
+       
     }
 }

@@ -15,7 +15,14 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddEntityFrameworkMySql();
             services.AddStarshineEfCore()
-                .AddStarshineDbContextPool<UserDbContext>();
+                .AddStarshineDbContextPool<UserDbContext>(options=>
+                {
+                    options.MigrationAssemblyName = "Starshine.TestProject";
+                })
+                .AddStarshineDbContextPool<ShopDbContext>(options =>
+                {
+                    options.MigrationAssemblyName = "Starshine.TestProject";
+                });
             services.AddTransient<IModelBuilderFilter<UserDbContext>, UserDbContextModelBuilderFilter>();
             return services;
         }

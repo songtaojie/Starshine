@@ -121,7 +121,7 @@ public static class StarshineEntityTypeBuilderExtensions
         }
         else 
         {
-            var appDbContextAttribute = DbProvider.GetAppDbContextAttribute(dbContext.GetType());
+            var appDbContextAttribute = DatabaseProviderHelper.GetStarshineDbContextAttribute(dbContext.GetType());
             // 添加表统一前后缀，排除视图
             if (appDbContextAttribute != null && (!string.IsNullOrWhiteSpace(appDbContextAttribute.TablePrefix) || !string.IsNullOrWhiteSpace(appDbContextAttribute.TableSuffix)))
             {
