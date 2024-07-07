@@ -15,7 +15,7 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// 
 /// </summary>
-public class EfCoreDatabaseApi : IDatabaseApi
+public class EFCoreDatabaseApi : IDatabaseApi
 {
     /// <summary>
     /// 数据库上下文
@@ -26,7 +26,7 @@ public class EfCoreDatabaseApi : IDatabaseApi
     /// 
     /// </summary>
     /// <param name="dbContext"></param>
-    public EfCoreDatabaseApi(DbContext dbContext)
+    public EFCoreDatabaseApi(DbContext dbContext)
     {
         StarterDbContext = dbContext;
     }

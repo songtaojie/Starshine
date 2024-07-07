@@ -1,6 +1,4 @@
-﻿using Starshine.EntityFrameworkCore.Internal;
-
-namespace Microsoft.AspNetCore.Builder
+﻿namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
     /// 

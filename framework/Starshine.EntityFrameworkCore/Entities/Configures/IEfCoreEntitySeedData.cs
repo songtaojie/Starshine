@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Starshine.EntityFrameworkCore.Internal;
-
-namespace Starshine.EntityFrameworkCore
+﻿namespace Starshine.EntityFrameworkCore
 {
     /// <summary>
     /// 数据库种子数据依赖接口

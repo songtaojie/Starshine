@@ -1,17 +1,8 @@
-﻿using Starshine.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Starshine.Common;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿// MIT License
+//
+// Copyright (c) 2021-present songtaojie, Daming Co.,Ltd and Contributors
+//
+// 电话/微信：song977601042
 
 namespace Starshine.EntityFrameworkCore
 {

@@ -16,7 +16,7 @@ namespace Starshine.EntityFrameworkCore;
 /// <summary>
 /// TransactionApi实现类
 /// </summary>
-public class EfCoreTransactionApi : ITransactionApi
+public class EFCoreTransactionApi : ITransactionApi
 {
     /// <summary>
     /// 事务
@@ -37,7 +37,7 @@ public class EfCoreTransactionApi : ITransactionApi
     /// </summary>
     /// <param name="dbContextTransaction"></param>
     /// <param name="starterDbContext"></param>
-    public EfCoreTransactionApi(
+    public EFCoreTransactionApi(
         IDbContextTransaction dbContextTransaction,
         DbContext starterDbContext)
     {

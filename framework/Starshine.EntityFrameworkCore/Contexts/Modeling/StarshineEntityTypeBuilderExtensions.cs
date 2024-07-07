@@ -5,18 +5,11 @@
 // 电话/微信：song977601042
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Starshine.Common;
-using Starshine.EntityFrameworkCore.Extensions;
+using Starshine.Extensions;
 using Starshine.EntityFrameworkCore.Extensions.LinqBuilder;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Starshine.EntityFrameworkCore.Modeling;
 /// <summary>
@@ -26,17 +19,12 @@ public static class StarshineEntityTypeBuilderExtensions
 {
 
     private static IEnumerable<Type> _entityMutableTableTypes;
-    /// <summary>
-    /// 模型构建器筛选器实例
-    /// </summary>
-    private static IEnumerable<Type> _modelBuilderFilters { get; set; }
+    
 
     static StarshineEntityTypeBuilderExtensions()
     {
         _entityMutableTableTypes = StarshineApp.EffectiveTypes.Where(u => u.GetInterfaces()
                     .Any(i => i.HasImplementedRawGeneric(typeof(IEntityMutableTable<>))));
-        _modelBuilderFilters = StarshineApp.EffectiveTypes.Where(u => u.GetInterfaces()
-                    .Any(i => i.HasImplementedRawGeneric(typeof(IModelBuilderFilter<>))));
 
     }
 
@@ -102,7 +90,7 @@ public static class StarshineEntityTypeBuilderExtensions
             ? entityBuilder.Metadata.ClrType.GetCustomAttribute<TableAttribute>(true) 
             : default;
 
-        // 排除无键实体或已经贴了 [Table] 特性的类型
+        // 排除已经贴了 [Table] 特性的类型
         if (!string.IsNullOrWhiteSpace(tableAttribute?.Schema)) return;
         
         // 获取真实表名

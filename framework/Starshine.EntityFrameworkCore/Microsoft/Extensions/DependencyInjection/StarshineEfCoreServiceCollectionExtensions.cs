@@ -1,8 +1,5 @@
 ﻿using Starshine.EntityFrameworkCore;
-using Starshine.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Starshine;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

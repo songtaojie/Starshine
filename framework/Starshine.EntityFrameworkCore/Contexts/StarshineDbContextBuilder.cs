@@ -42,7 +42,13 @@ internal static class StarshineDbContextBuilder
     /// EntityTypeConfiguration实现类
     /// </summary>
     private static readonly ConcurrentDictionary<string, Type> EntityTypeConfigurations;
-    
+
+    private static IEnumerable<Type> _entityMutableTableTypes;
+    /// <summary>
+    /// 模型构建器筛选器实例
+    /// </summary>
+    private static IEnumerable<Type> _modelBuilderFilters { get; set; }
+
     /// <summary>
     /// 构造函数
     /// </summary>
@@ -122,7 +128,6 @@ internal static class StarshineDbContextBuilder
         var iEFCoreEntitySeedDataType = typeof(IEFCoreEntitySeedData<>);
         var iEntityType = typeof(IEntity);
         var iEntityTypeConfigurationType = typeof(IEntityTypeConfiguration<>);
-        var iEntityContextMarkerType = typeof(IEntityContextMarker<>);
         foreach (var type in StarshineApp.EffectiveTypes)
         {
             if (type.IsAbstract || type.IsInterface) continue;

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Starshine.EntityFrameworkCore
 {
-    internal static class DbHelpers
+    internal static class DbParameterHelper
     {
         /// <summary>
         /// 将模型转为 DbParameter 集合
@@ -113,15 +113,6 @@ namespace Starshine.EntityFrameworkCore
         }
 
         /// <summary>
-        /// 数据没找到异常
-        /// </summary>
-        /// <returns></returns>
-        internal static InvalidOperationException DataNotFoundException()
-        {
-            return new InvalidOperationException("Sequence contains no elements.");
-        }
-
-        /// <summary>
         /// 修正不同数据库命令参数前缀不一致问题
         /// </summary>
         /// <param name="providerName"></param>
@@ -130,26 +121,13 @@ namespace Starshine.EntityFrameworkCore
         /// <returns></returns>
         internal static string FixSqlParameterPlaceholder(string? providerName, string parameterName, bool isFixed = true)
         {
-            var placeholder = !DbProvider.IsDatabaseFor(providerName, DbProvider.Oracle) ? "@" : ":";
+            var placeholder = !DatabaseProviderHelper.IsDatabaseFor(providerName, DatabaseProviderHelper.Oracle) ? "@" : ":";
             if (parameterName.StartsWith("@") || parameterName.StartsWith(":"))
             {
                 parameterName = parameterName[1..];
             }
 
             return isFixed ? placeholder + parameterName : parameterName;
-        }
-
-        /// <summary>
-        /// Sql 模板正在表达式
-        /// </summary>
-        private static readonly Regex SqlTemplateRegex;
-
-        /// <summary>
-        /// 静态构造函数
-        /// </summary>
-        static DbHelpers()
-        {
-            SqlTemplateRegex = new Regex(@"\#\((?<path>.*?)\)");
         }
     }
 }

@@ -73,10 +73,10 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
 
         if (databaseApi == null)
         {
-            databaseApi = new EfCoreDatabaseApi(await CreateDbContextAsync(unitOfWork, connectionString));
+            databaseApi = new EFCoreDatabaseApi(await CreateDbContextAsync(unitOfWork, connectionString));
             unitOfWork.AddDatabaseApi(dbContextKey, databaseApi);
         }
-        return (TDbContext)((EfCoreDatabaseApi)databaseApi).StarterDbContext;
+        return (TDbContext)((EFCoreDatabaseApi)databaseApi).StarterDbContext;
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
     protected virtual async Task<TDbContext> CreateDbContextWithTransactionAsync(IUnitOfWork unitOfWork, CancellationToken cancellationToken = default)
     {
         var transactionApiKey = $"EntityFrameworkCore_{DbContextCreationContext.Current.ConnectionString}";
-        var activeTransaction = unitOfWork.FindTransactionApi(transactionApiKey) as EfCoreTransactionApi;
+        var activeTransaction = unitOfWork.FindTransactionApi(transactionApiKey) as EFCoreTransactionApi;
 
         if (activeTransaction == null)
         {
@@ -138,7 +138,7 @@ public class UnitOfWorkDbContextProvider<TDbContext> : IDbContextProvider<TDbCon
 
                 unitOfWork.AddTransactionApi(
                     transactionApiKey,
-                    new EfCoreTransactionApi(
+                    new EFCoreTransactionApi(
                         dbTransaction,
                         dbContext
                     )

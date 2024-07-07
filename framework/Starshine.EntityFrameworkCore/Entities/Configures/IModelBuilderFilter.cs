@@ -19,7 +19,7 @@ namespace Starshine.EntityFrameworkCore;
 ///  数据库模型构建筛选器依赖接口
 /// </summary>
 /// <typeparam name="TDbContext">数据库上下文</typeparam>
-public interface IModelBuilderFilter<TDbContext>:ITransientDependency
+public interface IModelBuilderFilter<TDbContext>
     where TDbContext : DbContext
 {
     /// <summary>

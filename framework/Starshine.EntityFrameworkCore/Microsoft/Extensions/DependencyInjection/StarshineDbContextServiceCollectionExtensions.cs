@@ -1,14 +1,5 @@
 ﻿using Starshine.EntityFrameworkCore;
-using Starshine.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using StackExchange.Profiling.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

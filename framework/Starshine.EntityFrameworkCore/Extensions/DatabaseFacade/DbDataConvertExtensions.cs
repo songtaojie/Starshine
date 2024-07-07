@@ -1,13 +1,14 @@
-﻿using Starshine.EntityFrameworkCore.Extensions;
+﻿using Starshine.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Hx.Sdk.Extensions
+namespace Starshine.Extensions
 {
     /// <summary>
     /// 数据库数据转换拓展
@@ -190,6 +191,65 @@ namespace Hx.Sdk.Extensions
         public static Task<object?> ToListAsync(this DataTable dataTable, Type returnType)
         {
             return Task.FromResult(dataTable.ToList(returnType));
+        }
+
+        /// <summary>
+        /// 将 DbDataReader 转 DataSet
+        /// </summary>
+        /// <param name="dataReader"></param>
+        /// <returns></returns>
+        public static DataSet ToDataSet(this DbDataReader dataReader)
+        {
+            var dataSet = new DataSet();
+
+            do
+            {
+                // 获取元数据
+                var schemaTable = dataReader.GetSchemaTable();
+                var dataTable = new DataTable();
+
+                if (schemaTable != null)
+                {
+                    for (var i = 0; i < schemaTable.Rows.Count; i++)
+                    {
+                        var dataRow = schemaTable.Rows[i];
+
+                        var columnName = (string)dataRow["ColumnName"];
+                        var column = new DataColumn(columnName, (Type)dataRow["DataType"]);
+                        dataTable.Columns.Add(column);
+                    }
+
+                    dataSet.Tables.Add(dataTable);
+
+                    // 循环读取
+                    while (dataReader.Read())
+                    {
+                        var dataRow = dataTable.NewRow();
+
+                        for (var i = 0; i < dataReader.FieldCount; i++)
+                        {
+                            dataRow[i] = dataReader.GetValue(i);
+                        }
+
+                        dataTable.Rows.Add(dataRow);
+                    }
+                }
+                else
+                {
+                    var column = new DataColumn("RecordsAffected");
+                    dataTable.Columns.Add(column);
+                    dataSet.Tables.Add(dataTable);
+
+                    var dataRow = dataTable.NewRow();
+                    dataRow[0] = dataReader.RecordsAffected;
+                    dataTable.Rows.Add(dataRow);
+                }
+            }
+
+            // 读取下一个结果
+            while (dataReader.NextResult());
+
+            return dataSet;
         }
 
     }

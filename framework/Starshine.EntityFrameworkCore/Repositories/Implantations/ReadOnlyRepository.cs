@@ -31,7 +31,7 @@ namespace Starshine.EntityFrameworkCore
         public virtual async Task<TEntity> FindAsync(object key, CancellationToken cancellationToken = default)
         {
             var entity = await FindOrDefaultAsync(key, cancellationToken);
-            return entity ?? throw DbHelpers.DataNotFoundException();
+            return entity ?? throw new InvalidOperationException("Sequence contains no elements.");
         }
 
         /// <summary>

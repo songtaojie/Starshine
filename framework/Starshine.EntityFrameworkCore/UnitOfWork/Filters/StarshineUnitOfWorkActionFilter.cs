@@ -1,12 +1,7 @@
-﻿using Starshine.EntityFrameworkCore.Internal;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Starshine.EntityFrameworkCore
 {
@@ -15,11 +10,6 @@ namespace Starshine.EntityFrameworkCore
     /// </summary>
     internal sealed class StarshineUnitOfWorkActionFilter : IAsyncActionFilter, IOrderedFilter
     {
-        /// <summary>
-        /// MiniProfiler 分类名
-        /// </summary>
-        private const string MiniProfilerCategory = "StarshineUnitOfWork";
-
         /// <summary>
         /// 排序属性
         /// </summary>
@@ -48,7 +38,7 @@ namespace Starshine.EntityFrameworkCore
             var actionDescriptor = context.ActionDescriptor.AsControllerActionDescriptor();
             // 获取动作方法描述器
             var method = actionDescriptor.MethodInfo;
-            var unitOfWorkAttr = UnitOfWorkHelper.GetUnitOfWorkAttribute(method);
+            var unitOfWorkAttr = GetUnitOfWorkAttribute(method);
             if (unitOfWorkAttr?.IsDisabled == true)
             {
                 await next();
@@ -91,10 +81,30 @@ namespace Starshine.EntityFrameworkCore
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private static bool Succeed(ActionExecutedContext result)
+        private bool Succeed(ActionExecutedContext result)
         {
             return result.Exception == null || result.ExceptionHandled;
         }
 
+
+        private UnitOfWorkAttribute? GetUnitOfWorkAttribute(MethodInfo methodInfo)
+        {
+            var attrs = methodInfo.GetCustomAttributes(true).OfType<UnitOfWorkAttribute>().ToArray();
+            if (attrs.Length > 0)
+            {
+                return attrs[0];
+            }
+
+            if (methodInfo.DeclaringType != null)
+            {
+                attrs = methodInfo.DeclaringType.GetTypeInfo().GetCustomAttributes(true).OfType<UnitOfWorkAttribute>().ToArray();
+                if (attrs.Length > 0)
+                {
+                    return attrs[0];
+                }
+            }
+
+            return null;
+        }
     }
 }

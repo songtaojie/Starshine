@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Starshine.EntityFrameworkCore.Internal;
 
 namespace Starshine.EntityFrameworkCore
 {
