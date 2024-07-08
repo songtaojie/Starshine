@@ -14,6 +14,7 @@
         <PackageId>Starshine.Sqlsugar</PackageId>
         <Product>Starshine.Sqlsugar for ASP.NET Core</Product>
         <Copyright>2020 Starshine.Sqlsugar</Copyright>
+	  <PackageReadmeFile>Index.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,5 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Starshine.Common\Starshine.Common.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 </Project>

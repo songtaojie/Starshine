@@ -18,16 +18,6 @@ namespace Starshine.EntityFrameworkCore.Modeling;
 public static class StarshineEntityTypeBuilderExtensions
 {
 
-    private static IEnumerable<Type> _entityMutableTableTypes;
-    
-
-    static StarshineEntityTypeBuilderExtensions()
-    {
-        _entityMutableTableTypes = StarshineApp.EffectiveTypes.Where(u => u.GetInterfaces()
-                    .Any(i => i.HasImplementedRawGeneric(typeof(IEntityMutableTable<>))));
-
-    }
-
     /// <summary>
     /// 配置
     /// </summary>
@@ -60,11 +50,12 @@ public static class StarshineEntityTypeBuilderExtensions
     {
         var isSet = false;
         // 获取实体动态配置表配置
-        var lastEntityMutableTableType = _entityMutableTableTypes.Where(t => t.GenericTypeArguments.Contains(entityBuilder.Metadata.ClrType)).LastOrDefault();
+        var lastEntityMutableTableType = StarshineDbContextBuilder.GetEntityMutableTableType(entityBuilder.Metadata.ClrType);
         if (lastEntityMutableTableType == null) return isSet;
-        lastEntityMutableTableType = lastEntityMutableTableType.MakeGenericType(entityBuilder.Metadata.ClrType);
+        //lastEntityMutableTableType = lastEntityMutableTableType.MakeGenericType(entityBuilder.Metadata.ClrType);
         // 只应用于扫描的最后配置
         var instance = Activator.CreateInstance(lastEntityMutableTableType);
+        if (instance == null) return isSet;
         var getTableNameMethod = lastEntityMutableTableType.GetMethod(nameof(IEntityMutableTable<object>.GetTableName));
         if(getTableNameMethod == null) return isSet;
         var tableName = getTableNameMethod.Invoke(instance, new object[] { dbContext }) as StarshineTableName;

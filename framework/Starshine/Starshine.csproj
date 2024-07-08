@@ -14,6 +14,7 @@
 		<PackageId>Starshine</PackageId>
 		<Product>Starshine for ASP.NET Core</Product>
 		<Copyright>2020 Starshine</Copyright>
+		<PackageReadmeFile>Index.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,4 +26,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 </Project>

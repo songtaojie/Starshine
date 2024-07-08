@@ -51,7 +51,7 @@ namespace Starshine
             { 
                 string? name = HttpContext?.User?.Identity?.Name;
                 if (!string.IsNullOrEmpty(name)) return name;
-                //string getNameType = _isUseIds4 ? HxClaimTypes.Ids4Name : ClaimTypes.Name;
+                //string getNameType = _isUseIds4 ? StarshineClaimTypes.Ids4Name : ClaimTypes.Name;
                return GetClaimValueByType(ClaimTypes.Name).FirstOrDefault();
             }
         }
@@ -64,7 +64,7 @@ namespace Starshine
             get
             {
                 var claims = GetClaimsIdentity();
-                var isAdmin = claims.Any(c => c.Type == ClaimTypes.Role && c.Value == HxClaimValues.SuperAdmin);
+                var isAdmin = claims.Any(c => c.Type == ClaimTypes.Role && c.Value == StarshineClaimValues.SuperAdmin);
                 return IsAuthenticated && isAdmin;
             }
         }
@@ -77,14 +77,14 @@ namespace Starshine
             get
             {
                 var claims = GetClaimsIdentity();
-                var isAdmin = claims.Any(c => c.Type == ClaimTypes.Role && c.Value == HxClaimValues.Admin);
+                var isAdmin = claims.Any(c => c.Type == ClaimTypes.Role && c.Value == StarshineClaimValues.Admin);
                 return IsAuthenticated && isAdmin;
             }
         }
         /// <summary>
         /// Jwt的id
         /// </summary>
-        public string? JwtId => GetClaimValueByType(HxClaimTypes.Jti).FirstOrDefault();
+        public string? JwtId => GetClaimValueByType(StarshineClaimTypes.Jti).FirstOrDefault();
 
         /// <summary>
         /// 用户的id
@@ -101,7 +101,7 @@ namespace Starshine
         /// <returns></returns>
         public T? GetOrgId<T>()
         {
-            return GetClaimValueByType<T>(HxClaimTypes.OrgId);
+            return GetClaimValueByType<T>(StarshineClaimTypes.OrgId);
         }
 
         /// <summary>

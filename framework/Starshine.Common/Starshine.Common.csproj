@@ -12,11 +12,14 @@
         <PackageId>Starshine.Common</PackageId>
         <Product>Starshine Help class for ASP.NET Core</Product>
         <Copyright>2020 Starshine.Common</Copyright>
+	  <PackageReadmeFile>Index.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>Starshine.Common.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
-
+	<ItemGroup>
+		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 </Project>

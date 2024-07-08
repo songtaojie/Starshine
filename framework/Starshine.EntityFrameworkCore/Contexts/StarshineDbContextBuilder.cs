@@ -5,6 +5,7 @@
 // 电话/微信：song977601042
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Starshine.Common;
 using Starshine.Extensions;
 using System;
@@ -43,11 +44,10 @@ internal static class StarshineDbContextBuilder
     /// </summary>
     private static readonly ConcurrentDictionary<string, Type> EntityTypeConfigurations;
 
-    private static IEnumerable<Type> _entityMutableTableTypes;
     /// <summary>
     /// 模型构建器筛选器实例
     /// </summary>
-    private static IEnumerable<Type> _modelBuilderFilters { get; set; }
+    private static Dictionary<string,Type> EntityMutableTableTypes { get; set; }
 
     /// <summary>
     /// 构造函数
@@ -58,6 +58,7 @@ internal static class StarshineDbContextBuilder
         ModelBuilderFilters = new();
         EFCoreEntitySeedDatas = new();
         EntityTypeConfigurations = new();
+        EntityMutableTableTypes = new();
         Init();
     }
 
@@ -76,7 +77,7 @@ internal static class StarshineDbContextBuilder
     {
         if (EntityTypeConfigurations.Any())
         {
-            var entityTypeConfiguration = EntityTypeConfigurations.GetValueOrDefault(typeof(TEntity).FullName ?? typeof(TEntity).Name);
+            var entityTypeConfiguration = EntityTypeConfigurations.GetValueOrDefault(GetGenericTypeName(typeof(TEntity)));
             if (entityTypeConfiguration != null)
             { 
                 return Activator.CreateInstance(entityTypeConfiguration) as IEntityTypeConfiguration<TEntity>;
@@ -90,7 +91,7 @@ internal static class StarshineDbContextBuilder
     {
         if (ModelBuilderFilters.Any())
         {
-            return ModelBuilderFilters.GetValueOrDefault(dbContextType.FullName ?? dbContextType.Name);
+            return ModelBuilderFilters.GetValueOrDefault(GetGenericTypeName(dbContextType));
         }
         return null;
     }
@@ -99,7 +100,7 @@ internal static class StarshineDbContextBuilder
     {
         if (EntityTypeConfigurations.Any())
         {
-            return EntityTypeConfigurations.GetValueOrDefault(entityType.FullName ?? entityType.Name);
+            return EntityTypeConfigurations.GetValueOrDefault(GetGenericTypeName(entityType));
         }
         return null;
     }
@@ -108,7 +109,7 @@ internal static class StarshineDbContextBuilder
     {
         if (EFCoreEntitySeedDatas.Any())
         {
-            return EFCoreEntitySeedDatas.GetValueOrDefault(entityType.FullName ?? entityType.Name);
+            return EFCoreEntitySeedDatas.GetValueOrDefault(GetGenericTypeName(entityType));
         }
         return null;
     }
@@ -117,7 +118,16 @@ internal static class StarshineDbContextBuilder
     {
         if (EFCoreEntitySeedDatas.Any())
         {
-            return EFCoreEntitySeedDatas.GetValueOrDefault(entityType.FullName ?? entityType.Name);
+            return EFCoreEntitySeedDatas.GetValueOrDefault(GetGenericTypeName(entityType));
+        }
+        return null;
+    }
+
+    internal static Type? GetEntityMutableTableType(Type entityType)
+    {
+        if (EntityMutableTableTypes.Any())
+        {
+            return EntityMutableTableTypes.GetValueOrDefault(GetGenericTypeName(entityType));
         }
         return null;
     }
@@ -128,9 +138,10 @@ internal static class StarshineDbContextBuilder
         var iEFCoreEntitySeedDataType = typeof(IEFCoreEntitySeedData<>);
         var iEntityType = typeof(IEntity);
         var iEntityTypeConfigurationType = typeof(IEntityTypeConfiguration<>);
+        var iEntityMutableTableType = typeof(IEntityMutableTable<>);
         foreach (var type in StarshineApp.EffectiveTypes)
         {
-            if (type.IsAbstract || type.IsInterface) continue;
+            if (!IsEffectiveType(type)) continue;
             if (iEntityType.IsAssignableFrom(type))
             {
                 string key = DefaultDbContextId;
@@ -166,8 +177,28 @@ internal static class StarshineDbContextBuilder
             {
                 EntityTypeConfigurations.TryAdd(GetGenericTypeName(genericType3), type);
             }
+            if (iEntityMutableTableType.IsAssignableFromGenericType(type, out Type genericType4))
+            {
+                EntityMutableTableTypes.Add(GetGenericTypeName(genericType4), type);
+            }
         }
     }
+
+    private static bool IsEffectiveType(Type type) 
+    {
+        if (type.IsAbstract || type.IsInterface || !type.IsClass || type.IsNotPublic)return false;
+        var interfaces = type.GetInterfaces();
+        if(!interfaces.Any()) return false;
+        var iModelBuilderFilterType = typeof(IModelBuilderFilter<>);
+        var iEFCoreEntitySeedDataType = typeof(IEFCoreEntitySeedData<>);
+        var iEntityType = typeof(IEntity);
+        var iEntityTypeConfigurationType = typeof(IEntityTypeConfiguration<>);
+        var iEntityMutableTableType = typeof(IEntityMutableTable<>);
+        return interfaces.Any(r => r.IsGenericType(iModelBuilderFilterType) || r.IsGenericType(iEFCoreEntitySeedDataType)
+            || iEntityType.IsAssignableFrom(r) || r.IsGenericType(iEntityTypeConfigurationType)
+            || r.IsGenericType(iEntityMutableTableType));
+    }
+
 
     private static string GetGenericTypeName(Type genericType)
     {

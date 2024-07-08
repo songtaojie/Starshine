@@ -2359,7 +2359,7 @@
             判断当前类是否实现了泛型接口
             </summary>
             <param name="type"></param>
-            <param name="interfaceType"></param>
+            <param name="genericType">泛型接口类型</param>
             <returns></returns>
         </member>
         <member name="M:Starshine.Extensions.TypeExtensions.IsGenericType(System.Type,System.Type)">

@@ -14,6 +14,7 @@
 	  <PackageId>Starshine.EntityFrameworkCore</PackageId>
 	  <Product>Cache for ASP.NET Core</Product>
 	  <Copyright>2020 Starshine.EntityFrameworkCore</Copyright>
+	  <PackageReadmeFile>Index.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,5 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Starshine\Starshine.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 </Project>

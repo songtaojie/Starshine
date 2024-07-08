@@ -7,7 +7,7 @@ namespace Starshine
     /// <summary>
     /// 自定义声明
     /// </summary>
-    public static class HxClaimTypes
+    public static class StarshineClaimTypes
     {
         /// <summary>
         /// http://tools.ietf.org/html/rfc7519#section-4    
@@ -22,7 +22,7 @@ namespace Starshine
     /// <summary>
     /// Claim的常量值
     /// </summary>
-    internal static class HxClaimValues
+    internal static class StarshineClaimValues
     {
         /// <summary>
         /// 超级管理员

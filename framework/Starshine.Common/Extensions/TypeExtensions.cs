@@ -155,17 +155,17 @@ namespace Starshine.Extensions
         /// 判断当前类是否实现了泛型接口
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="interfaceType"></param>
+        /// <param name="genericType">泛型接口类型</param>
         /// <returns></returns>
-        public static bool ImplementsGenericInterface(this Type type, Type interfaceType)
+        public static bool ImplementsGenericInterface(this Type type, Type genericType)
         {
-            if (type.IsGenericType(interfaceType))
+            if (type.IsGenericType(genericType))
             {
                 return true;
             }
             foreach (var @interface in type.GetTypeInfo().ImplementedInterfaces)
             {
-                if (@interface.IsGenericType(interfaceType))
+                if (@interface.IsGenericType(genericType))
                 {
                     return true;
                 }
@@ -263,10 +263,10 @@ namespace Starshine.Extensions
                     return true;
             }
             Type baseType = givenType.BaseType;
-            if (baseType == null) return false;
+            if (baseType == null || baseType == typeof(object)) return false;
             return genericType.IsAssignableFromGenericType(baseType);
         }
-
+      
         /// <summary>
         /// 确定是否可以将指定类型的实例分配给当前泛型类型的变量。
         /// </summary>
@@ -294,7 +294,7 @@ namespace Starshine.Extensions
                 }
             }
             Type baseType = givenType.BaseType;
-            if (baseType == null) return false;
+            if (baseType == null || baseType == typeof(object)) return false;
             return genericType.IsAssignableFromGenericType(baseType, out selectType);
         }
         /// <summary>

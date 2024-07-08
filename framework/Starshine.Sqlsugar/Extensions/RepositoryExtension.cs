@@ -44,7 +44,7 @@ public static class RepositoryExtension
     /// <returns></returns>
     public static int FakeDelete<T>(this ISqlSugarClient db, T entity) where T : FullAuditedEntityBase, new()
     {
-        return db.Updateable(entity).AS()
+        return db.Updateable(entity)
             .ReSetValue(u =>
             {
                 u.IsDeleted = true;
@@ -78,7 +78,7 @@ public static class RepositoryExtension
     /// <returns></returns>
     public static Task<int> FakeDeleteAsync<T>(this ISqlSugarClient db, T entity) where T : FullAuditedEntityBase, new()
     {
-        return db.Updateable(entity).AS().ReSetValue(u =>
+        return db.Updateable(entity).ReSetValue(u =>
             {
                 u.IsDeleted = true;
                 u.DeleteTime = DateTime.Now;
