@@ -5,6 +5,7 @@
 // 电话/微信：song977601042
 
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Starshine.FriendlyException;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,5 +106,92 @@ public static class HttpContextExtension
     public static string GetRefererUrlAddress(this HttpRequest request, string refererHeaderKey = "Referer")
     {
         return request.Headers[refererHeaderKey].ToString();
+    }
+
+    /// <summary>
+    /// 设置规范化文档自动登录
+    /// </summary>
+    /// <param name="httpContext"></param>
+    /// <param name="accessToken"></param>
+    public static void SigninToSwagger(this HttpContext httpContext, string accessToken)
+    {
+        // 设置 Swagger 刷新自动授权
+        httpContext.Response.Headers["access-token"] = accessToken;
+    }
+
+    /// <summary>
+    /// 设置规范化文档退出登录
+    /// </summary>
+    /// <param name="httpContext"></param>
+    public static void SignoutToSwagger(this HttpContext httpContext)
+    {
+        httpContext.Response.Headers["access-token"] = "invalid_token";
+    }
+
+    /// <summary>
+    /// 设置响应头 Tokens
+    /// </summary>
+    /// <param name="httpContext"></param>
+    /// <param name="accessToken"></param>
+    /// <param name="refreshToken"></param>
+    public static void SetTokensOfResponseHeaders(this HttpContext httpContext, string accessToken, string? refreshToken = null)
+    {
+        httpContext.Response.Headers["access-token"] = accessToken;
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            httpContext.Response.Headers["x-access-token"] = refreshToken;
+        }
+    }
+
+    /// <summary>
+    /// 读取 Body 内容
+    /// </summary>
+    /// <param name="httpContext"></param>
+    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+    /// <returns></returns>
+    public static async Task<string?> ReadBodyContentAsync(this HttpContext httpContext)
+    {
+        if (httpContext == null) return default;
+        return await httpContext.Request.ReadBodyContentAsync();
+    }
+
+    /// <summary>
+    /// 读取 Body 内容
+    /// </summary>
+    /// <param name="request"></param>
+    /// <remarks>需先在 Startup 的 Configure 中注册 app.EnableBuffering()</remarks>
+    /// <returns></returns>
+    public static async Task<string> ReadBodyContentAsync(this HttpRequest request)
+    {
+        request.Body.Seek(0, SeekOrigin.Begin);
+
+        using var reader = new StreamReader(request.Body, Encoding.UTF8, true, 1024, true);
+        var body = await reader.ReadToEndAsync();
+
+        // 回到顶部，解决此类问题 https://gitee.com/dotnetchina/Hx.Sdk/issues/I6NX9E
+        request.Body.Seek(0, SeekOrigin.Begin);
+        return body;
+    }
+
+    /// <summary>
+    /// 将 <see cref="BadPageResult"/> 写入响应流中
+    /// </summary>
+    /// <param name="httpResponse"><see cref="HttpResponse"/></param>
+    /// <param name="badPageResult"><see cref="BadPageResult"/></param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+    /// <returns></returns>
+    public static async ValueTask WriteAsync(this HttpResponse httpResponse, BadPageResult badPageResult, CancellationToken cancellationToken = default)
+    {
+        await httpResponse.Body.WriteAsync(badPageResult.ToByteArray(), cancellationToken);
+    }
+
+    /// <summary>
+    /// 判断是否是 WebSocket 请求
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public static bool IsWebSocketRequest(this HttpContext context)
+    {
+        return context.WebSockets.IsWebSocketRequest || context.Request.Path == "/ws";
     }
 }
