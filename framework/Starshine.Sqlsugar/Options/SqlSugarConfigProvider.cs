@@ -12,12 +12,11 @@ namespace Starshine.Sqlsugar
     /// </summary>
     internal static class SqlSugarConfigProvider
     {
-        internal const string DefaultConfigId = "hx_sqlsugar_configid";
+        internal const string DefaultConfigId = $"starshine_sqlsugar_configId";
+    
         /// <summary>
-        /// 应用有效程序集
+        /// 
         /// </summary>
-        private static IEnumerable<Assembly> Assemblies;
-
         private static IEnumerable<Type>? _effectiveTypes;
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace Starshine.Sqlsugar
         /// </summary>
         static SqlSugarConfigProvider()
         {
-            Assemblies = GetAssemblies();
         }
 
         /// <summary>
@@ -36,9 +34,10 @@ namespace Starshine.Sqlsugar
             get
             {
                 if (_effectiveTypes != null && _effectiveTypes.Any()) return _effectiveTypes;
-                if (Assemblies != null)
+                var assemblies = GetAssemblies();
+                if (assemblies != null)
                 {
-                    _effectiveTypes = Assemblies.SelectMany(GetTypes);
+                    _effectiveTypes = assemblies.SelectMany(GetTypes);
                 }
                 else
                 {
@@ -55,7 +54,7 @@ namespace Starshine.Sqlsugar
         /// <returns></returns>
         private static IEnumerable<Type> GetTypes(Assembly ass)
         {
-            return ass.GetTypes().Where(u => u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
+            return ass.GetTypes().Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass && u.IsPublic && !u.IsDefined(typeof(SkipScanAttribute), false));
         }
 
 
@@ -185,23 +184,20 @@ namespace Starshine.Sqlsugar
 
             if (!config.EnableDiffLog) return;
             //开启库表差异化日志
-            if (config.EnableDiffLog)
+            db.Aop.OnDiffLogEvent = u =>
             {
-                db.Aop.OnDiffLogEvent = u =>
+                var logDiff = JsonSerializer.Serialize(u);
+                using (logger.BeginScope(new Dictionary<string, object>
                 {
-                    var logDiff = JsonSerializer.Serialize(u);
-                    using (logger.BeginScope(new Dictionary<string, object>
-                    {
-                        [SugarLogScope.Source] = SugarLogScope.SourceValue,
-                        [SugarLogScope.Sql] = logDiff,
-                        [SugarLogScope.LogType] = 3,
-                        [SugarLogScope.SugarActionType] = db.SugarActionType,
-                    }))
-                    {
-                        logger.LogInformation(DateTime.Now + $"\r\n*****差异日志开始*****\r\n{Environment.NewLine}{logDiff}{Environment.NewLine}*****差异日志结束*****\r\n");
-                    }
-                };
-            }
+                    [SugarLogScope.Source] = SugarLogScope.SourceValue,
+                    [SugarLogScope.Sql] = logDiff,
+                    [SugarLogScope.LogType] = 3,
+                    [SugarLogScope.SugarActionType] = db.SugarActionType,
+                }))
+                {
+                    logger.LogInformation(DateTime.Now + $"\r\n*****差异日志开始*****\r\n{Environment.NewLine}{logDiff}{Environment.NewLine}*****差异日志结束*****\r\n");
+                }
+            };
         }
 
         private static List<string?> _isInitDbList = new List<string?>();
@@ -222,7 +218,7 @@ namespace Starshine.Sqlsugar
                 dbProvider.DbMaintenance.CreateDatabase();
 
             // 获取所有实体表-初始化表结构
-            var entityTypes = EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass && u.IsDefined(typeof(SugarTable), false)).ToList();
+            var entityTypes = EffectiveTypes.Where(u => u.IsDefined(typeof(SugarTable), false)).ToList();
             if (!entityTypes.Any()) return;
             foreach (var entityType in entityTypes)
             {
@@ -239,36 +235,35 @@ namespace Starshine.Sqlsugar
 
             if (!config!.EnableInitSeed) return;
             // 获取所有种子配置-初始化数据
-            var seedDataTypes = EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
-                && u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(ISqlSugarEntitySeedData<>)))).ToList();
+            var seedDataTypes = EffectiveTypes.Where(u => u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(ISqlSugarEntitySeedData<>)))).ToList();
             if (!seedDataTypes.Any()) return;
             foreach (var seedType in seedDataTypes)
             {
+                var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+                var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
+                var allowSeedData = (tAtt != null && tAtt.configId.ToString() == configId) || (tAtt == null && configId == DefaultConfigId);
+                if (!allowSeedData) continue;
+
                 var instance = Activator.CreateInstance(seedType);
                 var hasDataMethod = seedType.GetMethod(nameof(ISqlSugarEntitySeedData<object>.HasData));
                 if (hasDataMethod == null) continue;
                 var seedData = ((IEnumerable)hasDataMethod.Invoke(instance, null)!)?.Cast<object>();
                 if (seedData == null) continue;
 
-                var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
-                var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
-                if ((tAtt != null && tAtt.configId.ToString() == configId) || (tAtt == null && configId == DefaultConfigId))
+                var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
+                if (entityInfo.Columns.Any(u => u.IsPrimarykey))
                 {
-                    var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
-                    if (entityInfo.Columns.Any(u => u.IsPrimarykey))
-                    {
-                        // 按主键进行批量增加和更新
-                        var storage = dbProvider.StorageableByObject(seedData.ToList()).ToStorage();
-                        storage.AsInsertable.ExecuteCommand();
-                        var ignoreUpdate = hasDataMethod.GetCustomAttribute<IgnoreSeedUpdateAttribute>();
-                        if (ignoreUpdate == null) storage.AsUpdateable.ExecuteCommand();
-                    }
-                    else
-                    {
-                        // 无主键则只进行插入
-                        if (!dbProvider.Queryable(entityInfo.DbTableName, entityInfo.DbTableName).Any())
-                            dbProvider.InsertableByObject(seedData.ToList()).ExecuteCommand();
-                    }
+                    // 按主键进行批量增加和更新
+                    var storage = dbProvider.StorageableByObject(seedData.ToList()).ToStorage();
+                    storage.AsInsertable.ExecuteCommand();
+                    var ignoreUpdate = hasDataMethod.GetCustomAttribute<IgnoreSeedUpdateAttribute>();
+                    if (ignoreUpdate == null) storage.AsUpdateable.ExecuteCommand();
+                }
+                else
+                {
+                    // 无主键则只进行插入
+                    if (!dbProvider.Queryable(entityInfo.DbTableName, entityInfo.DbTableName).Any())
+                        dbProvider.InsertableByObject(seedData.ToList()).ExecuteCommand();
                 }
             }
         }
@@ -288,8 +283,7 @@ namespace Starshine.Sqlsugar
             db.DbMaintenance.CreateDatabase();
 
             // 获取所有实体表-初始化租户业务表
-            var entityTypes = EffectiveTypes.Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass
-                && u.IsDefined(typeof(SugarTable), false) && !u.IsDefined(typeof(TenantAttribute), false)).ToList();
+            var entityTypes = EffectiveTypes.Where(u => u.IsDefined(typeof(SugarTable), false) && !u.IsDefined(typeof(TenantAttribute), false)).ToList();
             if (!entityTypes.Any()) return;
             foreach (var entityType in entityTypes)
             {
@@ -305,7 +299,7 @@ namespace Starshine.Sqlsugar
         /// <summary>
         /// 框架 App 静态类
         /// </summary>
-        internal static Type? HxCoreApp { get; set; }
+        internal static Type? StarshineApp { get; set; }
 
         /// <summary>
         /// 获取框架上下文
@@ -314,15 +308,15 @@ namespace Starshine.Sqlsugar
         internal static Assembly? GetFrameworkContext(Assembly? callAssembly)
         {
             if (callAssembly == null) return null;
-            if (HxCoreApp != null) return HxCoreApp.Assembly;
+            if (StarshineApp != null) return StarshineApp.Assembly;
 
             var hxCoreAssemblyName = callAssembly.GetReferencedAssemblies()
-                                                       .FirstOrDefault(u => u.Name == "Hx.Sdk.Core");
+                                                       .FirstOrDefault(u => u.Name == nameof(Starshine));
             if (hxCoreAssemblyName == null) return null;
             var hxCoreAssembly = AssemblyLoadContext.Default.LoadFromAssemblyName(hxCoreAssemblyName);
 
             // 获取 App 静态类
-            HxCoreApp = hxCoreAssembly.GetType("Hx.Sdk.Core.App");
+            StarshineApp = hxCoreAssembly.GetType("Starshine.StarshineApp");
 
             return hxCoreAssembly;
         }
@@ -335,7 +329,7 @@ namespace Starshine.Sqlsugar
             IEnumerable<Assembly>? result = null;
             if (frameworkAssembly != null)
             {
-                var assembliesField = HxCoreApp!.GetField("Assemblies", BindingFlags.Public | BindingFlags.Static);
+                var assembliesField = StarshineApp!.GetField("Assemblies", BindingFlags.Public | BindingFlags.Static);
                 if (assembliesField != null)
                 {
                     result = assembliesField.GetValue(null) as IEnumerable<Assembly>;
