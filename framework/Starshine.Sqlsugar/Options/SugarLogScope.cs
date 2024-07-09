@@ -24,7 +24,7 @@ public class SugarLogScope
     /// <summary>
     /// sql来源
     /// </summary>
-    internal const string SourceValue = "Sqlsugar";
+    internal const string SourceValue = "Starshine.Sqlsugar";
 
     /// <summary>
     /// sql语句
