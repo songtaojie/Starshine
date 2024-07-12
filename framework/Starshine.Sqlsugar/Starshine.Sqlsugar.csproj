@@ -20,13 +20,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.158" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.4.162" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Starshine.Common\Starshine.Common.csproj" />
   </ItemGroup>
 	<ItemGroup>
-		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\docs\Index.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>

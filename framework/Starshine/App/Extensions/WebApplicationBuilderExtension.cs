@@ -26,5 +26,18 @@ namespace Microsoft.AspNetCore.Builder
             webApplicationBuilder.WebHost.ConfigureStarshineWebAppConfiguration();
             return webApplicationBuilder;
         }
+
+        /// <summary>
+        /// Web 应用注入
+        /// </summary>
+        /// <param name="webApplicationBuilder">Web应用构建器</param>
+        /// <returns>WebApplicationBuilder</returns>
+        public static WebApplicationBuilder ConfigureStarshineWebApp(this WebApplicationBuilder webApplicationBuilder)
+        {
+            //InternalApp.WebHostEnvironment = webApplicationBuilder.Environment;
+            // 初始化配置
+            webApplicationBuilder.Host.ConfigureStarshineWebHostDefaults();
+            return webApplicationBuilder;
+        }
     }
 }

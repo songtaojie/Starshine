@@ -74,6 +74,11 @@ namespace Starshine.Sqlsugar
                 },
                 EntityService = (type, column) => // 处理列
                 {
+                    if (type.GetIndexParameters().Length > 0)
+                    {
+                        column.IsIgnore = true;
+                        return;
+                    }
                     if (column.IsPrimarykey == false && type.PropertyType.IsGenericType
                         && type.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
@@ -243,17 +248,18 @@ namespace Starshine.Sqlsugar
                 var tAtt = entityType.GetCustomAttribute<TenantAttribute>();
                 var allowSeedData = (tAtt != null && tAtt.configId.ToString() == configId) || (tAtt == null && configId == DefaultConfigId);
                 if (!allowSeedData) continue;
-
-                var instance = Activator.CreateInstance(seedType);
                 var hasDataMethod = seedType.GetMethod(nameof(ISqlSugarEntitySeedData<object>.HasData));
                 if (hasDataMethod == null) continue;
-                var seedData = ((IEnumerable)hasDataMethod.Invoke(instance, null)!)?.Cast<object>();
+                var instance = Activator.CreateInstance(seedType);
+                if (instance == null) continue;
+                var seedData = ((IEnumerable?)hasDataMethod.Invoke(instance, null))?.Cast<object>();
                 if (seedData == null) continue;
 
-                var entityInfo = dbProvider.EntityMaintenance.GetEntityInfo(entityType);
+                var entityInfo = dbProvider.EntityMaintenance.GetEntityInfoNoCache(entityType);
                 if (entityInfo.Columns.Any(u => u.IsPrimarykey))
                 {
                     // 按主键进行批量增加和更新
+                    dbProvider.InsertableByObject(seedData.ToList()).ExecuteCommand();
                     var storage = dbProvider.StorageableByObject(seedData.ToList()).ToStorage();
                     storage.AsInsertable.ExecuteCommand();
                     var ignoreUpdate = hasDataMethod.GetCustomAttribute<IgnoreSeedUpdateAttribute>();
