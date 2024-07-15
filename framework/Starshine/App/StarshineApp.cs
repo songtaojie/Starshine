@@ -127,7 +127,7 @@ namespace Starshine
             var packages = dependencyContext.CompileLibraries
                 .Where(u =>
                        (u.Type == "project" && !excludeAssemblyNames.Any(j => u.Name.EndsWith(j)))
-                       || (u.Type == "package" && u.Name.StartsWith("Hx")));
+                       || (u.Type == "package" && u.Name.StartsWith(nameof(Starshine))));
 
             var scanAssemblies = packages.Select(u => AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(u.Name)))
             .ToList();

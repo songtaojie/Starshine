@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">服务集合</param>
         /// <returns>服务集合</returns>
-        internal static IServiceCollection AddSwaggerDocuments(this IServiceCollection services)
+        internal static IServiceCollection AddStarshineSwagger(this IServiceCollection services)
         {
             // 判断是否安装了 Starshine.Swagger 程序集
             var diAssembly = StarshineApp.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
@@ -28,18 +28,22 @@ namespace Microsoft.Extensions.DependencyInjection
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.Extensions.DependencyInjection.SwaggerDocumentServiceCollectionExtensions");
             if (swaggerBuilderExtensionsType == null) return services;
-            var addSwaggerDocumentsMethod = swaggerBuilderExtensionsType
+            var addStarshineSwaggerMethod = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(FirstMethod);
+                .FirstOrDefault(AddStarshineSwaggerMethod);
             var logger = NullLoggerFactory.Instance.CreateLogger<IServiceCollection>();
-            logger.LogDebug("Add the Swagger service");
-            addSwaggerDocumentsMethod?.Invoke(null, new object?[] { services, null, null });
+            if (addStarshineSwaggerMethod == null)
+            {
+                logger.LogDebug($"No method AddStarshineSwagger was found in the assembly {diAssembly.FullName}");
+                return services;
+            }
+            logger.LogDebug("The AddStarshineSwagger method is initialized");
+            addStarshineSwaggerMethod?.Invoke(null, new object?[] { services, null});
             return services;
-            static bool FirstMethod(MethodInfo methodInfo)
+            static bool AddStarshineSwaggerMethod(MethodInfo methodInfo)
             {
                 var parameter = methodInfo.GetParameters();
-                if (parameter.Length < 2) return false;
-                return methodInfo.Name == "AddSwaggerDocuments"
+                return methodInfo.Name == "AddStarshineSwagger" && parameter.Length == 2
                     && parameter.First().ParameterType == typeof(IServiceCollection);
             }
         }

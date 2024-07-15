@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 // 注册swagger
                 // 判断是否启用规范化文档
-                if (StarshineApp.Settings.EnabledSwagger == true) services.AddSwaggerDocuments();
+                if (StarshineApp.Settings.EnabledSwagger == true) services.AddStarshineSwagger();
 
                 // 判断是否启用规范化文档
                 if (StarshineApp.Settings.EnabledUnifyResult == true) services.AddUnifyResult();

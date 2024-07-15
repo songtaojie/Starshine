@@ -17,20 +17,22 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder UseSwaggerDocuments(this IApplicationBuilder app)
+        internal static IApplicationBuilder UseStarshineSwagger(this IApplicationBuilder app)
         {
             // 判断是否安装了 DependencyInjection 程序集
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
+            
             var diAssembly = StarshineApp.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
             if (swaggerBuilderExtensionsType == null) return app;
-            var useSwaggerDocuments = swaggerBuilderExtensionsType
+            var useStarshineSwagger = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(u => u.Name == "UseSwaggerDocuments" && u.GetParameters().First()?.ParameterType == typeof(IApplicationBuilder));
+                .FirstOrDefault(u => u.Name == "UseStarshineSwagger" && u.GetParameters().First()?.ParameterType == typeof(IApplicationBuilder));
+            if(useStarshineSwagger == null)return app;
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
             logger.LogDebug("Use the SwaggerUI ApplicationBuilder");
-            useSwaggerDocuments?.Invoke(null, new object?[] { app, null, null });
+            useStarshineSwagger?.Invoke(null, new object?[] { app, null, null });
             return app;
 
         }
@@ -40,20 +42,22 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder UseSwaggerKnife4jDocuments(this IApplicationBuilder app)
+        internal static IApplicationBuilder UseStarshineSwaggerKnife4j(this IApplicationBuilder app)
         {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
+            
             // 判断是否安装了 DependencyInjection 程序集
             var diAssembly = StarshineApp.Assemblies.FirstOrDefault(u => u.GetName().Name!.Equals(AppExtend.Swagger));
             if (diAssembly == null) return app;
             // 加载 SwaggerBuilder 拓展类型和拓展方法
             var swaggerBuilderExtensionsType = diAssembly.GetType($"Microsoft.AspNetCore.Builder.SwaggerDocumentApplicationBuilderExtensions");
             if (swaggerBuilderExtensionsType == null) return app;
-            var useSwaggerDocuments = swaggerBuilderExtensionsType
+            var useStarshineSwagger = swaggerBuilderExtensionsType
                 .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .First(u => u.Name == "UseSwaggerKnife4jDocuments" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
+                .First(u => u.Name == "UseStarshineSwaggerKnife4j" && u.GetParameters().First().ParameterType == typeof(IApplicationBuilder));
+            if(useStarshineSwagger == null) return app;
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<IApplicationBuilder>>();
             logger.LogDebug("Use the Swagger Knife4UI ApplicationBuilder");
-            useSwaggerDocuments?.Invoke(null, new object?[] { app, null, null});
+            useStarshineSwagger?.Invoke(null, new object?[] { app, null, null});
             return app;
         }
     }

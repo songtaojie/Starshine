@@ -22,11 +22,11 @@ namespace Microsoft.AspNetCore.Builder
             {
                 if (StarshineApp.Settings.SwaggerUI == SwaggerUIEnum.Knife4)
                 {
-                    app.UseSwaggerKnife4jDocuments();
+                    app.UseStarshineSwaggerKnife4j();
                 }
                 else
                 {
-                    app.UseSwaggerDocuments();
+                    app.UseStarshineSwagger();
                 }
             }
 
