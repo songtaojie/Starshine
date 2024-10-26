@@ -13,19 +13,6 @@ namespace Microsoft.AspNetCore.Mvc.Filters
     public sealed class FriendlyExceptionFilter : IAsyncExceptionFilter
     {
         /// <summary>
-        /// 服务提供器
-        /// </summary>
-        private readonly IServiceProvider _serviceProvider;
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="serviceProvider">服务提供器</param>
-        public FriendlyExceptionFilter(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        /// <summary>
         /// 异步异常的处理
         /// </summary>
         /// <param name="context"></param>
@@ -33,7 +20,7 @@ namespace Microsoft.AspNetCore.Mvc.Filters
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             //解析异常处理服务，实现自定义异常额外操作，如记录日志等
-            var globalExceptionHandler = _serviceProvider.GetService<IGlobalExceptionHandler>();
+            var globalExceptionHandler = context.HttpContext.RequestServices.GetService<IGlobalExceptionHandler>();
             if (globalExceptionHandler != null)
             {
                 await globalExceptionHandler.OnExceptionAsync(context);
